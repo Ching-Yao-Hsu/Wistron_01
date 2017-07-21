@@ -1,0 +1,83 @@
+    --  SQL Server 預存程序 (DB) ---------------------------------------  
+	-- 資料來源：http://www.aspsnippets.com/Articles/Implement-Infinite-Scroll-Endless-Scroll-in-ASPNet-using-jQuery-AJAX.aspx
+
+   USE [Northwind]
+
+GO
+
+SET ANSI_NULLS ON
+
+GO
+
+SET QUOTED_IDENTIFIER ON
+
+GO
+
+CREATE PROCEDURE [dbo].[GetCustomersPageWise] 
+
+      @PageIndex INT = 1
+
+      ,@PageSize INT = 10
+
+      ,@PageCount INT OUTPUT 
+
+AS
+
+BEGIN
+
+      SET NOCOUNT ON;
+
+      SELECT ROW_NUMBER() OVER
+
+            (
+
+                  ORDER BY [CustomerID] ASC
+
+            )AS RowNumber
+
+      ,[CustomerID]
+
+      ,[CompanyName]
+
+      ,[ContactName]
+
+      ,[City]
+
+      ,[Country]
+
+      ,[PostalCode]
+
+      ,[Phone]
+
+      ,[Fax]
+
+    INTO #Results
+
+      FROM [Customers]
+
+      
+
+      DECLARE @RecordCount INT
+
+      SELECT @RecordCount = COUNT(*) FROM #Results
+
+ 
+
+      SET @PageCount = CEILING(CAST(@RecordCount AS DECIMAL(10, 2)) / CAST(@PageSize AS DECIMAL(10, 2)))
+
+      PRINT       @PageCount
+
+            
+
+      SELECT * FROM #Results
+
+      WHERE RowNumber BETWEEN(@PageIndex -1) * @PageSize + 1 AND(((@PageIndex -1) * @PageSize + 1) + @PageSize) - 1
+
+      
+
+      DROP TABLE #Results
+
+END
+
+		-- 註解：分頁 ROW_NUMBER()，請看 https://dotblogs.com.tw/mis2000lab/archive/2010/11/30/datareader_paging_row_number.aspx
+		

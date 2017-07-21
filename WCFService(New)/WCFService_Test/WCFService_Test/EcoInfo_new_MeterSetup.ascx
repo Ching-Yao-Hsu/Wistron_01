@@ -1,0 +1,157 @@
+﻿<%@ Control Language="C#" AutoEventWireup="true" CodeBehind="EcoInfo_new_MeterSetup.ascx.cs" Inherits="WCFService_Test.EcoInfo_new_MeterSetup" %>
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <link href="css/html_reset.css" rel="stylesheet" />
+    <link href="css/EcoInfo_new/MeterSetup.css" rel="stylesheet" />
+    
+</head>
+
+<body>
+    <div class="Metertabs" style="height:380px; width:400px;">
+
+
+        <!--        <span style="font-size:12px; position:absolute; right:7px; top:7px; color:#999;">X</span>-->
+
+
+
+        <div class="Meternav">
+            <div style="height:50px;"></div>
+            <div style="width:30px;">
+                <button type="button" class="Metertablinks" data-link="01">01</button>
+                <button type="button" class="Metertablinks" data-link="02">02</button>
+                <button type="button" class="Metertablinks" data-link="03">03</button>
+                <button type="button" class="Metertablinks" data-link="04">04</button>
+                <button type="button" class="Metertablinks" data-link="05">05</button>
+                <button type="button" class="Metertablinks" data-link="06">06</button>
+                <button type="button" class="Metertablinks" data-link="07">07</button>
+                <button type="button" class="Metertablinks" data-link="08">08</button>
+                <button type="button" class="Metertablinks" data-link="09">09</button>
+                <button type="button" class="Metertablinks" data-link="10">10</button>
+            </div>
+        </div>
+
+        <div class="Metercontent">
+
+            <div class="Metertabcontent">
+                <div class="title">
+                    <div class="MeterSetup">電表設定</div>
+                    <div class="MeterNum"><span id="MeterNum"></span></div>
+                </div>
+                <div class="MeterTable">
+                    <table>
+                        <tr>
+                            <td style="letter-spacing:20px;">
+                                型號:
+                            </td>
+                            <td>
+                                <select name="" id="MeterType">
+                                    <option value="PA-310">PA-310</option>
+                                </select>
+                            </td>
+
+
+                        </tr>
+                        <tr>
+                            <td style="letter-spacing:20px;"><span>電流:</span></td>
+                            <td class="MeterTableBLine" id="MeterCurrent">123</td>
+                        </tr>
+                        <tr>
+                            <td style="letter-spacing:20px;">電壓:</td>
+                            <td class="MeterTableBLine" id="MeterVoltage">123</td>
+                        </tr>
+                        <tr>
+                            <td style="letter-spacing:4px;">
+                                用電種類:
+                            </td>
+                            <td>
+                                <select name="" id="MeterPotitionType">
+                                    <option value="MeterPotitionType">辦公室</option>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="letter-spacing:4px;">安裝位置:</td>
+                            <td class="MeterTableBLine" id="MeterSetupPosition">123</td>
+                        </tr>
+                        <tr>
+                            <td style="letter-spacing:4px;">圖面編號:</td>
+                            <td class="MeterTableBLine" id="MeterDiagramNum">123</td>
+                        </tr>
+                        <tr>
+                            <td>單線圖編號:</td>
+                            <td class="MeterTableBLine" id="MeterLineDiagramNum">123</td>
+                        </tr>
+                        <tr>
+                            <td style="letter-spacing:4px;">啟用狀態:</td>
+                            <td style="text-align:left; line-height:20px;">
+                                <div>
+                                    <span class="MeterStatus_ON" id="MeterStatus">ON</span>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="MeterTable_Btn" ><button type="button" id="MeterTable_Btn_Enter" >確定</button></td>
+                            <td class="MeterTable_Btn" ><button type="button" id="MeterTable_Btn_Cancel">取消</button></td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+
+
+
+        <!--
+        <div id="autoclickme">
+            <a onclick="myFunction()">Onload Autoclick me !!</a>
+        </div>
+-->
+
+
+    </div>
+
+</body>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+
+<script>   
+
+    $(document).ready(function() {
+        
+
+        $(".Metertabs .Meternav .Metertablinks").click(function() {
+
+            $(".Metertabs .Meternav .Metertablinks").each(function() {
+                $(this).removeClass("tablinks_selected");
+            });
+            $(this).addClass("tablinks_selected");
+
+            $("#MeterCurrent").text($(this).data('link'));
+            $("#MeterNum").text("02-" + $(this).data('link'));
+            
+
+        });
+
+        //        ----------------------
+        $("#MeterStatus").click(function() {
+            if ($(this).hasClass("MeterStatus_ON")) {
+                $(this).removeClass("MeterStatus_ON");
+                $(this).addClass("MeterStatus_OFF");
+                $(this).text("OFF");
+            } else {
+                $(this).removeClass("MeterStatus_OFF");
+                $(this).addClass("MeterStatus_ON");
+                $(this).text("ON");
+            }
+
+        });
+
+
+    });
+
+</script>
+
+</html>

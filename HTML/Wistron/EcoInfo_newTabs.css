@@ -1,0 +1,70 @@
+.EcoInfo_page .MeterTreeView {
+    float: left;
+    width: 480px;
+}
+
+.EcoInfo_page .MeterTreeViewNav {
+    padding-left: 10px;
+    height: 100%;
+}
+
+.EcoInfo_page .MeterTreeViewTabs {
+    padding-left: 15px;
+}
+
+.EcoInfo_page .MeterTreeViewTabs button {
+    position: relative;
+    height: 30px;
+    border: 1px solid;
+    border-color: lightgray;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    background: -webkit-linear-gradient(to right bottom, white, white, #f2f2f2);
+    background: -o-linear-gradient(to right bottom, white, white, #f2f2f2);
+    background: -moz-linear-gradient(to right bottom, white, white, #f2f2f2);
+    background: linear-gradient(to right bottom, white, white, #f2f2f2);
+    font-size: 12px;
+}
+
+.EcoInfo_page .MeterTreeViewContent {
+    border: 1px solid lightgray;
+    border-radius: 10px;
+    height: 96%;
+    background: -webkit-linear-gradient(to right bottom, white, , #f2f2f2, white, #f2f2f2);
+    background: -o-linear-gradient(to right bottom, white, , #f2f2f2, white, #f2f2f2);
+    background: -moz-linear-gradient(to right bottom, white, , #f2f2f2, white, #f2f2f2);
+    background: linear-gradient(to right bottom, white, #f2f2f2, white, #f2f2f2);
+    position: relative;
+}
+
+.EcoInfo_page .MeterTreeViewContent .MeterStatusSelect {
+    float: right;
+    padding-right: 10px;
+}
+
+.EcoInfo_page .MeterTreeViewContent .MeterStatusSelect>div {
+    font-size: 15px;
+    font-weight: bold;
+    line-height: 30px;
+    margin-top: 5px;
+}
+
+.EcoInfo_page .MeterTreeViewContent .MeterStatusSelect div img {
+    width: 20px;
+    vertical-align: middle;
+}
+
+.EcoInfo_page .MeterTreeView .MeterTreeViewNav .tablinks_selected:after {
+    content: "";
+    position: absolute;
+    left: 0px;
+    right: 0px;
+    bottom: -3px;
+    border: 3px solid white;
+    z-index: 1;
+}
+
+.EcoInfo_page .MeterTreeView .MeterTreeViewNav .tablinks_selected {
+    background: white;
+    border-bottom-color: white;
+}

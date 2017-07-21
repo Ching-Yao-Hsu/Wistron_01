@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <style>
+        .cut{
+            overflow: auto;
+            display: flex;
+        }
+        
+        .aaa{
+/*            flex: 1;*/
+            float: left;
+            width: 50%;
+            background-color: antiquewhite;
+        }
+        
+        .bbb{
+/*            flex: 1;*/
+            float: left;
+            background-color: greenyellow;
+            width: 50%;           
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="cut" style="border:1px solid red;">
+        
+        <div id="abc" class="1234 567 89a bcd 465 46 6465 efghi jklmnop qrstu vwxyz">
+              
+               <p>456</p>
+               <p>456</p>
+               <p>456</p>
+               <p>456</p>
+               <p>456</p>
+               <p>456</p>
+               <p>456</p>
+               <p>456</p>
+               <p>456</p>
+               
+        </div>
+                
+        
+        
+        <div class="bbb">456</div>
+        
+        
+    </div>
+    <div style="border:1px solid;">123123313</div>
+
+</body>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script>
+    $(document).ready(function(){
+        $("#abc").addClass("asdfasdfasdfasdfasdf");
+    });
+</script>
+
+</html>

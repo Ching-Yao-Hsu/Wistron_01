@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+        
+        #OrgChart table {
+            margin: 0;
+            padding: 0;
+            border-collapse: collapse;
+        }
+        
+        #OrgChart table tr td {
+            text-align: center;
+            width: 50px;
+        }
+        
+        #OrgChart .centerLine:after {
+            content: "";
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 50%;
+            border-left: 1px solid #ff0000;
+            transform: translate(-50%);
+        }
+        
+        #OrgChart .left_bottomLine {
+            position: absolute;
+            right: 0;
+            left: 50%;
+            bottom: -0.5px;
+            border-bottom: solid 1px red;
+            border-radius: 10px;
+        }
+        
+        #OrgChart .right_bottomLine {
+            position: absolute;
+            right: 50%;
+            left: 0;
+            bottom: -0.5px;
+            border-bottom: solid 1px red;
+            border-radius: 10px;
+        }
+        
+        #OrgChart table td {
+            width: 50px;
+            position: relative;
+        }
+        
+        #OrgChart table td.CenterAndRightBottom:before {
+            content: "";
+            position: absolute;
+            right: -1px;
+            bottom: 0;
+            height: 100%;
+            width: 50%;
+            border-left: 2px solid magenta;
+            border-bottom: 2px solid magenta;
+        }
+        
+        #OrgChart table td.Center:before {
+            content: "";
+            position: absolute;
+            right: -1px;
+            bottom: 0;
+            height: 100%;
+            width: 50%;
+            border-left: 2px solid magenta;
+        }
+        
+        #OrgChart table td.Bottom:before {
+            content: "";
+            position: absolute;
+            right: -1px;
+            bottom: 0;
+            height: 100%;
+            width: 100%;
+            border-bottom: 2px solid magenta;
+        }
+        
+        #OrgChart table td.leftBottom:before {
+            content: "";
+            position: absolute;
+            left: 1px;
+            bottom: 0;
+            height: 100%;
+            width: 50%;
+            border-bottom: 2px solid magenta;
+        }
+
+    </style>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+
+
+    <script>
+        function OrgChart_Setup() {
+            $("#OrgChart").append(
+                $("<table/>")
+            );
+        }
+
+        function OrgChart_Area(_hierarchy) {
+            for (var i = 1; i < _hierarchy; i++) {
+                $("#OrgChart table").append(
+                    $("<tr/>")
+                    .attr("id", "hierarchy" + i + "-0")
+                ).append(
+                    $("<tr/>")
+                    .attr("id", "hierarchy" + i + "-1")
+                ).append(
+                    $("<tr/>")
+                    .attr("id", "hierarchy" + i + "-2")
+                );
+            }
+
+            $("#OrgChart table").append(
+                $("<tr/>")
+                .attr("id", "hierarchy" + _hierarchy + "-0")
+            )
+        }
+
+        function OrgChart_root(_array) {
+            var _amount = _array.length;
+
+            for (var i = 0; i < _amount; i++) {
+                $("#OrgChart table").find('tr').each(function() {
+                    $(this).append(
+                        $("<td/>")
+                        .attr("colspan", "2")
+                        .addClass(_array[i]["id"])
+
+                    ).append(
+                        $("<td/>")
+                        .attr("colspan", "1")
+                    );
+                });
+            }
+
+        }
+
+        function OrgChart_Node(_array) {
+
+            var _amount = _array.length;
+
+            for (var i = 0; i < _amount; i++) {
+
+                $("#OrgChart table").find('tr').each(function() {
+                    $(this).find("." + _array[i]["id"]).addClass(_array[i]["child"][0]);
+                });
+
+                for (var j = _array[i]["child"].length - 1; j > 0; j--) {
+                    $("#OrgChart table").find('tr').each(function() {
+                        $(this).find("." + _array[i]["id"]).next()
+                            .after("<td colspan='2' class=" + _array[i]['child'][j] + "></td><td colspan='1'></td>");
+                    });
+                }
+            }
+        }
+
+        function OrgChart_Insert(_data) {
+
+            for (var i = 1; i <= _data.length; i++) {
+
+                for (var j = 0; j < _data[i - 1].length; j++) {
+
+                    $("#OrgChart table")
+                        .find("#hierarchy" + i + "-0")
+                        .find("." + _data[i - 1][j]["id"])                       
+                        .append(
+                            $("<div/>")
+                            .text("aaa")
+                            .css("height", "28px")
+                            .css("margin", "auto")
+                            .css("border", "2px")
+                            .css("border-style", "solid")
+                            .css("border-color", "green")
+                        );
+
+                    $("#OrgChart table")
+                        .find("#hierarchy" + (i - 1) + "-2")
+                        .find("." + _data[i - 1][j]["id"])
+                        .css("width", "15px")
+                        .css("height", "28px")
+                        .addClass("Center");                   
+                    
+                    if (_data[i - 1][j]["child"].length !== 0 && _data[i - 1][j]["child"].length != 1) {
+                        $("#OrgChart table")
+                            .find("#hierarchy" + i + "-1")
+                            .find("." + _data[i - 1][j]["id"])
+                            .css("width", "15px")
+                            .css("height", "28px")
+                            .addClass("CenterAndRightBottom");
+                        $("#OrgChart table")
+                            .find("#hierarchy" + i + "-1")
+                            .find("." + _data[i - 1][j]["id"])
+                            .nextUntil("." + _data[i - 1][j]["child"][(_data[i - 1][j]["child"].length - 1)]).addClass("Bottom");
+                        //                        
+                        $("#OrgChart table")
+                            .find("#hierarchy" + i + "-1")
+                            .find("." + _data[i - 1][j]["child"][(_data[i - 1][j]["child"].length - 1)])
+                            .addClass("leftBottom");
+                    } else if (_data[i - 1][j]["child"].length == 1) {
+                        $("#OrgChart table")
+                            .find("#hierarchy" + i + "-1")
+                            .find("." + _data[i - 1][j]["id"])
+                            .css("width", "15px")
+                            .css("height", "28px")
+                            .addClass("Center");
+                    }
+                }
+            }
+        }
+
+
+
+
+        $(document).ready(function() {
+            
+            data = {
+                0: [{
+                        "id": "00",                        
+                        "child": [
+                            "00-00",
+                            "00-01",
+                            "00-02"
+                        ]
+                    }
+                    ,
+                    {
+                        "id": "01",                        
+                        "child": [
+                            "01-00",
+                            "01-01",
+                            "01-02"
+                        ]
+                    }
+                ],
+                1: [{
+                        "id": "00-00",                        
+                        "child": []
+                    },
+                    {
+                        "id": "00-01",                        
+                        "child": [
+                            "00-01-00"
+                        ]
+                    },
+                    {
+                        "id": "00-02",                        
+                        "child": [
+                            "00-02-00",
+                            "00-02-01",
+                            "00-02-02"
+                        ]
+                    }
+                    
+                    ,
+                    {
+                        "id": "01-00",                        
+                        "child": []
+                    },
+                    {
+                        "id": "01-01",                        
+                        "child": [
+                            "00-01-00"
+                        ]
+                    },
+                    {
+                        "id": "01-02",                        
+                        "child": [
+                            "01-02-00",
+                            "01-02-01",
+                            "01-02-02"
+                        ]
+                    }
+                ],
+                2: [{
+                        "id": "00-01-00",                        
+                        "child": []
+                    },
+                    {
+                        "id": "00-02-00",                        
+                        "child": []
+                    },
+                    {
+                        "id": "00-02-01",                        
+                        "child": [
+                            "00-02-01-00"                            
+                        ]
+                    },
+                    {
+                        "id": "00-02-02",                        
+                        "child": [
+                            "00-02-02-00"       
+                        ]
+                    }
+                    ,
+                    
+                    
+                    {
+                        "id": "01-01-00",                        
+                        "child": []
+                    },
+                    {
+                        "id": "01-02-00",                        
+                        "child": ""
+                    },
+                    {
+                        "id": "01-02-01",                        
+                        "child": [
+                            "01-02-01-00"                            
+                        ]
+                    },
+                    {
+                        "id": "01-02-02",                        
+                        "child": [
+                            "01-02-02-00"       
+                        ]
+                    }
+                ],
+                3: [
+                    {
+                        "id": "00-02-01-00",                        
+                        "child": [
+                            "00-02-01-00-00",
+                            "00-02-01-00-01"
+                        ]
+                    },
+                    {
+                        "id": "00-02-02-00",
+                        "hasleaf": "4",
+                        "child": [
+                            "00-02-02-00-00",     
+                            "00-02-02-00-01",     
+                            "00-02-02-00-02",     
+                            "00-02-02-00-03"     
+                        ]
+                        
+                    }
+                    ,{
+                        "id": "01-02-01-00",                        
+                        "child": [
+                            "01-02-01-00-00"                               
+                        ]
+                    },
+                    {
+                        "id": "01-02-02-00",                        
+                        "child": [
+                            "01-02-02-00-00",     
+                            "01-02-02-00-01",     
+                            "01-02-02-00-02",     
+                            "01-02-02-00-03"     
+                        ]
+                        
+                    }
+                ],
+                4: [
+                    
+                    
+                    {
+                        "id": "00-02-01-00-00",                        
+                        "child": []
+                    },
+                    {
+                        "id": "00-02-01-00-01",                        
+                        "child": []
+                    },
+                    {
+                        "id": "00-02-02-00-00",                        
+                        "child": []
+                    },
+                    {
+                        "id": "00-02-02-00-01",                        
+                        "child": []
+                    },
+                    {
+                        "id": "00-02-02-00-02",                        
+                        "child": []
+                    },
+                    {
+                        "id": "00-02-02-00-03",                        
+                        "child": []
+                    }
+                    
+                    ,
+                    
+                    {
+                        "id": "01-02-01-00-00",                        
+                        "child": [
+                            "01-02-01-00-00-00"
+                        ]
+                    }
+                    ,
+                    
+                    {
+                        "id": "01-02-02-00-00",                        
+                        "child": []
+                    },
+                    {
+                        "id": "01-02-02-00-01",                        
+                        "child": []
+                    },
+                    {
+                        "id": "01-02-02-00-02",                        
+                        "child": []
+                    },
+                    {
+                        "id": "01-02-02-00-03",                        
+                        "child": []
+                    }
+                ]
+                ,
+                5:[
+                    {
+                         "id": "01-02-01-00-00-00",                        
+                         "child": []
+                    }
+                ]
+            }            
+
+            console.log(data.length);
+            
+            
+            
+            data2 = [data["0"], data["1"],data["2"],data["3"],data["4"],data["5"]]
+            OrgChart_Setup();
+            OrgChart_Area(data2.length);
+            OrgChart_root(data2[0]);
+            
+            
+            OrgChart_Node(data2[0]);
+            OrgChart_Node(data2[1]);
+            OrgChart_Node(data2[2]);
+            OrgChart_Node(data2[3]);
+            OrgChart_Node(data2[4]);
+            OrgChart_Node(data2[5]);
+                        
+
+            OrgChart_Insert(data2);
+
+
+
+
+        });
+
+    </script>
+
+</head>
+
+<body>
+
+    <div id="OrgChart"></div>
+
+</body>
+
+</html>

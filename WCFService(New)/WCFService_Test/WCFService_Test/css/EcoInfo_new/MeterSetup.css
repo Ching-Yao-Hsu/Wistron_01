@@ -1,0 +1,177 @@
+* {
+    box-sizing: border-box;
+}
+
+.Metertabs {
+    position: relative;
+}
+
+.Metertabs .Meternav {
+    float: left;
+}
+
+.Metertabs .Meternav button {
+    position: relative;
+    width: 100%;
+    height: 30px;
+    border: 1px solid;
+    border-color: lightgray;
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
+    /* For browsers that do not support gradients */
+    background: -webkit-linear-gradient(to right bottom, white, white, #f2f2f2);
+    /* For Safari 5.1 to 6.0 */
+    background: -o-linear-gradient(to right bottom, white, white, #f2f2f2);
+    /* For Opera 11.1 to 12.0 */
+    background: -moz-linear-gradient(to right bottom, white, white, #f2f2f2);
+    /* For Firefox 3.6 to 15 */
+    background: linear-gradient(to right bottom, white, white, #f2f2f2);
+    margin-top: 1px;
+    margin-bottom: 1px;
+}
+
+.Metertabs .Meternav .tablinks_selected:after {
+    content: "";
+    position: absolute;
+    top: 0;
+    right: -2px;
+    height: 26px;
+    border: 1px solid white;
+}
+
+.Metertabs .Meternav .tablinks_selected {
+    border-right: 0px;
+    background: white;   
+}
+
+.Metertabs .Metertabcontent .MeterSetup {
+    position: relative;
+    display: inline-block;
+    width: 270px;
+    /* For browsers that do not support gradients */
+    background: -webkit-linear-gradient(white, #ffff99);
+    /* For Safari 5.1 to 6.0 */
+    background: -o-linear-gradient(white, #ffff99);
+    /* For Opera 11.1 to 12.0 */
+    background: -moz-linear-gradient(white, #ffff99);
+    /* For Firefox 3.6 to 15 */
+    background: linear-gradient(white, #ffff99);
+    border-radius: 10px 0 0 0;
+    font-weight: bold;
+    font-size: 25px;
+}
+
+.Metertabs .Metertabcontent .MeterSetup:before {
+    content: "";
+    position: absolute;
+    top: 0;
+    right: 0;
+    border-width: 50px 20px 0px 0px;
+    border-style: solid;
+    border-color: transparent #fff transparent transparent;
+}
+
+.Metertabs .Metertabcontent .MeterNum {
+    display: inline-block;
+    width: 80px;
+    font-weight: bold;
+    font-size: 25px;
+    color: #999;
+    padding-right: 10px;
+}
+
+.Metertabs .Metercontent {
+    float: left;
+    height: 100%;
+    width: 370px;
+    background: -webkit-linear-gradient(to right bottom, white, white, #f2f2f2);
+    /* For Safari 5.1 to 6.0 */
+    background: -o-linear-gradient(to right bottom, white, white, #f2f2f2);
+    /* For Opera 11.1 to 12.0 */
+    background: -moz-linear-gradient(to right bottom, white, white, #f2f2f2);
+    /* For Firefox 3.6 to 15 */
+    background: linear-gradient(to right bottom, white, white, #f2f2f2);
+    border-width: 2px 3px 2px 1px;
+    border-style: solid;
+    border-color: lightgray;
+    border-radius: 5px 5px 5px 5px;
+}
+
+.Metertabs .Metercontent .title {
+    line-height: 50px;
+    text-align: center;
+}
+
+.Metertabs .Metercontent .MeterTable {
+    padding: 20px;
+}
+
+.Metertabs .Metercontent .Metertabcontent {
+    height: 100%;    
+}
+
+.Metertabs .Metercontent .MeterTable table {
+    width: 220px;
+    margin: auto;
+}
+
+.Metertabs .Metercontent .MeterTable td {
+    padding-top: 8px;
+    padding-bottom: 5px;
+}
+
+.Metertabs .Metercontent .MeterTable .MeterTableBLine {
+    border: 2px;
+    border-bottom-style: groove;
+}
+
+.Metertabs .Metercontent .MeterTable table tr td:first-child {
+    width: 100px;
+    font-weight: bold;
+}
+
+.Metertabs .Metercontent .MeterTable select {
+    color: #999;
+    border-radius: 2px;
+    font-weight: bold;
+    padding: 2px;
+    width: 120px;
+}
+
+.Metertabs .Metercontent .MeterTable table .MeterTable_Btn {
+    text-align: center;
+}
+
+.Metertabs .Metercontent .MeterTable table .MeterTable_Btn button {
+    color: #999;
+    font-size: 15px;
+    width: 60px;
+    border-radius: 3px;
+    background: -webkit-linear-gradient(to right bottom, white, white, lightgray);
+    /* For Safari 5.1 to 6.0 */
+    background: -o-linear-gradient(to right bottom, white, white, lightgray);
+    /* For Opera 11.1 to 12.0 */
+    background: -moz-linear-gradient(to right bottom, white, white, lightgray);
+    /* For Firefox 3.6 to 15 */
+    background: linear-gradient(to right bottom, white, white, lightgray);
+    margin-top: 5px;
+    font-weight: bold;
+}
+
+.Metertabs .MeterStatus_ON {
+    border: 1px groove;
+    border-radius: 3px;
+    padding: 3px;
+    background-color: #85e085;
+    color: white;
+    font-weight: bold;    
+}
+
+.Metertabs .MeterStatus_OFF {
+    border: 1px groove;
+    border-radius: 3px;
+    padding: 3px;
+    background-color: #ff4d4d;
+    color: white;
+    font-weight: bold;
+}

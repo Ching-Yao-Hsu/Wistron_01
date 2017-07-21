@@ -1,0 +1,1211 @@
+USE [master]
+GO
+/****** Object:  Database [GREENSMART]    Script Date: 2017/7/17 下午 05:50:18 ******/
+CREATE DATABASE [GREENSMART]
+ CONTAINMENT = NONE
+ ON  PRIMARY 
+( NAME = N'GREENSMART', FILENAME = N'C:\Program Files\Microsoft SQL Server\MSSQL11.MSSQLSERVER\MSSQL\DATA\GREENSMART.mdf' , SIZE = 5120KB , MAXSIZE = UNLIMITED, FILEGROWTH = 1024KB )
+ LOG ON 
+( NAME = N'GREENSMART_log', FILENAME = N'C:\Program Files\Microsoft SQL Server\MSSQL11.MSSQLSERVER\MSSQL\DATA\GREENSMART_log.ldf' , SIZE = 1024KB , MAXSIZE = 2048GB , FILEGROWTH = 10%)
+GO
+ALTER DATABASE [GREENSMART] SET COMPATIBILITY_LEVEL = 110
+GO
+IF (1 = FULLTEXTSERVICEPROPERTY('IsFullTextInstalled'))
+begin
+EXEC [GREENSMART].[dbo].[sp_fulltext_database] @action = 'enable'
+end
+GO
+ALTER DATABASE [GREENSMART] SET ANSI_NULL_DEFAULT OFF 
+GO
+ALTER DATABASE [GREENSMART] SET ANSI_NULLS OFF 
+GO
+ALTER DATABASE [GREENSMART] SET ANSI_PADDING OFF 
+GO
+ALTER DATABASE [GREENSMART] SET ANSI_WARNINGS OFF 
+GO
+ALTER DATABASE [GREENSMART] SET ARITHABORT OFF 
+GO
+ALTER DATABASE [GREENSMART] SET AUTO_CLOSE OFF 
+GO
+ALTER DATABASE [GREENSMART] SET AUTO_CREATE_STATISTICS ON 
+GO
+ALTER DATABASE [GREENSMART] SET AUTO_SHRINK OFF 
+GO
+ALTER DATABASE [GREENSMART] SET AUTO_UPDATE_STATISTICS ON 
+GO
+ALTER DATABASE [GREENSMART] SET CURSOR_CLOSE_ON_COMMIT OFF 
+GO
+ALTER DATABASE [GREENSMART] SET CURSOR_DEFAULT  GLOBAL 
+GO
+ALTER DATABASE [GREENSMART] SET CONCAT_NULL_YIELDS_NULL OFF 
+GO
+ALTER DATABASE [GREENSMART] SET NUMERIC_ROUNDABORT OFF 
+GO
+ALTER DATABASE [GREENSMART] SET QUOTED_IDENTIFIER OFF 
+GO
+ALTER DATABASE [GREENSMART] SET RECURSIVE_TRIGGERS OFF 
+GO
+ALTER DATABASE [GREENSMART] SET  DISABLE_BROKER 
+GO
+ALTER DATABASE [GREENSMART] SET AUTO_UPDATE_STATISTICS_ASYNC OFF 
+GO
+ALTER DATABASE [GREENSMART] SET DATE_CORRELATION_OPTIMIZATION OFF 
+GO
+ALTER DATABASE [GREENSMART] SET TRUSTWORTHY OFF 
+GO
+ALTER DATABASE [GREENSMART] SET ALLOW_SNAPSHOT_ISOLATION OFF 
+GO
+ALTER DATABASE [GREENSMART] SET PARAMETERIZATION SIMPLE 
+GO
+ALTER DATABASE [GREENSMART] SET READ_COMMITTED_SNAPSHOT OFF 
+GO
+ALTER DATABASE [GREENSMART] SET HONOR_BROKER_PRIORITY OFF 
+GO
+ALTER DATABASE [GREENSMART] SET RECOVERY FULL 
+GO
+ALTER DATABASE [GREENSMART] SET  MULTI_USER 
+GO
+ALTER DATABASE [GREENSMART] SET PAGE_VERIFY CHECKSUM  
+GO
+ALTER DATABASE [GREENSMART] SET DB_CHAINING OFF 
+GO
+ALTER DATABASE [GREENSMART] SET FILESTREAM( NON_TRANSACTED_ACCESS = OFF ) 
+GO
+ALTER DATABASE [GREENSMART] SET TARGET_RECOVERY_TIME = 0 SECONDS 
+GO
+USE [GREENSMART]
+GO
+/****** Object:  Table [dbo].[ClassCom]    Script Date: 2017/7/17 下午 05:50:19 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[ClassCom](
+	[ECOGroup] [nvarchar](20) NOT NULL,
+	[Class] [nvarchar](20) NOT NULL,
+	[CtrlNr] [int] NOT NULL,
+	[MeterID] [int] NOT NULL,
+	[Calculate] [bit] NOT NULL
+) ON [PRIMARY]
+
+GO
+/****** Object:  Table [dbo].[ClassSetup]    Script Date: 2017/7/17 下午 05:50:19 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[ClassSetup](
+	[ECOGroup] [nvarchar](20) NOT NULL,
+	[Class] [nvarchar](20) NOT NULL,
+	[ClassName] [nvarchar](20) NOT NULL,
+	[FloorArea] [float] NULL,
+	[StaffNum] [int] NULL,
+	[Output] [float] NULL,
+	[EVU] [float] NULL,
+	[KPI] [float] NULL,
+	[Parents] [nvarchar](20) NULL,
+	[High] [int] NULL,
+	[Mid] [int] NULL,
+	[Low] [int] NULL
+) ON [PRIMARY]
+
+GO
+/****** Object:  Table [dbo].[ControllerSetup]    Script Date: 2017/7/17 下午 05:50:19 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[ControllerSetup](
+	[ECOGroup] [nvarchar](max) NOT NULL,
+	[ECOAccount] [nvarchar](20) NOT NULL,
+	[ECOPassword] [nvarchar](20) NOT NULL,
+	[ECOType] [nvarchar](20) NOT NULL,
+	[CtrlNr] [int] NOT NULL,
+	[DrawNr] [nvarchar](30) NULL,
+	[InstallPosition] [nvarchar](30) NULL,
+	[IPAddress] [nvarchar](30) NULL,
+	[Enabled] [bit] NOT NULL,
+	[DiffTime] [int] NULL
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+
+GO
+/****** Object:  Table [dbo].[EventRecord]    Script Date: 2017/7/17 下午 05:50:19 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[EventRecord](
+	[EventIndex] [int] IDENTITY(1,1) NOT NULL,
+	[ECOGroup] [nvarchar](20) NULL,
+	[CtrlNr] [int] NULL,
+	[MeterID] [int] NULL,
+	[RecDate] [nvarchar](20) NOT NULL,
+	[InstallPosition] [nvarchar](30) NULL,
+	[ErrType] [int] NULL,
+	[ErrContent] [nvarchar](100) NULL,
+	[SMSSent] [bit] NULL,
+	[MailSent] [bit] NULL,
+ CONSTRAINT [PK_EventRecord] PRIMARY KEY CLUSTERED 
+(
+	[EventIndex] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+
+GO
+/****** Object:  Table [dbo].[GroupSetup]    Script Date: 2017/7/17 下午 05:50:19 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[GroupSetup](
+	[ECOGroup] [nvarchar](50) NOT NULL,
+	[GroupName] [nvarchar](20) NOT NULL,
+	[BillType] [int] NOT NULL,
+	[RushHour] [int] NULL,
+	[HalfHour] [int] NULL,
+	[SatHalfHour] [int] NULL,
+	[OffHour] [int] NULL,
+	[Enabled] [bit] NOT NULL,
+	[EnabledTime] [datetime] NOT NULL,
+	[SumDayMailSend] [bit] NULL,
+	[SumDayMail] [nvarchar](100) NULL,
+	[SumMonthMailSend] [bit] NULL,
+	[SumMonthMail] [nvarchar](100) NULL,
+	[EventSMSSend] [bit] NULL,
+	[EventSMS] [nvarchar](100) NULL,
+	[EventMailSend] [bit] NULL,
+	[EventMail] [nvarchar](100) NULL,
+	[PerNum] [int] NULL
+) ON [PRIMARY]
+
+GO
+/****** Object:  Table [dbo].[MeterSetup]    Script Date: 2017/7/17 下午 05:50:19 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[MeterSetup](
+	[ECOGroup] [nvarchar](20) NOT NULL,
+	[CtrlNr] [int] NOT NULL,
+	[MeterID] [int] NOT NULL,
+	[DrawNr] [nvarchar](30) NULL,
+	[InstallPosition] [nvarchar](30) NOT NULL,
+	[LineNum] [nvarchar](100) NULL,
+	[Enabled] [bit] NOT NULL,
+	[MeterType] [int] NULL,
+	[RatedCurrent] [int] NULL,
+	[RatedVoltage] [int] NULL,
+	[RatedPower] [float] NULL,
+	[Class] [nvarchar](20) NULL,
+	[Calculate] [bit] NULL,
+	[FloorArea] [float] NULL,
+	[StaffNum] [int] NULL,
+	[OutPut] [float] NULL,
+	[EUI] [float] NULL,
+	[KPI] [float] NULL,
+	[High] [int] NULL,
+	[Mid] [int] NULL,
+	[Low] [int] NULL,
+ CONSTRAINT [PK_MeterSetup] PRIMARY KEY CLUSTERED 
+(
+	[ECOGroup] ASC,
+	[CtrlNr] ASC,
+	[MeterID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+
+GO
+/****** Object:  Table [dbo].[MeterValue]    Script Date: 2017/7/17 下午 05:50:19 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[MeterValue](
+	[ECOGroup] [nvarchar](20) NOT NULL,
+	[CtrlNr] [int] NOT NULL,
+	[MeterID] [int] NOT NULL,
+	[RecDate] [nvarchar](14) NOT NULL,
+	[I1] [float] NULL,
+	[I2] [float] NULL,
+	[I3] [float] NULL,
+	[Iavg] [float] NULL,
+	[V1] [float] NULL,
+	[V2] [float] NULL,
+	[V3] [float] NULL,
+	[Vavg] [float] NULL,
+	[W] [float] NULL,
+	[V_ar] [float] NULL,
+	[VA] [float] NULL,
+	[PF] [float] NULL,
+	[KWh] [int] NULL,
+	[Mode1] [float] NULL,
+	[Mode2] [float] NULL,
+	[Mode3] [float] NULL,
+	[Mode4] [float] NULL,
+	[Demand] [int] NULL,
+	[DemandHalf] [int] NULL,
+	[DemandStaHalf] [int] NULL,
+	[DemandOff] [int] NULL,
+	[RushHour] [int] NULL,
+	[HalfHour] [int] NULL,
+	[SatHalfHour] [int] NULL,
+	[OffHour] [int] NULL,
+ CONSTRAINT [PK_MeterValue] PRIMARY KEY CLUSTERED 
+(
+	[ECOGroup] ASC,
+	[CtrlNr] ASC,
+	[MeterID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+
+GO
+/****** Object:  Table [dbo].[SmtpSetup]    Script Date: 2017/7/17 下午 05:50:19 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[SmtpSetup](
+	[SmtpServer] [nvarchar](30) NULL,
+	[MailAccount] [nvarchar](20) NULL,
+	[MailPassword] [nvarchar](20) NULL,
+	[MailAddress] [nvarchar](30) NULL,
+	[MailName] [nvarchar](20) NULL,
+	[SSL] [bit] NULL,
+	[Bcc] [nvarchar](30) NULL
+) ON [PRIMARY]
+
+GO
+/****** Object:  Table [dbo].[UserCom]    Script Date: 2017/7/17 下午 05:50:19 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[UserCom](
+	[Account] [nvarchar](20) NOT NULL,
+	[Com] [nvarchar](20) NOT NULL,
+	[Enabled] [bit] NOT NULL,
+	[EnabledTime] [datetime] NOT NULL,
+ CONSTRAINT [PK_UserCom] PRIMARY KEY CLUSTERED 
+(
+	[Account] ASC,
+	[Com] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+
+GO
+/****** Object:  Table [dbo].[UserSetup]    Script Date: 2017/7/17 下午 05:50:19 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[UserSetup](
+	[Account] [nvarchar](20) NOT NULL,
+	[Password] [nvarchar](20) NOT NULL,
+	[ECOGroup] [nvarchar](20) NOT NULL,
+	[Name] [nvarchar](20) NULL,
+	[Company] [nvarchar](20) NULL,
+	[Address] [nvarchar](50) NULL,
+	[Tel] [nvarchar](20) NULL,
+	[Mobile] [nvarchar](20) NULL,
+	[Email] [nvarchar](30) NOT NULL,
+	[Rank] [int] NOT NULL,
+	[GUID] [uniqueidentifier] NOT NULL,
+	[Enabled] [bit] NOT NULL,
+	[EnabledTime] [datetime] NOT NULL
+) ON [PRIMARY]
+
+GO
+INSERT [dbo].[ControllerSetup] ([ECOGroup], [ECOAccount], [ECOPassword], [ECOType], [CtrlNr], [DrawNr], [InstallPosition], [IPAddress], [Enabled], [DiffTime]) VALUES (N'eco', N'000000000000000', N'111111', N'ECO5', 2, N'', N'行動箱#1', N'', 1, 0)
+GO
+INSERT [dbo].[ControllerSetup] ([ECOGroup], [ECOAccount], [ECOPassword], [ECOType], [CtrlNr], [DrawNr], [InstallPosition], [IPAddress], [Enabled], [DiffTime]) VALUES (N'eco', N'000000000000001', N'abc123', N'ECO5', 3, N'', N'行動箱#2', N'192.168.1.125', 1, 0)
+GO
+INSERT [dbo].[ControllerSetup] ([ECOGroup], [ECOAccount], [ECOPassword], [ECOType], [CtrlNr], [DrawNr], [InstallPosition], [IPAddress], [Enabled], [DiffTime]) VALUES (N'eco', N'000000000000005', N'abc123', N'ECO5', 10, N'', N'test', N'192.168.1.112', 1, 0)
+GO
+INSERT [dbo].[ControllerSetup] ([ECOGroup], [ECOAccount], [ECOPassword], [ECOType], [CtrlNr], [DrawNr], [InstallPosition], [IPAddress], [Enabled], [DiffTime]) VALUES (N'eco', N'ecooffice000001', N'abc123', N'ECO5', 1, N'', N'會議室', N'', 1, 0)
+GO
+INSERT [dbo].[ControllerSetup] ([ECOGroup], [ECOAccount], [ECOPassword], [ECOType], [CtrlNr], [DrawNr], [InstallPosition], [IPAddress], [Enabled], [DiffTime]) VALUES (N'fomolux', N'fomolux00000001', N'abc123', N'ECO5_Lite', 1, N'', N'圖資館停車場', N'', 1, 0)
+GO
+INSERT [dbo].[ControllerSetup] ([ECOGroup], [ECOAccount], [ECOPassword], [ECOType], [CtrlNr], [DrawNr], [InstallPosition], [IPAddress], [Enabled], [DiffTime]) VALUES (N'jtflex', N'jtflex000000001', N'abc123', N'ECO5', 1, N'', N'', N'192.168.1.106', 1, 0)
+GO
+INSERT [dbo].[ControllerSetup] ([ECOGroup], [ECOAccount], [ECOPassword], [ECOType], [CtrlNr], [DrawNr], [InstallPosition], [IPAddress], [Enabled], [DiffTime]) VALUES (N'kuanstar', N'kuanslin0000001', N'abc123', N'ECO5', 1, N'', N'清華大學EMBA', N'', 1, 0)
+GO
+INSERT [dbo].[ControllerSetup] ([ECOGroup], [ECOAccount], [ECOPassword], [ECOType], [CtrlNr], [DrawNr], [InstallPosition], [IPAddress], [Enabled], [DiffTime]) VALUES (N'shichi', N'shichi000000001', N'abc123', N'ECO5_Lite', 1, N'', N'總電源', N'', 1, 0)
+GO
+INSERT [dbo].[ControllerSetup] ([ECOGroup], [ECOAccount], [ECOPassword], [ECOType], [CtrlNr], [DrawNr], [InstallPosition], [IPAddress], [Enabled], [DiffTime]) VALUES (N'twenergy', N'twenergy0000001', N'abc123', N'ECO5_Lite', 1, N'', N'雅勝01', N'', 1, 0)
+GO
+INSERT [dbo].[ControllerSetup] ([ECOGroup], [ECOAccount], [ECOPassword], [ECOType], [CtrlNr], [DrawNr], [InstallPosition], [IPAddress], [Enabled], [DiffTime]) VALUES (N'twenergy', N'twenergy0000002', N'abc123', N'ECO5_Lite', 2, N'', N'雅勝02', N'', 1, 0)
+GO
+INSERT [dbo].[ControllerSetup] ([ECOGroup], [ECOAccount], [ECOPassword], [ECOType], [CtrlNr], [DrawNr], [InstallPosition], [IPAddress], [Enabled], [DiffTime]) VALUES (N'twenergy', N'twenergy0000003', N'abc123', N'ECO5_Lite', 3, N'', N'雅勝03', N'', 1, 0)
+GO
+INSERT [dbo].[ControllerSetup] ([ECOGroup], [ECOAccount], [ECOPassword], [ECOType], [CtrlNr], [DrawNr], [InstallPosition], [IPAddress], [Enabled], [DiffTime]) VALUES (N'twenergy', N'twenergy0000004', N'abc123', N'ECO5_Lite', 4, N'', N'雅勝04', N'', 1, 0)
+GO
+INSERT [dbo].[ControllerSetup] ([ECOGroup], [ECOAccount], [ECOPassword], [ECOType], [CtrlNr], [DrawNr], [InstallPosition], [IPAddress], [Enabled], [DiffTime]) VALUES (N'twenergy', N'twenergy0000005', N'abc123', N'ECO5_Lite', 5, N'', N'雅勝05', N'', 1, 0)
+GO
+INSERT [dbo].[ControllerSetup] ([ECOGroup], [ECOAccount], [ECOPassword], [ECOType], [CtrlNr], [DrawNr], [InstallPosition], [IPAddress], [Enabled], [DiffTime]) VALUES (N'wljsh', N'wljhs0000000001', N'abc123', N'ECO5', 1, N'', N'電號1', N'', 1, 0)
+GO
+INSERT [dbo].[ControllerSetup] ([ECOGroup], [ECOAccount], [ECOPassword], [ECOType], [CtrlNr], [DrawNr], [InstallPosition], [IPAddress], [Enabled], [DiffTime]) VALUES (N'wlsh', N'wlsh00000000001', N'abc123', N'ECO5', 1, N'', N'圖書館', N'210.70.27.195', 1, 0)
+GO
+INSERT [dbo].[ControllerSetup] ([ECOGroup], [ECOAccount], [ECOPassword], [ECOType], [CtrlNr], [DrawNr], [InstallPosition], [IPAddress], [Enabled], [DiffTime]) VALUES (N'sample', N'sample000000001', N'abc123', N'ECO5', 1, NULL, NULL, NULL, 1, 0)
+GO
+INSERT [dbo].[ControllerSetup] ([ECOGroup], [ECOAccount], [ECOPassword], [ECOType], [CtrlNr], [DrawNr], [InstallPosition], [IPAddress], [Enabled], [DiffTime]) VALUES (N'sample', N'sample000000002', N'abc123', N'ECO5', 2, NULL, NULL, NULL, 1, 0)
+GO
+INSERT [dbo].[ControllerSetup] ([ECOGroup], [ECOAccount], [ECOPassword], [ECOType], [CtrlNr], [DrawNr], [InstallPosition], [IPAddress], [Enabled], [DiffTime]) VALUES (N'sample', N'sample000000003', N'abc123', N'ECO5', 3, NULL, NULL, NULL, 1, 0)
+GO
+INSERT [dbo].[ControllerSetup] ([ECOGroup], [ECOAccount], [ECOPassword], [ECOType], [CtrlNr], [DrawNr], [InstallPosition], [IPAddress], [Enabled], [DiffTime]) VALUES (N'sample', N'sample000000004', N'abc123', N'ECO5', 4, NULL, NULL, NULL, 1, 0)
+GO
+INSERT [dbo].[ControllerSetup] ([ECOGroup], [ECOAccount], [ECOPassword], [ECOType], [CtrlNr], [DrawNr], [InstallPosition], [IPAddress], [Enabled], [DiffTime]) VALUES (N'sample', N'sample000000005', N'abc123', N'ECO5', 5, NULL, NULL, NULL, 1, 0)
+GO
+INSERT [dbo].[GroupSetup] ([ECOGroup], [GroupName], [BillType], [RushHour], [HalfHour], [SatHalfHour], [OffHour], [Enabled], [EnabledTime], [SumDayMailSend], [SumDayMail], [SumMonthMailSend], [SumMonthMail], [EventSMSSend], [EventSMS], [EventMailSend], [EventMail], [PerNum]) VALUES (N'eco', N'ECO', 0, 0, 0, 0, 0, 1, CAST(N'2017-07-17 11:30:00.000' AS DateTime), NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1)
+GO
+INSERT [dbo].[GroupSetup] ([ECOGroup], [GroupName], [BillType], [RushHour], [HalfHour], [SatHalfHour], [OffHour], [Enabled], [EnabledTime], [SumDayMailSend], [SumDayMail], [SumMonthMailSend], [SumMonthMail], [EventSMSSend], [EventSMS], [EventMailSend], [EventMail], [PerNum]) VALUES (N'fomolux', N'陽明大學', 0, 0, 0, 0, 0, 1, CAST(N'2017-07-17 11:30:00.000' AS DateTime), NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1)
+GO
+INSERT [dbo].[GroupSetup] ([ECOGroup], [GroupName], [BillType], [RushHour], [HalfHour], [SatHalfHour], [OffHour], [Enabled], [EnabledTime], [SumDayMailSend], [SumDayMail], [SumMonthMailSend], [SumMonthMail], [EventSMSSend], [EventSMS], [EventMailSend], [EventMail], [PerNum]) VALUES (N'jtflex', N'日翔', 0, 0, 0, 0, 0, 1, CAST(N'2017-07-17 11:30:00.000' AS DateTime), NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1)
+GO
+INSERT [dbo].[GroupSetup] ([ECOGroup], [GroupName], [BillType], [RushHour], [HalfHour], [SatHalfHour], [OffHour], [Enabled], [EnabledTime], [SumDayMailSend], [SumDayMail], [SumMonthMailSend], [SumMonthMail], [EventSMSSend], [EventSMS], [EventMailSend], [EventMail], [PerNum]) VALUES (N'kuanstar', N'冠新能源', 0, 0, 0, 0, 0, 1, CAST(N'2017-07-17 11:30:00.000' AS DateTime), NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1)
+GO
+INSERT [dbo].[GroupSetup] ([ECOGroup], [GroupName], [BillType], [RushHour], [HalfHour], [SatHalfHour], [OffHour], [Enabled], [EnabledTime], [SumDayMailSend], [SumDayMail], [SumMonthMailSend], [SumMonthMail], [EventSMSSend], [EventSMS], [EventMailSend], [EventMail], [PerNum]) VALUES (N'shichi', N'世奇蛋糕', 0, 0, 0, 0, 0, 1, CAST(N'2017-07-17 11:30:00.000' AS DateTime), NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1)
+GO
+INSERT [dbo].[GroupSetup] ([ECOGroup], [GroupName], [BillType], [RushHour], [HalfHour], [SatHalfHour], [OffHour], [Enabled], [EnabledTime], [SumDayMailSend], [SumDayMail], [SumMonthMailSend], [SumMonthMail], [EventSMSSend], [EventSMS], [EventMailSend], [EventMail], [PerNum]) VALUES (N'twenergy', N'雅勝', 0, 0, 0, 0, 0, 1, CAST(N'2017-07-17 11:30:00.000' AS DateTime), NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1)
+GO
+INSERT [dbo].[GroupSetup] ([ECOGroup], [GroupName], [BillType], [RushHour], [HalfHour], [SatHalfHour], [OffHour], [Enabled], [EnabledTime], [SumDayMailSend], [SumDayMail], [SumMonthMailSend], [SumMonthMail], [EventSMSSend], [EventSMS], [EventMailSend], [EventMail], [PerNum]) VALUES (N'wljsh', N'萬里國中', 0, 0, 0, 0, 0, 1, CAST(N'2017-07-17 11:30:00.000' AS DateTime), NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1)
+GO
+INSERT [dbo].[GroupSetup] ([ECOGroup], [GroupName], [BillType], [RushHour], [HalfHour], [SatHalfHour], [OffHour], [Enabled], [EnabledTime], [SumDayMailSend], [SumDayMail], [SumMonthMailSend], [SumMonthMail], [EventSMSSend], [EventSMS], [EventMailSend], [EventMail], [PerNum]) VALUES (N'wlsh', N'武陵高中', 0, 0, 0, 0, 0, 1, CAST(N'2017-07-17 11:30:00.000' AS DateTime), NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1)
+GO
+INSERT [dbo].[GroupSetup] ([ECOGroup], [GroupName], [BillType], [RushHour], [HalfHour], [SatHalfHour], [OffHour], [Enabled], [EnabledTime], [SumDayMailSend], [SumDayMail], [SumMonthMailSend], [SumMonthMail], [EventSMSSend], [EventSMS], [EventMailSend], [EventMail], [PerNum]) VALUES (N'sample', N'樣本', 0, 0, 0, 0, 0, 1, CAST(N'2017-07-17 11:30:00.000' AS DateTime), NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1)
+GO
+INSERT [dbo].[MeterSetup] ([ECOGroup], [CtrlNr], [MeterID], [DrawNr], [InstallPosition], [LineNum], [Enabled], [MeterType], [RatedCurrent], [RatedVoltage], [RatedPower], [Class], [Calculate], [FloorArea], [StaffNum], [OutPut], [EUI], [KPI], [High], [Mid], [Low]) VALUES (N'eco', 1, 1, N'', N'總電源', N'00', 1, 4, 0, 0, 0, N'', 0, NULL, NULL, 0, 0, 0, 0, 0, 0)
+GO
+INSERT [dbo].[MeterSetup] ([ECOGroup], [CtrlNr], [MeterID], [DrawNr], [InstallPosition], [LineNum], [Enabled], [MeterType], [RatedCurrent], [RatedVoltage], [RatedPower], [Class], [Calculate], [FloorArea], [StaffNum], [OutPut], [EUI], [KPI], [High], [Mid], [Low]) VALUES (N'eco', 1, 2, N'', N'Demo電表02', N'00-02', 1, 4, 0, 0, 0, N'', 0, NULL, NULL, 0, 0, 0, 0, 0, 0)
+GO
+INSERT [dbo].[MeterSetup] ([ECOGroup], [CtrlNr], [MeterID], [DrawNr], [InstallPosition], [LineNum], [Enabled], [MeterType], [RatedCurrent], [RatedVoltage], [RatedPower], [Class], [Calculate], [FloorArea], [StaffNum], [OutPut], [EUI], [KPI], [High], [Mid], [Low]) VALUES (N'eco', 1, 3, N'', N'Demo電表03', N'00-03', 1, 4, 0, 0, 0, N'', 0, NULL, NULL, 0, 0, 0, 0, 0, 0)
+GO
+INSERT [dbo].[MeterSetup] ([ECOGroup], [CtrlNr], [MeterID], [DrawNr], [InstallPosition], [LineNum], [Enabled], [MeterType], [RatedCurrent], [RatedVoltage], [RatedPower], [Class], [Calculate], [FloorArea], [StaffNum], [OutPut], [EUI], [KPI], [High], [Mid], [Low]) VALUES (N'eco', 1, 4, NULL, N'預設位置4', NULL, 0, NULL, 0, 0, 0, N'', 0, NULL, NULL, 0, 0, 0, 0, 0, 0)
+GO
+INSERT [dbo].[MeterSetup] ([ECOGroup], [CtrlNr], [MeterID], [DrawNr], [InstallPosition], [LineNum], [Enabled], [MeterType], [RatedCurrent], [RatedVoltage], [RatedPower], [Class], [Calculate], [FloorArea], [StaffNum], [OutPut], [EUI], [KPI], [High], [Mid], [Low]) VALUES (N'eco', 1, 5, NULL, N'預設位置5', NULL, 0, NULL, 0, 0, 0, N'', 0, NULL, NULL, 0, 0, 0, 0, 0, 0)
+GO
+INSERT [dbo].[MeterSetup] ([ECOGroup], [CtrlNr], [MeterID], [DrawNr], [InstallPosition], [LineNum], [Enabled], [MeterType], [RatedCurrent], [RatedVoltage], [RatedPower], [Class], [Calculate], [FloorArea], [StaffNum], [OutPut], [EUI], [KPI], [High], [Mid], [Low]) VALUES (N'eco', 1, 6, NULL, N'預設位置6', NULL, 0, NULL, 0, 0, 0, N'', 0, NULL, NULL, 0, 0, 0, 0, 0, 0)
+GO
+INSERT [dbo].[MeterSetup] ([ECOGroup], [CtrlNr], [MeterID], [DrawNr], [InstallPosition], [LineNum], [Enabled], [MeterType], [RatedCurrent], [RatedVoltage], [RatedPower], [Class], [Calculate], [FloorArea], [StaffNum], [OutPut], [EUI], [KPI], [High], [Mid], [Low]) VALUES (N'eco', 1, 7, NULL, N'預設位置7', NULL, 0, NULL, 0, 0, 0, N'', 0, NULL, NULL, 0, 0, 0, 0, 0, 0)
+GO
+INSERT [dbo].[MeterSetup] ([ECOGroup], [CtrlNr], [MeterID], [DrawNr], [InstallPosition], [LineNum], [Enabled], [MeterType], [RatedCurrent], [RatedVoltage], [RatedPower], [Class], [Calculate], [FloorArea], [StaffNum], [OutPut], [EUI], [KPI], [High], [Mid], [Low]) VALUES (N'eco', 1, 8, NULL, N'預設位置8', NULL, 0, NULL, 0, 0, 0, N'', 0, NULL, NULL, 0, 0, 0, 0, 0, 0)
+GO
+INSERT [dbo].[MeterSetup] ([ECOGroup], [CtrlNr], [MeterID], [DrawNr], [InstallPosition], [LineNum], [Enabled], [MeterType], [RatedCurrent], [RatedVoltage], [RatedPower], [Class], [Calculate], [FloorArea], [StaffNum], [OutPut], [EUI], [KPI], [High], [Mid], [Low]) VALUES (N'eco', 1, 9, NULL, N'預設位置9', NULL, 0, NULL, 0, 0, 0, N'', 0, NULL, NULL, 0, 0, 0, 0, 0, 0)
+GO
+INSERT [dbo].[MeterSetup] ([ECOGroup], [CtrlNr], [MeterID], [DrawNr], [InstallPosition], [LineNum], [Enabled], [MeterType], [RatedCurrent], [RatedVoltage], [RatedPower], [Class], [Calculate], [FloorArea], [StaffNum], [OutPut], [EUI], [KPI], [High], [Mid], [Low]) VALUES (N'eco', 1, 10, NULL, N'預設位置10', NULL, 0, NULL, 0, 0, 0, N'', 0, NULL, NULL, 0, 0, 0, 0, 0, 0)
+GO
+INSERT [dbo].[MeterSetup] ([ECOGroup], [CtrlNr], [MeterID], [DrawNr], [InstallPosition], [LineNum], [Enabled], [MeterType], [RatedCurrent], [RatedVoltage], [RatedPower], [Class], [Calculate], [FloorArea], [StaffNum], [OutPut], [EUI], [KPI], [High], [Mid], [Low]) VALUES (N'eco', 2, 1, N'', N'行動箱1電表1', N'00-00-03', 1, 4, 0, 0, 0, N'', 0, NULL, NULL, 0, 0, 0, 0, 0, 0)
+GO
+INSERT [dbo].[MeterSetup] ([ECOGroup], [CtrlNr], [MeterID], [DrawNr], [InstallPosition], [LineNum], [Enabled], [MeterType], [RatedCurrent], [RatedVoltage], [RatedPower], [Class], [Calculate], [FloorArea], [StaffNum], [OutPut], [EUI], [KPI], [High], [Mid], [Low]) VALUES (N'eco', 2, 2, N'', N'行動箱1電表2', N'00-04', 1, 4, 0, 0, 0, N'', 0, NULL, NULL, 0, 0, 0, 0, 0, 0)
+GO
+INSERT [dbo].[MeterSetup] ([ECOGroup], [CtrlNr], [MeterID], [DrawNr], [InstallPosition], [LineNum], [Enabled], [MeterType], [RatedCurrent], [RatedVoltage], [RatedPower], [Class], [Calculate], [FloorArea], [StaffNum], [OutPut], [EUI], [KPI], [High], [Mid], [Low]) VALUES (N'eco', 2, 3, NULL, N'行動箱電表3', NULL, 0, 4, 0, 0, 0, N'', 0, NULL, NULL, 0, 0, 0, 0, 0, 0)
+GO
+INSERT [dbo].[MeterSetup] ([ECOGroup], [CtrlNr], [MeterID], [DrawNr], [InstallPosition], [LineNum], [Enabled], [MeterType], [RatedCurrent], [RatedVoltage], [RatedPower], [Class], [Calculate], [FloorArea], [StaffNum], [OutPut], [EUI], [KPI], [High], [Mid], [Low]) VALUES (N'eco', 2, 4, NULL, N'行動箱電表4', NULL, 0, 7, 0, 0, 0, N'', 0, NULL, NULL, 0, 0, 0, 0, 0, 0)
+GO
+INSERT [dbo].[MeterSetup] ([ECOGroup], [CtrlNr], [MeterID], [DrawNr], [InstallPosition], [LineNum], [Enabled], [MeterType], [RatedCurrent], [RatedVoltage], [RatedPower], [Class], [Calculate], [FloorArea], [StaffNum], [OutPut], [EUI], [KPI], [High], [Mid], [Low]) VALUES (N'eco', 2, 5, NULL, N'行動箱電表5', NULL, 0, 7, 0, 0, 0, N'', 0, NULL, NULL, 0, 0, 0, 0, 0, 0)
+GO
+INSERT [dbo].[MeterSetup] ([ECOGroup], [CtrlNr], [MeterID], [DrawNr], [InstallPosition], [LineNum], [Enabled], [MeterType], [RatedCurrent], [RatedVoltage], [RatedPower], [Class], [Calculate], [FloorArea], [StaffNum], [OutPut], [EUI], [KPI], [High], [Mid], [Low]) VALUES (N'eco', 2, 6, NULL, N'行動箱電表6', NULL, 0, 7, 0, 0, 0, N'', 0, NULL, NULL, 0, 0, 0, 0, 0, 0)
+GO
+INSERT [dbo].[MeterSetup] ([ECOGroup], [CtrlNr], [MeterID], [DrawNr], [InstallPosition], [LineNum], [Enabled], [MeterType], [RatedCurrent], [RatedVoltage], [RatedPower], [Class], [Calculate], [FloorArea], [StaffNum], [OutPut], [EUI], [KPI], [High], [Mid], [Low]) VALUES (N'eco', 2, 7, NULL, N'行動箱電表7', NULL, 0, NULL, 0, 0, 0, N'', 0, NULL, NULL, 0, 0, 0, 0, 0, 0)
+GO
+INSERT [dbo].[MeterSetup] ([ECOGroup], [CtrlNr], [MeterID], [DrawNr], [InstallPosition], [LineNum], [Enabled], [MeterType], [RatedCurrent], [RatedVoltage], [RatedPower], [Class], [Calculate], [FloorArea], [StaffNum], [OutPut], [EUI], [KPI], [High], [Mid], [Low]) VALUES (N'eco', 2, 8, NULL, N'行動箱電表8', NULL, 0, NULL, 0, 0, 0, N'', 0, NULL, NULL, 0, 0, 0, 0, 0, 0)
+GO
+INSERT [dbo].[MeterSetup] ([ECOGroup], [CtrlNr], [MeterID], [DrawNr], [InstallPosition], [LineNum], [Enabled], [MeterType], [RatedCurrent], [RatedVoltage], [RatedPower], [Class], [Calculate], [FloorArea], [StaffNum], [OutPut], [EUI], [KPI], [High], [Mid], [Low]) VALUES (N'eco', 2, 9, NULL, N'行動箱電表9', NULL, 0, NULL, 0, 0, 0, N'', 0, NULL, NULL, 0, 0, 0, 0, 0, 0)
+GO
+INSERT [dbo].[MeterSetup] ([ECOGroup], [CtrlNr], [MeterID], [DrawNr], [InstallPosition], [LineNum], [Enabled], [MeterType], [RatedCurrent], [RatedVoltage], [RatedPower], [Class], [Calculate], [FloorArea], [StaffNum], [OutPut], [EUI], [KPI], [High], [Mid], [Low]) VALUES (N'eco', 2, 10, NULL, N'行動箱電表10', NULL, 0, NULL, 0, 0, 0, N'', 0, NULL, NULL, 0, 0, 0, 0, 0, 0)
+GO
+INSERT [dbo].[MeterSetup] ([ECOGroup], [CtrlNr], [MeterID], [DrawNr], [InstallPosition], [LineNum], [Enabled], [MeterType], [RatedCurrent], [RatedVoltage], [RatedPower], [Class], [Calculate], [FloorArea], [StaffNum], [OutPut], [EUI], [KPI], [High], [Mid], [Low]) VALUES (N'eco', 3, 1, N'', N'行動箱2電表1', N'00-05', 1, 4, 0, 0, 0, N'', 0, NULL, NULL, 0, 0, 0, 0, 0, 0)
+GO
+INSERT [dbo].[MeterSetup] ([ECOGroup], [CtrlNr], [MeterID], [DrawNr], [InstallPosition], [LineNum], [Enabled], [MeterType], [RatedCurrent], [RatedVoltage], [RatedPower], [Class], [Calculate], [FloorArea], [StaffNum], [OutPut], [EUI], [KPI], [High], [Mid], [Low]) VALUES (N'eco', 3, 2, NULL, N'預設位置2', NULL, 0, NULL, 0, 0, 0, N'', 0, NULL, NULL, 0, 0, 0, 0, 0, 0)
+GO
+INSERT [dbo].[MeterSetup] ([ECOGroup], [CtrlNr], [MeterID], [DrawNr], [InstallPosition], [LineNum], [Enabled], [MeterType], [RatedCurrent], [RatedVoltage], [RatedPower], [Class], [Calculate], [FloorArea], [StaffNum], [OutPut], [EUI], [KPI], [High], [Mid], [Low]) VALUES (N'eco', 3, 3, NULL, N'預設位置3', NULL, 0, NULL, 0, 0, 0, N'', 0, NULL, NULL, 0, 0, 0, 0, 0, 0)
+GO
+INSERT [dbo].[MeterSetup] ([ECOGroup], [CtrlNr], [MeterID], [DrawNr], [InstallPosition], [LineNum], [Enabled], [MeterType], [RatedCurrent], [RatedVoltage], [RatedPower], [Class], [Calculate], [FloorArea], [StaffNum], [OutPut], [EUI], [KPI], [High], [Mid], [Low]) VALUES (N'eco', 3, 4, NULL, N'預設位置4', NULL, 0, NULL, 0, 0, 0, N'', 0, NULL, NULL, 0, 0, 0, 0, 0, 0)
+GO
+INSERT [dbo].[MeterSetup] ([ECOGroup], [CtrlNr], [MeterID], [DrawNr], [InstallPosition], [LineNum], [Enabled], [MeterType], [RatedCurrent], [RatedVoltage], [RatedPower], [Class], [Calculate], [FloorArea], [StaffNum], [OutPut], [EUI], [KPI], [High], [Mid], [Low]) VALUES (N'eco', 3, 5, NULL, N'預設位置5', NULL, 0, NULL, 0, 0, 0, N'', 0, NULL, NULL, 0, 0, 0, 0, 0, 0)
+GO
+INSERT [dbo].[MeterSetup] ([ECOGroup], [CtrlNr], [MeterID], [DrawNr], [InstallPosition], [LineNum], [Enabled], [MeterType], [RatedCurrent], [RatedVoltage], [RatedPower], [Class], [Calculate], [FloorArea], [StaffNum], [OutPut], [EUI], [KPI], [High], [Mid], [Low]) VALUES (N'eco', 3, 6, NULL, N'預設位置6', NULL, 0, NULL, 0, 0, 0, N'', 0, NULL, NULL, 0, 0, 0, 0, 0, 0)
+GO
+INSERT [dbo].[MeterSetup] ([ECOGroup], [CtrlNr], [MeterID], [DrawNr], [InstallPosition], [LineNum], [Enabled], [MeterType], [RatedCurrent], [RatedVoltage], [RatedPower], [Class], [Calculate], [FloorArea], [StaffNum], [OutPut], [EUI], [KPI], [High], [Mid], [Low]) VALUES (N'eco', 3, 7, NULL, N'預設位置7', NULL, 0, NULL, 0, 0, 0, N'', 0, NULL, NULL, 0, 0, 0, 0, 0, 0)
+GO
+INSERT [dbo].[MeterSetup] ([ECOGroup], [CtrlNr], [MeterID], [DrawNr], [InstallPosition], [LineNum], [Enabled], [MeterType], [RatedCurrent], [RatedVoltage], [RatedPower], [Class], [Calculate], [FloorArea], [StaffNum], [OutPut], [EUI], [KPI], [High], [Mid], [Low]) VALUES (N'eco', 3, 8, NULL, N'預設位置8', NULL, 0, NULL, 0, 0, 0, N'', 0, NULL, NULL, 0, 0, 0, 0, 0, 0)
+GO
+INSERT [dbo].[MeterSetup] ([ECOGroup], [CtrlNr], [MeterID], [DrawNr], [InstallPosition], [LineNum], [Enabled], [MeterType], [RatedCurrent], [RatedVoltage], [RatedPower], [Class], [Calculate], [FloorArea], [StaffNum], [OutPut], [EUI], [KPI], [High], [Mid], [Low]) VALUES (N'eco', 3, 9, NULL, N'預設位置9', NULL, 0, NULL, 0, 0, 0, N'', 0, NULL, NULL, 0, 0, 0, 0, 0, 0)
+GO
+INSERT [dbo].[MeterSetup] ([ECOGroup], [CtrlNr], [MeterID], [DrawNr], [InstallPosition], [LineNum], [Enabled], [MeterType], [RatedCurrent], [RatedVoltage], [RatedPower], [Class], [Calculate], [FloorArea], [StaffNum], [OutPut], [EUI], [KPI], [High], [Mid], [Low]) VALUES (N'eco', 3, 10, NULL, N'預設位置10', NULL, 0, NULL, 0, 0, 0, N'', 0, NULL, NULL, 0, 0, 0, 0, 0, 0)
+GO
+INSERT [dbo].[MeterSetup] ([ECOGroup], [CtrlNr], [MeterID], [DrawNr], [InstallPosition], [LineNum], [Enabled], [MeterType], [RatedCurrent], [RatedVoltage], [RatedPower], [Class], [Calculate], [FloorArea], [StaffNum], [OutPut], [EUI], [KPI], [High], [Mid], [Low]) VALUES (N'eco', 10, 1, NULL, N'預設位置1', NULL, 0, NULL, 0, 0, 0, N'', 0, NULL, NULL, 0, 0, 0, 0, 0, 0)
+GO
+INSERT [dbo].[MeterSetup] ([ECOGroup], [CtrlNr], [MeterID], [DrawNr], [InstallPosition], [LineNum], [Enabled], [MeterType], [RatedCurrent], [RatedVoltage], [RatedPower], [Class], [Calculate], [FloorArea], [StaffNum], [OutPut], [EUI], [KPI], [High], [Mid], [Low]) VALUES (N'eco', 10, 2, NULL, N'預設位置2', NULL, 0, NULL, 0, 0, 0, N'', 0, NULL, NULL, 0, 0, 0, 0, 0, 0)
+GO
+INSERT [dbo].[MeterSetup] ([ECOGroup], [CtrlNr], [MeterID], [DrawNr], [InstallPosition], [LineNum], [Enabled], [MeterType], [RatedCurrent], [RatedVoltage], [RatedPower], [Class], [Calculate], [FloorArea], [StaffNum], [OutPut], [EUI], [KPI], [High], [Mid], [Low]) VALUES (N'eco', 10, 3, NULL, N'預設位置3', NULL, 0, NULL, 0, 0, 0, N'', 0, NULL, NULL, 0, 0, 0, 0, 0, 0)
+GO
+INSERT [dbo].[MeterSetup] ([ECOGroup], [CtrlNr], [MeterID], [DrawNr], [InstallPosition], [LineNum], [Enabled], [MeterType], [RatedCurrent], [RatedVoltage], [RatedPower], [Class], [Calculate], [FloorArea], [StaffNum], [OutPut], [EUI], [KPI], [High], [Mid], [Low]) VALUES (N'eco', 10, 4, NULL, N'預設位置4', NULL, 0, NULL, 0, 0, 0, N'', 0, NULL, NULL, 0, 0, 0, 0, 0, 0)
+GO
+INSERT [dbo].[MeterSetup] ([ECOGroup], [CtrlNr], [MeterID], [DrawNr], [InstallPosition], [LineNum], [Enabled], [MeterType], [RatedCurrent], [RatedVoltage], [RatedPower], [Class], [Calculate], [FloorArea], [StaffNum], [OutPut], [EUI], [KPI], [High], [Mid], [Low]) VALUES (N'eco', 10, 5, NULL, N'預設位置5', NULL, 0, NULL, 0, 0, 0, N'', 0, NULL, NULL, 0, 0, 0, 0, 0, 0)
+GO
+INSERT [dbo].[MeterSetup] ([ECOGroup], [CtrlNr], [MeterID], [DrawNr], [InstallPosition], [LineNum], [Enabled], [MeterType], [RatedCurrent], [RatedVoltage], [RatedPower], [Class], [Calculate], [FloorArea], [StaffNum], [OutPut], [EUI], [KPI], [High], [Mid], [Low]) VALUES (N'eco', 10, 6, NULL, N'預設位置6', NULL, 0, NULL, 0, 0, 0, N'', 0, NULL, NULL, 0, 0, 0, 0, 0, 0)
+GO
+INSERT [dbo].[MeterSetup] ([ECOGroup], [CtrlNr], [MeterID], [DrawNr], [InstallPosition], [LineNum], [Enabled], [MeterType], [RatedCurrent], [RatedVoltage], [RatedPower], [Class], [Calculate], [FloorArea], [StaffNum], [OutPut], [EUI], [KPI], [High], [Mid], [Low]) VALUES (N'eco', 10, 7, NULL, N'預設位置7', NULL, 0, NULL, 0, 0, 0, N'', 0, NULL, NULL, 0, 0, 0, 0, 0, 0)
+GO
+INSERT [dbo].[MeterSetup] ([ECOGroup], [CtrlNr], [MeterID], [DrawNr], [InstallPosition], [LineNum], [Enabled], [MeterType], [RatedCurrent], [RatedVoltage], [RatedPower], [Class], [Calculate], [FloorArea], [StaffNum], [OutPut], [EUI], [KPI], [High], [Mid], [Low]) VALUES (N'eco', 10, 8, NULL, N'預設位置8', NULL, 0, NULL, 0, 0, 0, N'', 0, NULL, NULL, 0, 0, 0, 0, 0, 0)
+GO
+INSERT [dbo].[MeterSetup] ([ECOGroup], [CtrlNr], [MeterID], [DrawNr], [InstallPosition], [LineNum], [Enabled], [MeterType], [RatedCurrent], [RatedVoltage], [RatedPower], [Class], [Calculate], [FloorArea], [StaffNum], [OutPut], [EUI], [KPI], [High], [Mid], [Low]) VALUES (N'eco', 10, 9, NULL, N'預設位置9', NULL, 0, NULL, 0, 0, 0, N'', 0, NULL, NULL, 0, 0, 0, 0, 0, 0)
+GO
+INSERT [dbo].[MeterSetup] ([ECOGroup], [CtrlNr], [MeterID], [DrawNr], [InstallPosition], [LineNum], [Enabled], [MeterType], [RatedCurrent], [RatedVoltage], [RatedPower], [Class], [Calculate], [FloorArea], [StaffNum], [OutPut], [EUI], [KPI], [High], [Mid], [Low]) VALUES (N'eco', 10, 10, NULL, N'預設位置10', NULL, 0, NULL, 0, 0, 0, N'', 0, NULL, NULL, 0, 0, 0, 0, 0, 0)
+GO
+INSERT [dbo].[MeterSetup] ([ECOGroup], [CtrlNr], [MeterID], [DrawNr], [InstallPosition], [LineNum], [Enabled], [MeterType], [RatedCurrent], [RatedVoltage], [RatedPower], [Class], [Calculate], [FloorArea], [StaffNum], [OutPut], [EUI], [KPI], [High], [Mid], [Low]) VALUES (N'fomolux', 1, 1, N'', N'A區', N'00', 1, 7, 0, 0, 0, N'', 0, NULL, NULL, 0, 0, 0, 0, 0, 0)
+GO
+INSERT [dbo].[MeterSetup] ([ECOGroup], [CtrlNr], [MeterID], [DrawNr], [InstallPosition], [LineNum], [Enabled], [MeterType], [RatedCurrent], [RatedVoltage], [RatedPower], [Class], [Calculate], [FloorArea], [StaffNum], [OutPut], [EUI], [KPI], [High], [Mid], [Low]) VALUES (N'fomolux', 1, 2, N'', N'B區', N'01', 1, 7, 0, 0, 0, N'', 0, NULL, NULL, 0, 0, 0, 0, 0, 0)
+GO
+INSERT [dbo].[MeterSetup] ([ECOGroup], [CtrlNr], [MeterID], [DrawNr], [InstallPosition], [LineNum], [Enabled], [MeterType], [RatedCurrent], [RatedVoltage], [RatedPower], [Class], [Calculate], [FloorArea], [StaffNum], [OutPut], [EUI], [KPI], [High], [Mid], [Low]) VALUES (N'fomolux', 1, 3, NULL, N'預設位置3', NULL, 0, NULL, 0, 0, 0, N'', 0, NULL, NULL, 0, 0, 0, 0, 0, 0)
+GO
+INSERT [dbo].[MeterSetup] ([ECOGroup], [CtrlNr], [MeterID], [DrawNr], [InstallPosition], [LineNum], [Enabled], [MeterType], [RatedCurrent], [RatedVoltage], [RatedPower], [Class], [Calculate], [FloorArea], [StaffNum], [OutPut], [EUI], [KPI], [High], [Mid], [Low]) VALUES (N'fomolux', 1, 4, NULL, N'預設位置4', NULL, 0, NULL, 0, 0, 0, N'', 0, NULL, NULL, 0, 0, 0, 0, 0, 0)
+GO
+INSERT [dbo].[MeterSetup] ([ECOGroup], [CtrlNr], [MeterID], [DrawNr], [InstallPosition], [LineNum], [Enabled], [MeterType], [RatedCurrent], [RatedVoltage], [RatedPower], [Class], [Calculate], [FloorArea], [StaffNum], [OutPut], [EUI], [KPI], [High], [Mid], [Low]) VALUES (N'jtflex', 1, 1, N'', N'MOF', N'00', 1, 6, 0, 0, 0, N'', 0, NULL, NULL, 0, 0, 0, 0, 0, 0)
+GO
+INSERT [dbo].[MeterSetup] ([ECOGroup], [CtrlNr], [MeterID], [DrawNr], [InstallPosition], [LineNum], [Enabled], [MeterType], [RatedCurrent], [RatedVoltage], [RatedPower], [Class], [Calculate], [FloorArea], [StaffNum], [OutPut], [EUI], [KPI], [High], [Mid], [Low]) VALUES (N'jtflex', 1, 2, N'', N'MPA1-1', N'00-00', 1, 6, 0, 0, 0, N'', 0, NULL, NULL, 0, 0, 0, 0, 0, 0)
+GO
+INSERT [dbo].[MeterSetup] ([ECOGroup], [CtrlNr], [MeterID], [DrawNr], [InstallPosition], [LineNum], [Enabled], [MeterType], [RatedCurrent], [RatedVoltage], [RatedPower], [Class], [Calculate], [FloorArea], [StaffNum], [OutPut], [EUI], [KPI], [High], [Mid], [Low]) VALUES (N'jtflex', 1, 3, N'', N'MPA2-1', N'00-01', 1, 6, 0, 0, 0, N'', 0, NULL, NULL, 0, 0, 0, 0, 0, 0)
+GO
+INSERT [dbo].[MeterSetup] ([ECOGroup], [CtrlNr], [MeterID], [DrawNr], [InstallPosition], [LineNum], [Enabled], [MeterType], [RatedCurrent], [RatedVoltage], [RatedPower], [Class], [Calculate], [FloorArea], [StaffNum], [OutPut], [EUI], [KPI], [High], [Mid], [Low]) VALUES (N'jtflex', 1, 4, N'', N'MPB-1', N'00-02', 1, 6, 0, 0, 0, N'', 0, NULL, NULL, 0, 0, 0, 0, 0, 0)
+GO
+INSERT [dbo].[MeterSetup] ([ECOGroup], [CtrlNr], [MeterID], [DrawNr], [InstallPosition], [LineNum], [Enabled], [MeterType], [RatedCurrent], [RatedVoltage], [RatedPower], [Class], [Calculate], [FloorArea], [StaffNum], [OutPut], [EUI], [KPI], [High], [Mid], [Low]) VALUES (N'jtflex', 1, 5, N'', N'冰水主機二', N'00-03-02', 1, 7, 0, 0, 0, N'', 0, NULL, NULL, 0, 0, 0, 0, 0, 0)
+GO
+INSERT [dbo].[MeterSetup] ([ECOGroup], [CtrlNr], [MeterID], [DrawNr], [InstallPosition], [LineNum], [Enabled], [MeterType], [RatedCurrent], [RatedVoltage], [RatedPower], [Class], [Calculate], [FloorArea], [StaffNum], [OutPut], [EUI], [KPI], [High], [Mid], [Low]) VALUES (N'jtflex', 1, 6, N'', N'50HP-1氣冷式空壓機', N'00-02-00', 1, 7, 0, 0, 0, N'', 0, NULL, NULL, 0, 0, 0, 0, 0, 0)
+GO
+INSERT [dbo].[MeterSetup] ([ECOGroup], [CtrlNr], [MeterID], [DrawNr], [InstallPosition], [LineNum], [Enabled], [MeterType], [RatedCurrent], [RatedVoltage], [RatedPower], [Class], [Calculate], [FloorArea], [StaffNum], [OutPut], [EUI], [KPI], [High], [Mid], [Low]) VALUES (N'jtflex', 1, 7, N'', N'50HP-2水冷式空壓機', N'00-02-01', 1, 7, 0, 0, 0, N'', 0, NULL, NULL, 0, 0, 0, 0, 0, 0)
+GO
+INSERT [dbo].[MeterSetup] ([ECOGroup], [CtrlNr], [MeterID], [DrawNr], [InstallPosition], [LineNum], [Enabled], [MeterType], [RatedCurrent], [RatedVoltage], [RatedPower], [Class], [Calculate], [FloorArea], [StaffNum], [OutPut], [EUI], [KPI], [High], [Mid], [Low]) VALUES (N'jtflex', 1, 8, N'', N'ACMP冰水系統', N'00-03-00', 1, 7, 0, 0, 0, N'', 0, NULL, NULL, 0, 0, 0, 0, 0, 0)
+GO
+INSERT [dbo].[MeterSetup] ([ECOGroup], [CtrlNr], [MeterID], [DrawNr], [InstallPosition], [LineNum], [Enabled], [MeterType], [RatedCurrent], [RatedVoltage], [RatedPower], [Class], [Calculate], [FloorArea], [StaffNum], [OutPut], [EUI], [KPI], [High], [Mid], [Low]) VALUES (N'jtflex', 1, 9, N'', N'100HP氣冷式空壓機', N'00-03-01', 1, 7, 0, 0, 0, N'', 0, NULL, NULL, 0, 0, 0, 0, 0, 0)
+GO
+INSERT [dbo].[MeterSetup] ([ECOGroup], [CtrlNr], [MeterID], [DrawNr], [InstallPosition], [LineNum], [Enabled], [MeterType], [RatedCurrent], [RatedVoltage], [RatedPower], [Class], [Calculate], [FloorArea], [StaffNum], [OutPut], [EUI], [KPI], [High], [Mid], [Low]) VALUES (N'jtflex', 1, 10, N'', N'冰水主機一', N'00-03-03', 1, 7, 0, 0, 0, N'', 0, NULL, NULL, 0, 0, 0, 0, 0, 0)
+GO
+INSERT [dbo].[MeterSetup] ([ECOGroup], [CtrlNr], [MeterID], [DrawNr], [InstallPosition], [LineNum], [Enabled], [MeterType], [RatedCurrent], [RatedVoltage], [RatedPower], [Class], [Calculate], [FloorArea], [StaffNum], [OutPut], [EUI], [KPI], [High], [Mid], [Low]) VALUES (N'kuanstar', 1, 1, N'', N'預設位置1', N'00', 1, 2, 0, 0, 0, N'', 0, NULL, NULL, 0, 0, 0, 0, 0, 0)
+GO
+INSERT [dbo].[MeterSetup] ([ECOGroup], [CtrlNr], [MeterID], [DrawNr], [InstallPosition], [LineNum], [Enabled], [MeterType], [RatedCurrent], [RatedVoltage], [RatedPower], [Class], [Calculate], [FloorArea], [StaffNum], [OutPut], [EUI], [KPI], [High], [Mid], [Low]) VALUES (N'kuanstar', 1, 2, N'', N'預設位置2', N'00-00', 1, 2, 0, 0, 0, N'', 0, NULL, NULL, 0, 0, 0, 0, 0, 0)
+GO
+INSERT [dbo].[MeterSetup] ([ECOGroup], [CtrlNr], [MeterID], [DrawNr], [InstallPosition], [LineNum], [Enabled], [MeterType], [RatedCurrent], [RatedVoltage], [RatedPower], [Class], [Calculate], [FloorArea], [StaffNum], [OutPut], [EUI], [KPI], [High], [Mid], [Low]) VALUES (N'kuanstar', 1, 3, N'', N'預設位置3', N'00-01', 1, 2, 0, 0, 0, N'', 0, NULL, NULL, 0, 0, 0, 0, 0, 0)
+GO
+INSERT [dbo].[MeterSetup] ([ECOGroup], [CtrlNr], [MeterID], [DrawNr], [InstallPosition], [LineNum], [Enabled], [MeterType], [RatedCurrent], [RatedVoltage], [RatedPower], [Class], [Calculate], [FloorArea], [StaffNum], [OutPut], [EUI], [KPI], [High], [Mid], [Low]) VALUES (N'kuanstar', 1, 4, N'', N'預設位置4', N'00-02', 1, 2, 0, 0, 0, N'', 0, NULL, NULL, 0, 0, 0, 0, 0, 0)
+GO
+INSERT [dbo].[MeterSetup] ([ECOGroup], [CtrlNr], [MeterID], [DrawNr], [InstallPosition], [LineNum], [Enabled], [MeterType], [RatedCurrent], [RatedVoltage], [RatedPower], [Class], [Calculate], [FloorArea], [StaffNum], [OutPut], [EUI], [KPI], [High], [Mid], [Low]) VALUES (N'kuanstar', 1, 5, N'', N'預設位置5', N'00-03', 1, 2, 0, 0, 0, N'', 0, NULL, NULL, 0, 0, 0, 0, 0, 0)
+GO
+INSERT [dbo].[MeterSetup] ([ECOGroup], [CtrlNr], [MeterID], [DrawNr], [InstallPosition], [LineNum], [Enabled], [MeterType], [RatedCurrent], [RatedVoltage], [RatedPower], [Class], [Calculate], [FloorArea], [StaffNum], [OutPut], [EUI], [KPI], [High], [Mid], [Low]) VALUES (N'kuanstar', 1, 6, N'', N'預設位置6', N'00-04', 1, 2, 0, 0, 0, N'', 0, NULL, NULL, 0, 0, 0, 0, 0, 0)
+GO
+INSERT [dbo].[MeterSetup] ([ECOGroup], [CtrlNr], [MeterID], [DrawNr], [InstallPosition], [LineNum], [Enabled], [MeterType], [RatedCurrent], [RatedVoltage], [RatedPower], [Class], [Calculate], [FloorArea], [StaffNum], [OutPut], [EUI], [KPI], [High], [Mid], [Low]) VALUES (N'kuanstar', 1, 7, N'', N'預設位置7', N'00-05', 0, 2, 0, 0, 0, N'', 0, NULL, NULL, 0, 0, 0, 0, 0, 0)
+GO
+INSERT [dbo].[MeterSetup] ([ECOGroup], [CtrlNr], [MeterID], [DrawNr], [InstallPosition], [LineNum], [Enabled], [MeterType], [RatedCurrent], [RatedVoltage], [RatedPower], [Class], [Calculate], [FloorArea], [StaffNum], [OutPut], [EUI], [KPI], [High], [Mid], [Low]) VALUES (N'kuanstar', 1, 8, N'', N'預設位置8', N'00-06', 0, 2, 0, 0, 0, N'', 0, NULL, NULL, 0, 0, 0, 0, 0, 0)
+GO
+INSERT [dbo].[MeterSetup] ([ECOGroup], [CtrlNr], [MeterID], [DrawNr], [InstallPosition], [LineNum], [Enabled], [MeterType], [RatedCurrent], [RatedVoltage], [RatedPower], [Class], [Calculate], [FloorArea], [StaffNum], [OutPut], [EUI], [KPI], [High], [Mid], [Low]) VALUES (N'kuanstar', 1, 9, NULL, N'預設位置9', NULL, 0, NULL, 0, 0, 0, N'', 0, NULL, NULL, 0, 0, 0, 0, 0, 0)
+GO
+INSERT [dbo].[MeterSetup] ([ECOGroup], [CtrlNr], [MeterID], [DrawNr], [InstallPosition], [LineNum], [Enabled], [MeterType], [RatedCurrent], [RatedVoltage], [RatedPower], [Class], [Calculate], [FloorArea], [StaffNum], [OutPut], [EUI], [KPI], [High], [Mid], [Low]) VALUES (N'kuanstar', 1, 10, NULL, N'預設位置10', NULL, 0, NULL, 0, 0, 0, N'', 0, NULL, NULL, 0, 0, 0, 0, 0, 0)
+GO
+INSERT [dbo].[MeterSetup] ([ECOGroup], [CtrlNr], [MeterID], [DrawNr], [InstallPosition], [LineNum], [Enabled], [MeterType], [RatedCurrent], [RatedVoltage], [RatedPower], [Class], [Calculate], [FloorArea], [StaffNum], [OutPut], [EUI], [KPI], [High], [Mid], [Low]) VALUES (N'sample', 1, 1, NULL, N'總用電1', NULL, 1, NULL, NULL, NULL, NULL, N'', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL)
+GO
+INSERT [dbo].[MeterSetup] ([ECOGroup], [CtrlNr], [MeterID], [DrawNr], [InstallPosition], [LineNum], [Enabled], [MeterType], [RatedCurrent], [RatedVoltage], [RatedPower], [Class], [Calculate], [FloorArea], [StaffNum], [OutPut], [EUI], [KPI], [High], [Mid], [Low]) VALUES (N'sample', 1, 2, NULL, N'總用電2', NULL, 1, NULL, NULL, NULL, NULL, N'', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL)
+GO
+INSERT [dbo].[MeterSetup] ([ECOGroup], [CtrlNr], [MeterID], [DrawNr], [InstallPosition], [LineNum], [Enabled], [MeterType], [RatedCurrent], [RatedVoltage], [RatedPower], [Class], [Calculate], [FloorArea], [StaffNum], [OutPut], [EUI], [KPI], [High], [Mid], [Low]) VALUES (N'sample', 1, 3, NULL, N'總用電3', NULL, 1, NULL, NULL, NULL, NULL, N'', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL)
+GO
+INSERT [dbo].[MeterSetup] ([ECOGroup], [CtrlNr], [MeterID], [DrawNr], [InstallPosition], [LineNum], [Enabled], [MeterType], [RatedCurrent], [RatedVoltage], [RatedPower], [Class], [Calculate], [FloorArea], [StaffNum], [OutPut], [EUI], [KPI], [High], [Mid], [Low]) VALUES (N'sample', 1, 4, NULL, N'總用電4', NULL, 1, NULL, NULL, NULL, NULL, N'', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL)
+GO
+INSERT [dbo].[MeterSetup] ([ECOGroup], [CtrlNr], [MeterID], [DrawNr], [InstallPosition], [LineNum], [Enabled], [MeterType], [RatedCurrent], [RatedVoltage], [RatedPower], [Class], [Calculate], [FloorArea], [StaffNum], [OutPut], [EUI], [KPI], [High], [Mid], [Low]) VALUES (N'sample', 1, 5, NULL, N'總用電5', NULL, 1, NULL, NULL, NULL, NULL, N'', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL)
+GO
+INSERT [dbo].[MeterSetup] ([ECOGroup], [CtrlNr], [MeterID], [DrawNr], [InstallPosition], [LineNum], [Enabled], [MeterType], [RatedCurrent], [RatedVoltage], [RatedPower], [Class], [Calculate], [FloorArea], [StaffNum], [OutPut], [EUI], [KPI], [High], [Mid], [Low]) VALUES (N'sample', 1, 6, NULL, N'', NULL, 0, NULL, NULL, NULL, NULL, N'', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL)
+GO
+INSERT [dbo].[MeterSetup] ([ECOGroup], [CtrlNr], [MeterID], [DrawNr], [InstallPosition], [LineNum], [Enabled], [MeterType], [RatedCurrent], [RatedVoltage], [RatedPower], [Class], [Calculate], [FloorArea], [StaffNum], [OutPut], [EUI], [KPI], [High], [Mid], [Low]) VALUES (N'sample', 1, 7, NULL, N'', NULL, 0, NULL, NULL, NULL, NULL, N'', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL)
+GO
+INSERT [dbo].[MeterSetup] ([ECOGroup], [CtrlNr], [MeterID], [DrawNr], [InstallPosition], [LineNum], [Enabled], [MeterType], [RatedCurrent], [RatedVoltage], [RatedPower], [Class], [Calculate], [FloorArea], [StaffNum], [OutPut], [EUI], [KPI], [High], [Mid], [Low]) VALUES (N'sample', 1, 8, NULL, N'', NULL, 0, NULL, NULL, NULL, NULL, N'', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL)
+GO
+INSERT [dbo].[MeterSetup] ([ECOGroup], [CtrlNr], [MeterID], [DrawNr], [InstallPosition], [LineNum], [Enabled], [MeterType], [RatedCurrent], [RatedVoltage], [RatedPower], [Class], [Calculate], [FloorArea], [StaffNum], [OutPut], [EUI], [KPI], [High], [Mid], [Low]) VALUES (N'sample', 1, 9, NULL, N'', NULL, 0, NULL, NULL, NULL, NULL, N'', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL)
+GO
+INSERT [dbo].[MeterSetup] ([ECOGroup], [CtrlNr], [MeterID], [DrawNr], [InstallPosition], [LineNum], [Enabled], [MeterType], [RatedCurrent], [RatedVoltage], [RatedPower], [Class], [Calculate], [FloorArea], [StaffNum], [OutPut], [EUI], [KPI], [High], [Mid], [Low]) VALUES (N'sample', 1, 10, NULL, N'', NULL, 0, NULL, NULL, NULL, NULL, N'', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL)
+GO
+INSERT [dbo].[MeterSetup] ([ECOGroup], [CtrlNr], [MeterID], [DrawNr], [InstallPosition], [LineNum], [Enabled], [MeterType], [RatedCurrent], [RatedVoltage], [RatedPower], [Class], [Calculate], [FloorArea], [StaffNum], [OutPut], [EUI], [KPI], [High], [Mid], [Low]) VALUES (N'sample', 2, 1, NULL, N'空壓1', NULL, 1, NULL, NULL, NULL, NULL, N'', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL)
+GO
+INSERT [dbo].[MeterSetup] ([ECOGroup], [CtrlNr], [MeterID], [DrawNr], [InstallPosition], [LineNum], [Enabled], [MeterType], [RatedCurrent], [RatedVoltage], [RatedPower], [Class], [Calculate], [FloorArea], [StaffNum], [OutPut], [EUI], [KPI], [High], [Mid], [Low]) VALUES (N'sample', 2, 2, NULL, N'空壓2', NULL, 1, NULL, NULL, NULL, NULL, N'', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL)
+GO
+INSERT [dbo].[MeterSetup] ([ECOGroup], [CtrlNr], [MeterID], [DrawNr], [InstallPosition], [LineNum], [Enabled], [MeterType], [RatedCurrent], [RatedVoltage], [RatedPower], [Class], [Calculate], [FloorArea], [StaffNum], [OutPut], [EUI], [KPI], [High], [Mid], [Low]) VALUES (N'sample', 2, 3, NULL, N'空壓3', NULL, 1, NULL, NULL, NULL, NULL, N'', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL)
+GO
+INSERT [dbo].[MeterSetup] ([ECOGroup], [CtrlNr], [MeterID], [DrawNr], [InstallPosition], [LineNum], [Enabled], [MeterType], [RatedCurrent], [RatedVoltage], [RatedPower], [Class], [Calculate], [FloorArea], [StaffNum], [OutPut], [EUI], [KPI], [High], [Mid], [Low]) VALUES (N'sample', 2, 4, NULL, N'空壓4', NULL, 1, NULL, NULL, NULL, NULL, N'', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL)
+GO
+INSERT [dbo].[MeterSetup] ([ECOGroup], [CtrlNr], [MeterID], [DrawNr], [InstallPosition], [LineNum], [Enabled], [MeterType], [RatedCurrent], [RatedVoltage], [RatedPower], [Class], [Calculate], [FloorArea], [StaffNum], [OutPut], [EUI], [KPI], [High], [Mid], [Low]) VALUES (N'sample', 2, 5, NULL, N'空壓5', NULL, 1, NULL, NULL, NULL, NULL, N'', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL)
+GO
+INSERT [dbo].[MeterSetup] ([ECOGroup], [CtrlNr], [MeterID], [DrawNr], [InstallPosition], [LineNum], [Enabled], [MeterType], [RatedCurrent], [RatedVoltage], [RatedPower], [Class], [Calculate], [FloorArea], [StaffNum], [OutPut], [EUI], [KPI], [High], [Mid], [Low]) VALUES (N'sample', 2, 6, NULL, N'空壓6', NULL, 1, NULL, NULL, NULL, NULL, N'', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL)
+GO
+INSERT [dbo].[MeterSetup] ([ECOGroup], [CtrlNr], [MeterID], [DrawNr], [InstallPosition], [LineNum], [Enabled], [MeterType], [RatedCurrent], [RatedVoltage], [RatedPower], [Class], [Calculate], [FloorArea], [StaffNum], [OutPut], [EUI], [KPI], [High], [Mid], [Low]) VALUES (N'sample', 2, 7, NULL, N'空壓7', NULL, 1, NULL, NULL, NULL, NULL, N'', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL)
+GO
+INSERT [dbo].[MeterSetup] ([ECOGroup], [CtrlNr], [MeterID], [DrawNr], [InstallPosition], [LineNum], [Enabled], [MeterType], [RatedCurrent], [RatedVoltage], [RatedPower], [Class], [Calculate], [FloorArea], [StaffNum], [OutPut], [EUI], [KPI], [High], [Mid], [Low]) VALUES (N'sample', 2, 8, NULL, N'空壓8', NULL, 1, NULL, NULL, NULL, NULL, N'', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL)
+GO
+INSERT [dbo].[MeterSetup] ([ECOGroup], [CtrlNr], [MeterID], [DrawNr], [InstallPosition], [LineNum], [Enabled], [MeterType], [RatedCurrent], [RatedVoltage], [RatedPower], [Class], [Calculate], [FloorArea], [StaffNum], [OutPut], [EUI], [KPI], [High], [Mid], [Low]) VALUES (N'sample', 2, 9, NULL, N'空壓9', NULL, 1, NULL, NULL, NULL, NULL, N'', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL)
+GO
+INSERT [dbo].[MeterSetup] ([ECOGroup], [CtrlNr], [MeterID], [DrawNr], [InstallPosition], [LineNum], [Enabled], [MeterType], [RatedCurrent], [RatedVoltage], [RatedPower], [Class], [Calculate], [FloorArea], [StaffNum], [OutPut], [EUI], [KPI], [High], [Mid], [Low]) VALUES (N'sample', 2, 10, NULL, N'', NULL, 0, NULL, NULL, NULL, NULL, N'', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL)
+GO
+INSERT [dbo].[MeterSetup] ([ECOGroup], [CtrlNr], [MeterID], [DrawNr], [InstallPosition], [LineNum], [Enabled], [MeterType], [RatedCurrent], [RatedVoltage], [RatedPower], [Class], [Calculate], [FloorArea], [StaffNum], [OutPut], [EUI], [KPI], [High], [Mid], [Low]) VALUES (N'sample', 3, 1, NULL, N'空調1', NULL, 1, NULL, NULL, NULL, NULL, N'', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL)
+GO
+INSERT [dbo].[MeterSetup] ([ECOGroup], [CtrlNr], [MeterID], [DrawNr], [InstallPosition], [LineNum], [Enabled], [MeterType], [RatedCurrent], [RatedVoltage], [RatedPower], [Class], [Calculate], [FloorArea], [StaffNum], [OutPut], [EUI], [KPI], [High], [Mid], [Low]) VALUES (N'sample', 3, 2, NULL, N'空調2', NULL, 1, NULL, NULL, NULL, NULL, N'', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL)
+GO
+INSERT [dbo].[MeterSetup] ([ECOGroup], [CtrlNr], [MeterID], [DrawNr], [InstallPosition], [LineNum], [Enabled], [MeterType], [RatedCurrent], [RatedVoltage], [RatedPower], [Class], [Calculate], [FloorArea], [StaffNum], [OutPut], [EUI], [KPI], [High], [Mid], [Low]) VALUES (N'sample', 3, 3, NULL, N'空調3', NULL, 1, NULL, NULL, NULL, NULL, N'', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL)
+GO
+INSERT [dbo].[MeterSetup] ([ECOGroup], [CtrlNr], [MeterID], [DrawNr], [InstallPosition], [LineNum], [Enabled], [MeterType], [RatedCurrent], [RatedVoltage], [RatedPower], [Class], [Calculate], [FloorArea], [StaffNum], [OutPut], [EUI], [KPI], [High], [Mid], [Low]) VALUES (N'sample', 3, 4, NULL, N'空調4', NULL, 1, NULL, NULL, NULL, NULL, N'', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL)
+GO
+INSERT [dbo].[MeterSetup] ([ECOGroup], [CtrlNr], [MeterID], [DrawNr], [InstallPosition], [LineNum], [Enabled], [MeterType], [RatedCurrent], [RatedVoltage], [RatedPower], [Class], [Calculate], [FloorArea], [StaffNum], [OutPut], [EUI], [KPI], [High], [Mid], [Low]) VALUES (N'sample', 3, 5, NULL, N'空調5', NULL, 1, NULL, NULL, NULL, NULL, N'', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL)
+GO
+INSERT [dbo].[MeterSetup] ([ECOGroup], [CtrlNr], [MeterID], [DrawNr], [InstallPosition], [LineNum], [Enabled], [MeterType], [RatedCurrent], [RatedVoltage], [RatedPower], [Class], [Calculate], [FloorArea], [StaffNum], [OutPut], [EUI], [KPI], [High], [Mid], [Low]) VALUES (N'sample', 3, 6, NULL, N'空調6', NULL, 1, NULL, NULL, NULL, NULL, N'', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL)
+GO
+INSERT [dbo].[MeterSetup] ([ECOGroup], [CtrlNr], [MeterID], [DrawNr], [InstallPosition], [LineNum], [Enabled], [MeterType], [RatedCurrent], [RatedVoltage], [RatedPower], [Class], [Calculate], [FloorArea], [StaffNum], [OutPut], [EUI], [KPI], [High], [Mid], [Low]) VALUES (N'sample', 3, 7, NULL, N'空調7', NULL, 1, NULL, NULL, NULL, NULL, N'', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL)
+GO
+INSERT [dbo].[MeterSetup] ([ECOGroup], [CtrlNr], [MeterID], [DrawNr], [InstallPosition], [LineNum], [Enabled], [MeterType], [RatedCurrent], [RatedVoltage], [RatedPower], [Class], [Calculate], [FloorArea], [StaffNum], [OutPut], [EUI], [KPI], [High], [Mid], [Low]) VALUES (N'sample', 3, 8, NULL, N'空調8', NULL, 1, NULL, NULL, NULL, NULL, N'', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL)
+GO
+INSERT [dbo].[MeterSetup] ([ECOGroup], [CtrlNr], [MeterID], [DrawNr], [InstallPosition], [LineNum], [Enabled], [MeterType], [RatedCurrent], [RatedVoltage], [RatedPower], [Class], [Calculate], [FloorArea], [StaffNum], [OutPut], [EUI], [KPI], [High], [Mid], [Low]) VALUES (N'sample', 3, 9, NULL, N'', NULL, 0, NULL, NULL, NULL, NULL, N'', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL)
+GO
+INSERT [dbo].[MeterSetup] ([ECOGroup], [CtrlNr], [MeterID], [DrawNr], [InstallPosition], [LineNum], [Enabled], [MeterType], [RatedCurrent], [RatedVoltage], [RatedPower], [Class], [Calculate], [FloorArea], [StaffNum], [OutPut], [EUI], [KPI], [High], [Mid], [Low]) VALUES (N'sample', 3, 10, NULL, N'', NULL, 0, NULL, NULL, NULL, NULL, N'', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL)
+GO
+INSERT [dbo].[MeterSetup] ([ECOGroup], [CtrlNr], [MeterID], [DrawNr], [InstallPosition], [LineNum], [Enabled], [MeterType], [RatedCurrent], [RatedVoltage], [RatedPower], [Class], [Calculate], [FloorArea], [StaffNum], [OutPut], [EUI], [KPI], [High], [Mid], [Low]) VALUES (N'sample', 4, 1, NULL, N'辦公室1', NULL, 1, NULL, NULL, NULL, NULL, N'', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL)
+GO
+INSERT [dbo].[MeterSetup] ([ECOGroup], [CtrlNr], [MeterID], [DrawNr], [InstallPosition], [LineNum], [Enabled], [MeterType], [RatedCurrent], [RatedVoltage], [RatedPower], [Class], [Calculate], [FloorArea], [StaffNum], [OutPut], [EUI], [KPI], [High], [Mid], [Low]) VALUES (N'sample', 4, 2, NULL, N'辦公室2', NULL, 1, NULL, NULL, NULL, NULL, N'', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL)
+GO
+INSERT [dbo].[MeterSetup] ([ECOGroup], [CtrlNr], [MeterID], [DrawNr], [InstallPosition], [LineNum], [Enabled], [MeterType], [RatedCurrent], [RatedVoltage], [RatedPower], [Class], [Calculate], [FloorArea], [StaffNum], [OutPut], [EUI], [KPI], [High], [Mid], [Low]) VALUES (N'sample', 4, 3, NULL, N'辦公室3', NULL, 1, NULL, NULL, NULL, NULL, N'', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL)
+GO
+INSERT [dbo].[MeterSetup] ([ECOGroup], [CtrlNr], [MeterID], [DrawNr], [InstallPosition], [LineNum], [Enabled], [MeterType], [RatedCurrent], [RatedVoltage], [RatedPower], [Class], [Calculate], [FloorArea], [StaffNum], [OutPut], [EUI], [KPI], [High], [Mid], [Low]) VALUES (N'sample', 4, 4, NULL, N'辦公室4', NULL, 1, NULL, NULL, NULL, NULL, N'', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL)
+GO
+INSERT [dbo].[MeterSetup] ([ECOGroup], [CtrlNr], [MeterID], [DrawNr], [InstallPosition], [LineNum], [Enabled], [MeterType], [RatedCurrent], [RatedVoltage], [RatedPower], [Class], [Calculate], [FloorArea], [StaffNum], [OutPut], [EUI], [KPI], [High], [Mid], [Low]) VALUES (N'sample', 4, 5, NULL, N'辦公室5', NULL, 1, NULL, NULL, NULL, NULL, N'', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL)
+GO
+INSERT [dbo].[MeterSetup] ([ECOGroup], [CtrlNr], [MeterID], [DrawNr], [InstallPosition], [LineNum], [Enabled], [MeterType], [RatedCurrent], [RatedVoltage], [RatedPower], [Class], [Calculate], [FloorArea], [StaffNum], [OutPut], [EUI], [KPI], [High], [Mid], [Low]) VALUES (N'sample', 4, 6, NULL, N'辦公室6', NULL, 1, NULL, NULL, NULL, NULL, N'', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL)
+GO
+INSERT [dbo].[MeterSetup] ([ECOGroup], [CtrlNr], [MeterID], [DrawNr], [InstallPosition], [LineNum], [Enabled], [MeterType], [RatedCurrent], [RatedVoltage], [RatedPower], [Class], [Calculate], [FloorArea], [StaffNum], [OutPut], [EUI], [KPI], [High], [Mid], [Low]) VALUES (N'sample', 4, 7, NULL, N'辦公室7', NULL, 1, NULL, NULL, NULL, NULL, N'', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL)
+GO
+INSERT [dbo].[MeterSetup] ([ECOGroup], [CtrlNr], [MeterID], [DrawNr], [InstallPosition], [LineNum], [Enabled], [MeterType], [RatedCurrent], [RatedVoltage], [RatedPower], [Class], [Calculate], [FloorArea], [StaffNum], [OutPut], [EUI], [KPI], [High], [Mid], [Low]) VALUES (N'sample', 4, 8, NULL, N'辦公室8', NULL, 1, NULL, NULL, NULL, NULL, N'', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL)
+GO
+INSERT [dbo].[MeterSetup] ([ECOGroup], [CtrlNr], [MeterID], [DrawNr], [InstallPosition], [LineNum], [Enabled], [MeterType], [RatedCurrent], [RatedVoltage], [RatedPower], [Class], [Calculate], [FloorArea], [StaffNum], [OutPut], [EUI], [KPI], [High], [Mid], [Low]) VALUES (N'sample', 4, 9, NULL, N'辦公室9', NULL, 1, NULL, NULL, NULL, NULL, N'', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL)
+GO
+INSERT [dbo].[MeterSetup] ([ECOGroup], [CtrlNr], [MeterID], [DrawNr], [InstallPosition], [LineNum], [Enabled], [MeterType], [RatedCurrent], [RatedVoltage], [RatedPower], [Class], [Calculate], [FloorArea], [StaffNum], [OutPut], [EUI], [KPI], [High], [Mid], [Low]) VALUES (N'sample', 4, 10, NULL, N'', NULL, 0, NULL, NULL, NULL, NULL, N'', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL)
+GO
+INSERT [dbo].[MeterSetup] ([ECOGroup], [CtrlNr], [MeterID], [DrawNr], [InstallPosition], [LineNum], [Enabled], [MeterType], [RatedCurrent], [RatedVoltage], [RatedPower], [Class], [Calculate], [FloorArea], [StaffNum], [OutPut], [EUI], [KPI], [High], [Mid], [Low]) VALUES (N'sample', 5, 1, NULL, N'產線1', NULL, 1, NULL, NULL, NULL, NULL, N'', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL)
+GO
+INSERT [dbo].[MeterSetup] ([ECOGroup], [CtrlNr], [MeterID], [DrawNr], [InstallPosition], [LineNum], [Enabled], [MeterType], [RatedCurrent], [RatedVoltage], [RatedPower], [Class], [Calculate], [FloorArea], [StaffNum], [OutPut], [EUI], [KPI], [High], [Mid], [Low]) VALUES (N'sample', 5, 2, NULL, N'產線2', NULL, 1, NULL, NULL, NULL, NULL, N'', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL)
+GO
+INSERT [dbo].[MeterSetup] ([ECOGroup], [CtrlNr], [MeterID], [DrawNr], [InstallPosition], [LineNum], [Enabled], [MeterType], [RatedCurrent], [RatedVoltage], [RatedPower], [Class], [Calculate], [FloorArea], [StaffNum], [OutPut], [EUI], [KPI], [High], [Mid], [Low]) VALUES (N'sample', 5, 3, NULL, N'產線3', NULL, 1, NULL, NULL, NULL, NULL, N'', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL)
+GO
+INSERT [dbo].[MeterSetup] ([ECOGroup], [CtrlNr], [MeterID], [DrawNr], [InstallPosition], [LineNum], [Enabled], [MeterType], [RatedCurrent], [RatedVoltage], [RatedPower], [Class], [Calculate], [FloorArea], [StaffNum], [OutPut], [EUI], [KPI], [High], [Mid], [Low]) VALUES (N'sample', 5, 4, NULL, N'產線4', NULL, 1, NULL, NULL, NULL, NULL, N'', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL)
+GO
+INSERT [dbo].[MeterSetup] ([ECOGroup], [CtrlNr], [MeterID], [DrawNr], [InstallPosition], [LineNum], [Enabled], [MeterType], [RatedCurrent], [RatedVoltage], [RatedPower], [Class], [Calculate], [FloorArea], [StaffNum], [OutPut], [EUI], [KPI], [High], [Mid], [Low]) VALUES (N'sample', 5, 5, NULL, N'產線5', NULL, 1, NULL, NULL, NULL, NULL, N'', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL)
+GO
+INSERT [dbo].[MeterSetup] ([ECOGroup], [CtrlNr], [MeterID], [DrawNr], [InstallPosition], [LineNum], [Enabled], [MeterType], [RatedCurrent], [RatedVoltage], [RatedPower], [Class], [Calculate], [FloorArea], [StaffNum], [OutPut], [EUI], [KPI], [High], [Mid], [Low]) VALUES (N'sample', 5, 6, NULL, N'產線6', NULL, 1, NULL, NULL, NULL, NULL, N'', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL)
+GO
+INSERT [dbo].[MeterSetup] ([ECOGroup], [CtrlNr], [MeterID], [DrawNr], [InstallPosition], [LineNum], [Enabled], [MeterType], [RatedCurrent], [RatedVoltage], [RatedPower], [Class], [Calculate], [FloorArea], [StaffNum], [OutPut], [EUI], [KPI], [High], [Mid], [Low]) VALUES (N'sample', 5, 7, NULL, N'產線7', NULL, 1, NULL, NULL, NULL, NULL, N'', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL)
+GO
+INSERT [dbo].[MeterSetup] ([ECOGroup], [CtrlNr], [MeterID], [DrawNr], [InstallPosition], [LineNum], [Enabled], [MeterType], [RatedCurrent], [RatedVoltage], [RatedPower], [Class], [Calculate], [FloorArea], [StaffNum], [OutPut], [EUI], [KPI], [High], [Mid], [Low]) VALUES (N'sample', 5, 8, NULL, N'產線8', NULL, 1, NULL, NULL, NULL, NULL, N'', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL)
+GO
+INSERT [dbo].[MeterSetup] ([ECOGroup], [CtrlNr], [MeterID], [DrawNr], [InstallPosition], [LineNum], [Enabled], [MeterType], [RatedCurrent], [RatedVoltage], [RatedPower], [Class], [Calculate], [FloorArea], [StaffNum], [OutPut], [EUI], [KPI], [High], [Mid], [Low]) VALUES (N'sample', 5, 9, NULL, N'產線9', NULL, 1, NULL, NULL, NULL, NULL, N'', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL)
+GO
+INSERT [dbo].[MeterSetup] ([ECOGroup], [CtrlNr], [MeterID], [DrawNr], [InstallPosition], [LineNum], [Enabled], [MeterType], [RatedCurrent], [RatedVoltage], [RatedPower], [Class], [Calculate], [FloorArea], [StaffNum], [OutPut], [EUI], [KPI], [High], [Mid], [Low]) VALUES (N'sample', 5, 10, NULL, N'', NULL, 0, NULL, NULL, NULL, NULL, N'', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL)
+GO
+INSERT [dbo].[MeterSetup] ([ECOGroup], [CtrlNr], [MeterID], [DrawNr], [InstallPosition], [LineNum], [Enabled], [MeterType], [RatedCurrent], [RatedVoltage], [RatedPower], [Class], [Calculate], [FloorArea], [StaffNum], [OutPut], [EUI], [KPI], [High], [Mid], [Low]) VALUES (N'shichi', 1, 1, N'', N'總電源', N'00', 1, 4, 0, 0, 0, N'', 0, NULL, NULL, 0, 0, 0, 0, 0, 0)
+GO
+INSERT [dbo].[MeterSetup] ([ECOGroup], [CtrlNr], [MeterID], [DrawNr], [InstallPosition], [LineNum], [Enabled], [MeterType], [RatedCurrent], [RatedVoltage], [RatedPower], [Class], [Calculate], [FloorArea], [StaffNum], [OutPut], [EUI], [KPI], [High], [Mid], [Low]) VALUES (N'shichi', 1, 2, NULL, N'預設位置2', NULL, 0, NULL, 0, 0, 0, N'', 0, NULL, NULL, 0, 0, 0, 0, 0, 0)
+GO
+INSERT [dbo].[MeterSetup] ([ECOGroup], [CtrlNr], [MeterID], [DrawNr], [InstallPosition], [LineNum], [Enabled], [MeterType], [RatedCurrent], [RatedVoltage], [RatedPower], [Class], [Calculate], [FloorArea], [StaffNum], [OutPut], [EUI], [KPI], [High], [Mid], [Low]) VALUES (N'shichi', 1, 3, NULL, N'預設位置3', NULL, 0, NULL, 0, 0, 0, N'', 0, NULL, NULL, 0, 0, 0, 0, 0, 0)
+GO
+INSERT [dbo].[MeterSetup] ([ECOGroup], [CtrlNr], [MeterID], [DrawNr], [InstallPosition], [LineNum], [Enabled], [MeterType], [RatedCurrent], [RatedVoltage], [RatedPower], [Class], [Calculate], [FloorArea], [StaffNum], [OutPut], [EUI], [KPI], [High], [Mid], [Low]) VALUES (N'shichi', 1, 4, NULL, N'預設位置4', NULL, 0, NULL, 0, 0, 0, N'', 0, NULL, NULL, 0, 0, 0, 0, 0, 0)
+GO
+INSERT [dbo].[MeterSetup] ([ECOGroup], [CtrlNr], [MeterID], [DrawNr], [InstallPosition], [LineNum], [Enabled], [MeterType], [RatedCurrent], [RatedVoltage], [RatedPower], [Class], [Calculate], [FloorArea], [StaffNum], [OutPut], [EUI], [KPI], [High], [Mid], [Low]) VALUES (N'twenergy', 1, 1, N'', N'總站', N'00', 1, 7, 0, 0, 0, N'', 0, NULL, NULL, 0, 0, 0, 0, 0, 0)
+GO
+INSERT [dbo].[MeterSetup] ([ECOGroup], [CtrlNr], [MeterID], [DrawNr], [InstallPosition], [LineNum], [Enabled], [MeterType], [RatedCurrent], [RatedVoltage], [RatedPower], [Class], [Calculate], [FloorArea], [StaffNum], [OutPut], [EUI], [KPI], [High], [Mid], [Low]) VALUES (N'twenergy', 1, 2, NULL, N'預設位置2', NULL, 0, NULL, 0, 0, 0, N'', 0, NULL, NULL, 0, 0, 0, 0, 0, 0)
+GO
+INSERT [dbo].[MeterSetup] ([ECOGroup], [CtrlNr], [MeterID], [DrawNr], [InstallPosition], [LineNum], [Enabled], [MeterType], [RatedCurrent], [RatedVoltage], [RatedPower], [Class], [Calculate], [FloorArea], [StaffNum], [OutPut], [EUI], [KPI], [High], [Mid], [Low]) VALUES (N'twenergy', 1, 3, NULL, N'預設位置3', NULL, 0, NULL, 0, 0, 0, N'', 0, NULL, NULL, 0, 0, 0, 0, 0, 0)
+GO
+INSERT [dbo].[MeterSetup] ([ECOGroup], [CtrlNr], [MeterID], [DrawNr], [InstallPosition], [LineNum], [Enabled], [MeterType], [RatedCurrent], [RatedVoltage], [RatedPower], [Class], [Calculate], [FloorArea], [StaffNum], [OutPut], [EUI], [KPI], [High], [Mid], [Low]) VALUES (N'twenergy', 1, 4, NULL, N'預設位置4', NULL, 0, NULL, 0, 0, 0, N'', 0, NULL, NULL, 0, 0, 0, 0, 0, 0)
+GO
+INSERT [dbo].[MeterSetup] ([ECOGroup], [CtrlNr], [MeterID], [DrawNr], [InstallPosition], [LineNum], [Enabled], [MeterType], [RatedCurrent], [RatedVoltage], [RatedPower], [Class], [Calculate], [FloorArea], [StaffNum], [OutPut], [EUI], [KPI], [High], [Mid], [Low]) VALUES (N'twenergy', 2, 1, N'', N'新加工站', N'00-01', 1, 7, 0, 0, 0, N'', 0, NULL, NULL, 0, 0, 0, 0, 0, 0)
+GO
+INSERT [dbo].[MeterSetup] ([ECOGroup], [CtrlNr], [MeterID], [DrawNr], [InstallPosition], [LineNum], [Enabled], [MeterType], [RatedCurrent], [RatedVoltage], [RatedPower], [Class], [Calculate], [FloorArea], [StaffNum], [OutPut], [EUI], [KPI], [High], [Mid], [Low]) VALUES (N'twenergy', 2, 2, NULL, N'預設位置2', NULL, 0, NULL, 0, 0, 0, N'', 0, NULL, NULL, 0, 0, 0, 0, 0, 0)
+GO
+INSERT [dbo].[MeterSetup] ([ECOGroup], [CtrlNr], [MeterID], [DrawNr], [InstallPosition], [LineNum], [Enabled], [MeterType], [RatedCurrent], [RatedVoltage], [RatedPower], [Class], [Calculate], [FloorArea], [StaffNum], [OutPut], [EUI], [KPI], [High], [Mid], [Low]) VALUES (N'twenergy', 2, 3, NULL, N'預設位置3', NULL, 0, NULL, 0, 0, 0, N'', 0, NULL, NULL, 0, 0, 0, 0, 0, 0)
+GO
+INSERT [dbo].[MeterSetup] ([ECOGroup], [CtrlNr], [MeterID], [DrawNr], [InstallPosition], [LineNum], [Enabled], [MeterType], [RatedCurrent], [RatedVoltage], [RatedPower], [Class], [Calculate], [FloorArea], [StaffNum], [OutPut], [EUI], [KPI], [High], [Mid], [Low]) VALUES (N'twenergy', 2, 4, NULL, N'預設位置4', NULL, 0, NULL, 0, 0, 0, N'', 0, NULL, NULL, 0, 0, 0, 0, 0, 0)
+GO
+INSERT [dbo].[MeterSetup] ([ECOGroup], [CtrlNr], [MeterID], [DrawNr], [InstallPosition], [LineNum], [Enabled], [MeterType], [RatedCurrent], [RatedVoltage], [RatedPower], [Class], [Calculate], [FloorArea], [StaffNum], [OutPut], [EUI], [KPI], [High], [Mid], [Low]) VALUES (N'twenergy', 3, 1, N'', N'315庫冷凍機440V', N'00-00-00-00', 1, 7, 0, 0, 0, N'', 0, NULL, NULL, 0, 0, 0, 0, 0, 0)
+GO
+INSERT [dbo].[MeterSetup] ([ECOGroup], [CtrlNr], [MeterID], [DrawNr], [InstallPosition], [LineNum], [Enabled], [MeterType], [RatedCurrent], [RatedVoltage], [RatedPower], [Class], [Calculate], [FloorArea], [StaffNum], [OutPut], [EUI], [KPI], [High], [Mid], [Low]) VALUES (N'twenergy', 3, 2, N'', N'315庫冷凍機周邊220V', N'00-00-01-00', 1, 7, 0, 0, 0, N'', 0, NULL, NULL, 0, 0, 0, 0, 0, 0)
+GO
+INSERT [dbo].[MeterSetup] ([ECOGroup], [CtrlNr], [MeterID], [DrawNr], [InstallPosition], [LineNum], [Enabled], [MeterType], [RatedCurrent], [RatedVoltage], [RatedPower], [Class], [Calculate], [FloorArea], [StaffNum], [OutPut], [EUI], [KPI], [High], [Mid], [Low]) VALUES (N'twenergy', 3, 3, N'', N'315庫CO2冷凍機440V', N'00-00-00-02', 1, 7, 0, 0, 0, N'', 0, NULL, NULL, 0, 0, 0, 0, 0, 0)
+GO
+INSERT [dbo].[MeterSetup] ([ECOGroup], [CtrlNr], [MeterID], [DrawNr], [InstallPosition], [LineNum], [Enabled], [MeterType], [RatedCurrent], [RatedVoltage], [RatedPower], [Class], [Calculate], [FloorArea], [StaffNum], [OutPut], [EUI], [KPI], [High], [Mid], [Low]) VALUES (N'twenergy', 3, 4, NULL, N'預設位置4', NULL, 0, NULL, 0, 0, 0, N'', 0, NULL, NULL, 0, 0, 0, 0, 0, 0)
+GO
+INSERT [dbo].[MeterSetup] ([ECOGroup], [CtrlNr], [MeterID], [DrawNr], [InstallPosition], [LineNum], [Enabled], [MeterType], [RatedCurrent], [RatedVoltage], [RatedPower], [Class], [Calculate], [FloorArea], [StaffNum], [OutPut], [EUI], [KPI], [High], [Mid], [Low]) VALUES (N'twenergy', 4, 1, N'', N'汙水廠800AT', N'00-01-00', 1, 7, 0, 0, 0, N'', 0, NULL, NULL, 0, 0, 0, 0, 0, 0)
+GO
+INSERT [dbo].[MeterSetup] ([ECOGroup], [CtrlNr], [MeterID], [DrawNr], [InstallPosition], [LineNum], [Enabled], [MeterType], [RatedCurrent], [RatedVoltage], [RatedPower], [Class], [Calculate], [FloorArea], [StaffNum], [OutPut], [EUI], [KPI], [High], [Mid], [Low]) VALUES (N'twenergy', 4, 2, N'', N'總開關1000AT', N'00-01-01', 1, 7, 0, 0, 0, N'', 0, NULL, NULL, 0, 0, 0, 0, 0, 0)
+GO
+INSERT [dbo].[MeterSetup] ([ECOGroup], [CtrlNr], [MeterID], [DrawNr], [InstallPosition], [LineNum], [Enabled], [MeterType], [RatedCurrent], [RatedVoltage], [RatedPower], [Class], [Calculate], [FloorArea], [StaffNum], [OutPut], [EUI], [KPI], [High], [Mid], [Low]) VALUES (N'twenergy', 4, 3, N'', N'預設位置3', NULL, 0, NULL, 0, 0, 0, N'', 0, NULL, NULL, 0, 0, 0, 0, 0, 0)
+GO
+INSERT [dbo].[MeterSetup] ([ECOGroup], [CtrlNr], [MeterID], [DrawNr], [InstallPosition], [LineNum], [Enabled], [MeterType], [RatedCurrent], [RatedVoltage], [RatedPower], [Class], [Calculate], [FloorArea], [StaffNum], [OutPut], [EUI], [KPI], [High], [Mid], [Low]) VALUES (N'twenergy', 4, 4, N'', N'預設位置4', NULL, 0, NULL, 0, 0, 0, N'', 0, NULL, NULL, 0, 0, 0, 0, 0, 0)
+GO
+INSERT [dbo].[MeterSetup] ([ECOGroup], [CtrlNr], [MeterID], [DrawNr], [InstallPosition], [LineNum], [Enabled], [MeterType], [RatedCurrent], [RatedVoltage], [RatedPower], [Class], [Calculate], [FloorArea], [StaffNum], [OutPut], [EUI], [KPI], [High], [Mid], [Low]) VALUES (N'twenergy', 5, 1, N'', N'319庫冷凍機440V', N'00-00-00', 1, 7, 0, 0, 0, N'', 0, NULL, NULL, 0, 0, 0, 0, 0, 0)
+GO
+INSERT [dbo].[MeterSetup] ([ECOGroup], [CtrlNr], [MeterID], [DrawNr], [InstallPosition], [LineNum], [Enabled], [MeterType], [RatedCurrent], [RatedVoltage], [RatedPower], [Class], [Calculate], [FloorArea], [StaffNum], [OutPut], [EUI], [KPI], [High], [Mid], [Low]) VALUES (N'twenergy', 5, 2, N'', N'319庫冷凍機周邊220V', N'00-00-01', 1, 7, 0, 0, 0, N'', 0, NULL, NULL, 0, 0, 0, 0, 0, 0)
+GO
+INSERT [dbo].[MeterSetup] ([ECOGroup], [CtrlNr], [MeterID], [DrawNr], [InstallPosition], [LineNum], [Enabled], [MeterType], [RatedCurrent], [RatedVoltage], [RatedPower], [Class], [Calculate], [FloorArea], [StaffNum], [OutPut], [EUI], [KPI], [High], [Mid], [Low]) VALUES (N'twenergy', 5, 3, NULL, N'預設位置3', NULL, 0, NULL, 0, 0, 0, N'', 0, NULL, NULL, 0, 0, 0, 0, 0, 0)
+GO
+INSERT [dbo].[MeterSetup] ([ECOGroup], [CtrlNr], [MeterID], [DrawNr], [InstallPosition], [LineNum], [Enabled], [MeterType], [RatedCurrent], [RatedVoltage], [RatedPower], [Class], [Calculate], [FloorArea], [StaffNum], [OutPut], [EUI], [KPI], [High], [Mid], [Low]) VALUES (N'twenergy', 5, 4, NULL, N'預設位置4', NULL, 0, NULL, 0, 0, 0, N'', 0, NULL, NULL, 0, 0, 0, 0, 0, 0)
+GO
+INSERT [dbo].[MeterSetup] ([ECOGroup], [CtrlNr], [MeterID], [DrawNr], [InstallPosition], [LineNum], [Enabled], [MeterType], [RatedCurrent], [RatedVoltage], [RatedPower], [Class], [Calculate], [FloorArea], [StaffNum], [OutPut], [EUI], [KPI], [High], [Mid], [Low]) VALUES (N'wljsh', 1, 1, N'', N'舊-總用電', N'00', 1, 7, 0, 0, 0, N'', 0, NULL, NULL, 0, 0, 0, 0, 0, 0)
+GO
+INSERT [dbo].[MeterSetup] ([ECOGroup], [CtrlNr], [MeterID], [DrawNr], [InstallPosition], [LineNum], [Enabled], [MeterType], [RatedCurrent], [RatedVoltage], [RatedPower], [Class], [Calculate], [FloorArea], [StaffNum], [OutPut], [EUI], [KPI], [High], [Mid], [Low]) VALUES (N'wljsh', 1, 2, NULL, N'預設位置2', NULL, 0, NULL, 0, 0, 0, N'', 0, NULL, NULL, 0, 0, 0, 0, 0, 0)
+GO
+INSERT [dbo].[MeterSetup] ([ECOGroup], [CtrlNr], [MeterID], [DrawNr], [InstallPosition], [LineNum], [Enabled], [MeterType], [RatedCurrent], [RatedVoltage], [RatedPower], [Class], [Calculate], [FloorArea], [StaffNum], [OutPut], [EUI], [KPI], [High], [Mid], [Low]) VALUES (N'wljsh', 1, 3, N'', N'集美國小總用電', N'03', 1, 7, 0, 0, 0, N'', 0, NULL, NULL, 0, 0, 0, 0, 0, 0)
+GO
+INSERT [dbo].[MeterSetup] ([ECOGroup], [CtrlNr], [MeterID], [DrawNr], [InstallPosition], [LineNum], [Enabled], [MeterType], [RatedCurrent], [RatedVoltage], [RatedPower], [Class], [Calculate], [FloorArea], [StaffNum], [OutPut], [EUI], [KPI], [High], [Mid], [Low]) VALUES (N'wljsh', 1, 4, NULL, N'預設位置4', NULL, 0, NULL, 0, 0, 0, N'', 0, NULL, NULL, 0, 0, 0, 0, 0, 0)
+GO
+INSERT [dbo].[MeterSetup] ([ECOGroup], [CtrlNr], [MeterID], [DrawNr], [InstallPosition], [LineNum], [Enabled], [MeterType], [RatedCurrent], [RatedVoltage], [RatedPower], [Class], [Calculate], [FloorArea], [StaffNum], [OutPut], [EUI], [KPI], [High], [Mid], [Low]) VALUES (N'wljsh', 1, 5, NULL, N'預設位置5', NULL, 0, NULL, 0, 0, 0, N'', 0, NULL, NULL, 0, 0, 0, 0, 0, 0)
+GO
+INSERT [dbo].[MeterSetup] ([ECOGroup], [CtrlNr], [MeterID], [DrawNr], [InstallPosition], [LineNum], [Enabled], [MeterType], [RatedCurrent], [RatedVoltage], [RatedPower], [Class], [Calculate], [FloorArea], [StaffNum], [OutPut], [EUI], [KPI], [High], [Mid], [Low]) VALUES (N'wljsh', 1, 6, NULL, N'預設位置6', NULL, 0, NULL, 0, 0, 0, N'', 0, NULL, NULL, 0, 0, 0, 0, 0, 0)
+GO
+INSERT [dbo].[MeterSetup] ([ECOGroup], [CtrlNr], [MeterID], [DrawNr], [InstallPosition], [LineNum], [Enabled], [MeterType], [RatedCurrent], [RatedVoltage], [RatedPower], [Class], [Calculate], [FloorArea], [StaffNum], [OutPut], [EUI], [KPI], [High], [Mid], [Low]) VALUES (N'wljsh', 1, 7, NULL, N'預設位置7', NULL, 0, NULL, 0, 0, 0, N'', 0, NULL, NULL, 0, 0, 0, 0, 0, 0)
+GO
+INSERT [dbo].[MeterSetup] ([ECOGroup], [CtrlNr], [MeterID], [DrawNr], [InstallPosition], [LineNum], [Enabled], [MeterType], [RatedCurrent], [RatedVoltage], [RatedPower], [Class], [Calculate], [FloorArea], [StaffNum], [OutPut], [EUI], [KPI], [High], [Mid], [Low]) VALUES (N'wljsh', 1, 8, NULL, N'預設位置8', NULL, 0, NULL, 0, 0, 0, N'', 0, NULL, NULL, 0, 0, 0, 0, 0, 0)
+GO
+INSERT [dbo].[MeterSetup] ([ECOGroup], [CtrlNr], [MeterID], [DrawNr], [InstallPosition], [LineNum], [Enabled], [MeterType], [RatedCurrent], [RatedVoltage], [RatedPower], [Class], [Calculate], [FloorArea], [StaffNum], [OutPut], [EUI], [KPI], [High], [Mid], [Low]) VALUES (N'wljsh', 1, 9, NULL, N'預設位置9', NULL, 0, NULL, 0, 0, 0, N'', 0, NULL, NULL, 0, 0, 0, 0, 0, 0)
+GO
+INSERT [dbo].[MeterSetup] ([ECOGroup], [CtrlNr], [MeterID], [DrawNr], [InstallPosition], [LineNum], [Enabled], [MeterType], [RatedCurrent], [RatedVoltage], [RatedPower], [Class], [Calculate], [FloorArea], [StaffNum], [OutPut], [EUI], [KPI], [High], [Mid], [Low]) VALUES (N'wljsh', 1, 10, NULL, N'預設位置10', NULL, 0, NULL, 0, 0, 0, N'', 0, NULL, NULL, 0, 0, 0, 0, 0, 0)
+GO
+INSERT [dbo].[MeterSetup] ([ECOGroup], [CtrlNr], [MeterID], [DrawNr], [InstallPosition], [LineNum], [Enabled], [MeterType], [RatedCurrent], [RatedVoltage], [RatedPower], [Class], [Calculate], [FloorArea], [StaffNum], [OutPut], [EUI], [KPI], [High], [Mid], [Low]) VALUES (N'wlsh', 1, 1, N'', N'圖書館總用電', N'00', 1, 7, 0, 0, 0, N'', 0, NULL, NULL, 0, 0, 0, 0, 0, 0)
+GO
+INSERT [dbo].[MeterSetup] ([ECOGroup], [CtrlNr], [MeterID], [DrawNr], [InstallPosition], [LineNum], [Enabled], [MeterType], [RatedCurrent], [RatedVoltage], [RatedPower], [Class], [Calculate], [FloorArea], [StaffNum], [OutPut], [EUI], [KPI], [High], [Mid], [Low]) VALUES (N'wlsh', 1, 2, N'', N'二樓機房用電', N'01', 1, 7, 0, 0, 0, N'', 0, NULL, NULL, 0, 0, 0, 0, 0, 0)
+GO
+INSERT [dbo].[MeterSetup] ([ECOGroup], [CtrlNr], [MeterID], [DrawNr], [InstallPosition], [LineNum], [Enabled], [MeterType], [RatedCurrent], [RatedVoltage], [RatedPower], [Class], [Calculate], [FloorArea], [StaffNum], [OutPut], [EUI], [KPI], [High], [Mid], [Low]) VALUES (N'wlsh', 1, 3, N'', N'冷氣', N'00-00', 1, 7, 0, 0, 0, N'', 0, NULL, NULL, 0, 0, 0, 0, 0, 0)
+GO
+INSERT [dbo].[MeterSetup] ([ECOGroup], [CtrlNr], [MeterID], [DrawNr], [InstallPosition], [LineNum], [Enabled], [MeterType], [RatedCurrent], [RatedVoltage], [RatedPower], [Class], [Calculate], [FloorArea], [StaffNum], [OutPut], [EUI], [KPI], [High], [Mid], [Low]) VALUES (N'wlsh', 1, 4, NULL, N'預設位置4', NULL, 0, NULL, 0, 0, 0, N'', 0, NULL, NULL, 0, 0, 0, 0, 0, 0)
+GO
+INSERT [dbo].[MeterSetup] ([ECOGroup], [CtrlNr], [MeterID], [DrawNr], [InstallPosition], [LineNum], [Enabled], [MeterType], [RatedCurrent], [RatedVoltage], [RatedPower], [Class], [Calculate], [FloorArea], [StaffNum], [OutPut], [EUI], [KPI], [High], [Mid], [Low]) VALUES (N'wlsh', 1, 5, NULL, N'預設位置5', NULL, 0, NULL, 0, 0, 0, N'', 0, NULL, NULL, 0, 0, 0, 0, 0, 0)
+GO
+INSERT [dbo].[MeterSetup] ([ECOGroup], [CtrlNr], [MeterID], [DrawNr], [InstallPosition], [LineNum], [Enabled], [MeterType], [RatedCurrent], [RatedVoltage], [RatedPower], [Class], [Calculate], [FloorArea], [StaffNum], [OutPut], [EUI], [KPI], [High], [Mid], [Low]) VALUES (N'wlsh', 1, 6, NULL, N'預設位置6', NULL, 0, NULL, 0, 0, 0, N'', 0, NULL, NULL, 0, 0, 0, 0, 0, 0)
+GO
+INSERT [dbo].[MeterSetup] ([ECOGroup], [CtrlNr], [MeterID], [DrawNr], [InstallPosition], [LineNum], [Enabled], [MeterType], [RatedCurrent], [RatedVoltage], [RatedPower], [Class], [Calculate], [FloorArea], [StaffNum], [OutPut], [EUI], [KPI], [High], [Mid], [Low]) VALUES (N'wlsh', 1, 7, NULL, N'預設位置7', NULL, 0, NULL, 0, 0, 0, N'', 0, NULL, NULL, 0, 0, 0, 0, 0, 0)
+GO
+INSERT [dbo].[MeterSetup] ([ECOGroup], [CtrlNr], [MeterID], [DrawNr], [InstallPosition], [LineNum], [Enabled], [MeterType], [RatedCurrent], [RatedVoltage], [RatedPower], [Class], [Calculate], [FloorArea], [StaffNum], [OutPut], [EUI], [KPI], [High], [Mid], [Low]) VALUES (N'wlsh', 1, 8, NULL, N'預設位置8', NULL, 0, NULL, 0, 0, 0, N'', 0, NULL, NULL, 0, 0, 0, 0, 0, 0)
+GO
+INSERT [dbo].[MeterSetup] ([ECOGroup], [CtrlNr], [MeterID], [DrawNr], [InstallPosition], [LineNum], [Enabled], [MeterType], [RatedCurrent], [RatedVoltage], [RatedPower], [Class], [Calculate], [FloorArea], [StaffNum], [OutPut], [EUI], [KPI], [High], [Mid], [Low]) VALUES (N'wlsh', 1, 9, NULL, N'預設位置9', NULL, 0, NULL, 0, 0, 0, N'', 0, NULL, NULL, 0, 0, 0, 0, 0, 0)
+GO
+INSERT [dbo].[MeterSetup] ([ECOGroup], [CtrlNr], [MeterID], [DrawNr], [InstallPosition], [LineNum], [Enabled], [MeterType], [RatedCurrent], [RatedVoltage], [RatedPower], [Class], [Calculate], [FloorArea], [StaffNum], [OutPut], [EUI], [KPI], [High], [Mid], [Low]) VALUES (N'wlsh', 1, 10, NULL, N'預設位置10', NULL, 0, NULL, 0, 0, 0, N'', 0, NULL, NULL, 0, 0, 0, 0, 0, 0)
+GO
+INSERT [dbo].[MeterValue] ([ECOGroup], [CtrlNr], [MeterID], [RecDate], [I1], [I2], [I3], [Iavg], [V1], [V2], [V3], [Vavg], [W], [V_ar], [VA], [PF], [KWh], [Mode1], [Mode2], [Mode3], [Mode4], [Demand], [DemandHalf], [DemandStaHalf], [DemandOff], [RushHour], [HalfHour], [SatHalfHour], [OffHour]) VALUES (N'eco', 1, 1, N'20170717113000', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL)
+GO
+INSERT [dbo].[MeterValue] ([ECOGroup], [CtrlNr], [MeterID], [RecDate], [I1], [I2], [I3], [Iavg], [V1], [V2], [V3], [Vavg], [W], [V_ar], [VA], [PF], [KWh], [Mode1], [Mode2], [Mode3], [Mode4], [Demand], [DemandHalf], [DemandStaHalf], [DemandOff], [RushHour], [HalfHour], [SatHalfHour], [OffHour]) VALUES (N'eco', 1, 2, N'20170717113000', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL)
+GO
+INSERT [dbo].[MeterValue] ([ECOGroup], [CtrlNr], [MeterID], [RecDate], [I1], [I2], [I3], [Iavg], [V1], [V2], [V3], [Vavg], [W], [V_ar], [VA], [PF], [KWh], [Mode1], [Mode2], [Mode3], [Mode4], [Demand], [DemandHalf], [DemandStaHalf], [DemandOff], [RushHour], [HalfHour], [SatHalfHour], [OffHour]) VALUES (N'eco', 1, 3, N'20170717113000', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL)
+GO
+INSERT [dbo].[MeterValue] ([ECOGroup], [CtrlNr], [MeterID], [RecDate], [I1], [I2], [I3], [Iavg], [V1], [V2], [V3], [Vavg], [W], [V_ar], [VA], [PF], [KWh], [Mode1], [Mode2], [Mode3], [Mode4], [Demand], [DemandHalf], [DemandStaHalf], [DemandOff], [RushHour], [HalfHour], [SatHalfHour], [OffHour]) VALUES (N'eco', 1, 4, N'20170717113000', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL)
+GO
+INSERT [dbo].[MeterValue] ([ECOGroup], [CtrlNr], [MeterID], [RecDate], [I1], [I2], [I3], [Iavg], [V1], [V2], [V3], [Vavg], [W], [V_ar], [VA], [PF], [KWh], [Mode1], [Mode2], [Mode3], [Mode4], [Demand], [DemandHalf], [DemandStaHalf], [DemandOff], [RushHour], [HalfHour], [SatHalfHour], [OffHour]) VALUES (N'eco', 1, 5, N'20170717113000', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL)
+GO
+INSERT [dbo].[MeterValue] ([ECOGroup], [CtrlNr], [MeterID], [RecDate], [I1], [I2], [I3], [Iavg], [V1], [V2], [V3], [Vavg], [W], [V_ar], [VA], [PF], [KWh], [Mode1], [Mode2], [Mode3], [Mode4], [Demand], [DemandHalf], [DemandStaHalf], [DemandOff], [RushHour], [HalfHour], [SatHalfHour], [OffHour]) VALUES (N'eco', 1, 6, N'20170717113000', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL)
+GO
+INSERT [dbo].[MeterValue] ([ECOGroup], [CtrlNr], [MeterID], [RecDate], [I1], [I2], [I3], [Iavg], [V1], [V2], [V3], [Vavg], [W], [V_ar], [VA], [PF], [KWh], [Mode1], [Mode2], [Mode3], [Mode4], [Demand], [DemandHalf], [DemandStaHalf], [DemandOff], [RushHour], [HalfHour], [SatHalfHour], [OffHour]) VALUES (N'eco', 1, 7, N'20170717113000', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL)
+GO
+INSERT [dbo].[MeterValue] ([ECOGroup], [CtrlNr], [MeterID], [RecDate], [I1], [I2], [I3], [Iavg], [V1], [V2], [V3], [Vavg], [W], [V_ar], [VA], [PF], [KWh], [Mode1], [Mode2], [Mode3], [Mode4], [Demand], [DemandHalf], [DemandStaHalf], [DemandOff], [RushHour], [HalfHour], [SatHalfHour], [OffHour]) VALUES (N'eco', 1, 8, N'20170717113000', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL)
+GO
+INSERT [dbo].[MeterValue] ([ECOGroup], [CtrlNr], [MeterID], [RecDate], [I1], [I2], [I3], [Iavg], [V1], [V2], [V3], [Vavg], [W], [V_ar], [VA], [PF], [KWh], [Mode1], [Mode2], [Mode3], [Mode4], [Demand], [DemandHalf], [DemandStaHalf], [DemandOff], [RushHour], [HalfHour], [SatHalfHour], [OffHour]) VALUES (N'eco', 1, 9, N'20170717113000', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL)
+GO
+INSERT [dbo].[MeterValue] ([ECOGroup], [CtrlNr], [MeterID], [RecDate], [I1], [I2], [I3], [Iavg], [V1], [V2], [V3], [Vavg], [W], [V_ar], [VA], [PF], [KWh], [Mode1], [Mode2], [Mode3], [Mode4], [Demand], [DemandHalf], [DemandStaHalf], [DemandOff], [RushHour], [HalfHour], [SatHalfHour], [OffHour]) VALUES (N'eco', 1, 10, N'20170717113000', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL)
+GO
+INSERT [dbo].[MeterValue] ([ECOGroup], [CtrlNr], [MeterID], [RecDate], [I1], [I2], [I3], [Iavg], [V1], [V2], [V3], [Vavg], [W], [V_ar], [VA], [PF], [KWh], [Mode1], [Mode2], [Mode3], [Mode4], [Demand], [DemandHalf], [DemandStaHalf], [DemandOff], [RushHour], [HalfHour], [SatHalfHour], [OffHour]) VALUES (N'eco', 2, 1, N'20170717113000', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL)
+GO
+INSERT [dbo].[MeterValue] ([ECOGroup], [CtrlNr], [MeterID], [RecDate], [I1], [I2], [I3], [Iavg], [V1], [V2], [V3], [Vavg], [W], [V_ar], [VA], [PF], [KWh], [Mode1], [Mode2], [Mode3], [Mode4], [Demand], [DemandHalf], [DemandStaHalf], [DemandOff], [RushHour], [HalfHour], [SatHalfHour], [OffHour]) VALUES (N'eco', 2, 2, N'20170717113000', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL)
+GO
+INSERT [dbo].[MeterValue] ([ECOGroup], [CtrlNr], [MeterID], [RecDate], [I1], [I2], [I3], [Iavg], [V1], [V2], [V3], [Vavg], [W], [V_ar], [VA], [PF], [KWh], [Mode1], [Mode2], [Mode3], [Mode4], [Demand], [DemandHalf], [DemandStaHalf], [DemandOff], [RushHour], [HalfHour], [SatHalfHour], [OffHour]) VALUES (N'eco', 2, 3, N'20170717113000', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL)
+GO
+INSERT [dbo].[MeterValue] ([ECOGroup], [CtrlNr], [MeterID], [RecDate], [I1], [I2], [I3], [Iavg], [V1], [V2], [V3], [Vavg], [W], [V_ar], [VA], [PF], [KWh], [Mode1], [Mode2], [Mode3], [Mode4], [Demand], [DemandHalf], [DemandStaHalf], [DemandOff], [RushHour], [HalfHour], [SatHalfHour], [OffHour]) VALUES (N'eco', 2, 4, N'20170717113000', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL)
+GO
+INSERT [dbo].[MeterValue] ([ECOGroup], [CtrlNr], [MeterID], [RecDate], [I1], [I2], [I3], [Iavg], [V1], [V2], [V3], [Vavg], [W], [V_ar], [VA], [PF], [KWh], [Mode1], [Mode2], [Mode3], [Mode4], [Demand], [DemandHalf], [DemandStaHalf], [DemandOff], [RushHour], [HalfHour], [SatHalfHour], [OffHour]) VALUES (N'eco', 2, 5, N'20170717113000', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL)
+GO
+INSERT [dbo].[MeterValue] ([ECOGroup], [CtrlNr], [MeterID], [RecDate], [I1], [I2], [I3], [Iavg], [V1], [V2], [V3], [Vavg], [W], [V_ar], [VA], [PF], [KWh], [Mode1], [Mode2], [Mode3], [Mode4], [Demand], [DemandHalf], [DemandStaHalf], [DemandOff], [RushHour], [HalfHour], [SatHalfHour], [OffHour]) VALUES (N'eco', 2, 6, N'20170717113000', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL)
+GO
+INSERT [dbo].[MeterValue] ([ECOGroup], [CtrlNr], [MeterID], [RecDate], [I1], [I2], [I3], [Iavg], [V1], [V2], [V3], [Vavg], [W], [V_ar], [VA], [PF], [KWh], [Mode1], [Mode2], [Mode3], [Mode4], [Demand], [DemandHalf], [DemandStaHalf], [DemandOff], [RushHour], [HalfHour], [SatHalfHour], [OffHour]) VALUES (N'eco', 2, 7, N'20170717113000', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL)
+GO
+INSERT [dbo].[MeterValue] ([ECOGroup], [CtrlNr], [MeterID], [RecDate], [I1], [I2], [I3], [Iavg], [V1], [V2], [V3], [Vavg], [W], [V_ar], [VA], [PF], [KWh], [Mode1], [Mode2], [Mode3], [Mode4], [Demand], [DemandHalf], [DemandStaHalf], [DemandOff], [RushHour], [HalfHour], [SatHalfHour], [OffHour]) VALUES (N'eco', 2, 8, N'20170717113000', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL)
+GO
+INSERT [dbo].[MeterValue] ([ECOGroup], [CtrlNr], [MeterID], [RecDate], [I1], [I2], [I3], [Iavg], [V1], [V2], [V3], [Vavg], [W], [V_ar], [VA], [PF], [KWh], [Mode1], [Mode2], [Mode3], [Mode4], [Demand], [DemandHalf], [DemandStaHalf], [DemandOff], [RushHour], [HalfHour], [SatHalfHour], [OffHour]) VALUES (N'eco', 2, 9, N'20170717113000', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL)
+GO
+INSERT [dbo].[MeterValue] ([ECOGroup], [CtrlNr], [MeterID], [RecDate], [I1], [I2], [I3], [Iavg], [V1], [V2], [V3], [Vavg], [W], [V_ar], [VA], [PF], [KWh], [Mode1], [Mode2], [Mode3], [Mode4], [Demand], [DemandHalf], [DemandStaHalf], [DemandOff], [RushHour], [HalfHour], [SatHalfHour], [OffHour]) VALUES (N'eco', 2, 10, N'20170717113000', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL)
+GO
+INSERT [dbo].[MeterValue] ([ECOGroup], [CtrlNr], [MeterID], [RecDate], [I1], [I2], [I3], [Iavg], [V1], [V2], [V3], [Vavg], [W], [V_ar], [VA], [PF], [KWh], [Mode1], [Mode2], [Mode3], [Mode4], [Demand], [DemandHalf], [DemandStaHalf], [DemandOff], [RushHour], [HalfHour], [SatHalfHour], [OffHour]) VALUES (N'eco', 3, 1, N'20170717113000', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL)
+GO
+INSERT [dbo].[MeterValue] ([ECOGroup], [CtrlNr], [MeterID], [RecDate], [I1], [I2], [I3], [Iavg], [V1], [V2], [V3], [Vavg], [W], [V_ar], [VA], [PF], [KWh], [Mode1], [Mode2], [Mode3], [Mode4], [Demand], [DemandHalf], [DemandStaHalf], [DemandOff], [RushHour], [HalfHour], [SatHalfHour], [OffHour]) VALUES (N'eco', 3, 2, N'20170717113000', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL)
+GO
+INSERT [dbo].[MeterValue] ([ECOGroup], [CtrlNr], [MeterID], [RecDate], [I1], [I2], [I3], [Iavg], [V1], [V2], [V3], [Vavg], [W], [V_ar], [VA], [PF], [KWh], [Mode1], [Mode2], [Mode3], [Mode4], [Demand], [DemandHalf], [DemandStaHalf], [DemandOff], [RushHour], [HalfHour], [SatHalfHour], [OffHour]) VALUES (N'eco', 3, 3, N'20170717113000', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL)
+GO
+INSERT [dbo].[MeterValue] ([ECOGroup], [CtrlNr], [MeterID], [RecDate], [I1], [I2], [I3], [Iavg], [V1], [V2], [V3], [Vavg], [W], [V_ar], [VA], [PF], [KWh], [Mode1], [Mode2], [Mode3], [Mode4], [Demand], [DemandHalf], [DemandStaHalf], [DemandOff], [RushHour], [HalfHour], [SatHalfHour], [OffHour]) VALUES (N'eco', 3, 4, N'20170717113000', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL)
+GO
+INSERT [dbo].[MeterValue] ([ECOGroup], [CtrlNr], [MeterID], [RecDate], [I1], [I2], [I3], [Iavg], [V1], [V2], [V3], [Vavg], [W], [V_ar], [VA], [PF], [KWh], [Mode1], [Mode2], [Mode3], [Mode4], [Demand], [DemandHalf], [DemandStaHalf], [DemandOff], [RushHour], [HalfHour], [SatHalfHour], [OffHour]) VALUES (N'eco', 3, 5, N'20170717113000', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL)
+GO
+INSERT [dbo].[MeterValue] ([ECOGroup], [CtrlNr], [MeterID], [RecDate], [I1], [I2], [I3], [Iavg], [V1], [V2], [V3], [Vavg], [W], [V_ar], [VA], [PF], [KWh], [Mode1], [Mode2], [Mode3], [Mode4], [Demand], [DemandHalf], [DemandStaHalf], [DemandOff], [RushHour], [HalfHour], [SatHalfHour], [OffHour]) VALUES (N'eco', 3, 6, N'20170717113000', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL)
+GO
+INSERT [dbo].[MeterValue] ([ECOGroup], [CtrlNr], [MeterID], [RecDate], [I1], [I2], [I3], [Iavg], [V1], [V2], [V3], [Vavg], [W], [V_ar], [VA], [PF], [KWh], [Mode1], [Mode2], [Mode3], [Mode4], [Demand], [DemandHalf], [DemandStaHalf], [DemandOff], [RushHour], [HalfHour], [SatHalfHour], [OffHour]) VALUES (N'eco', 3, 7, N'20170717113000', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL)
+GO
+INSERT [dbo].[MeterValue] ([ECOGroup], [CtrlNr], [MeterID], [RecDate], [I1], [I2], [I3], [Iavg], [V1], [V2], [V3], [Vavg], [W], [V_ar], [VA], [PF], [KWh], [Mode1], [Mode2], [Mode3], [Mode4], [Demand], [DemandHalf], [DemandStaHalf], [DemandOff], [RushHour], [HalfHour], [SatHalfHour], [OffHour]) VALUES (N'eco', 3, 8, N'20170717113000', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL)
+GO
+INSERT [dbo].[MeterValue] ([ECOGroup], [CtrlNr], [MeterID], [RecDate], [I1], [I2], [I3], [Iavg], [V1], [V2], [V3], [Vavg], [W], [V_ar], [VA], [PF], [KWh], [Mode1], [Mode2], [Mode3], [Mode4], [Demand], [DemandHalf], [DemandStaHalf], [DemandOff], [RushHour], [HalfHour], [SatHalfHour], [OffHour]) VALUES (N'eco', 3, 9, N'20170717113000', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL)
+GO
+INSERT [dbo].[MeterValue] ([ECOGroup], [CtrlNr], [MeterID], [RecDate], [I1], [I2], [I3], [Iavg], [V1], [V2], [V3], [Vavg], [W], [V_ar], [VA], [PF], [KWh], [Mode1], [Mode2], [Mode3], [Mode4], [Demand], [DemandHalf], [DemandStaHalf], [DemandOff], [RushHour], [HalfHour], [SatHalfHour], [OffHour]) VALUES (N'eco', 3, 10, N'20170717113000', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL)
+GO
+INSERT [dbo].[MeterValue] ([ECOGroup], [CtrlNr], [MeterID], [RecDate], [I1], [I2], [I3], [Iavg], [V1], [V2], [V3], [Vavg], [W], [V_ar], [VA], [PF], [KWh], [Mode1], [Mode2], [Mode3], [Mode4], [Demand], [DemandHalf], [DemandStaHalf], [DemandOff], [RushHour], [HalfHour], [SatHalfHour], [OffHour]) VALUES (N'eco', 10, 1, N'20170717113000', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL)
+GO
+INSERT [dbo].[MeterValue] ([ECOGroup], [CtrlNr], [MeterID], [RecDate], [I1], [I2], [I3], [Iavg], [V1], [V2], [V3], [Vavg], [W], [V_ar], [VA], [PF], [KWh], [Mode1], [Mode2], [Mode3], [Mode4], [Demand], [DemandHalf], [DemandStaHalf], [DemandOff], [RushHour], [HalfHour], [SatHalfHour], [OffHour]) VALUES (N'eco', 10, 2, N'20170717113000', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL)
+GO
+INSERT [dbo].[MeterValue] ([ECOGroup], [CtrlNr], [MeterID], [RecDate], [I1], [I2], [I3], [Iavg], [V1], [V2], [V3], [Vavg], [W], [V_ar], [VA], [PF], [KWh], [Mode1], [Mode2], [Mode3], [Mode4], [Demand], [DemandHalf], [DemandStaHalf], [DemandOff], [RushHour], [HalfHour], [SatHalfHour], [OffHour]) VALUES (N'eco', 10, 3, N'20170717113000', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL)
+GO
+INSERT [dbo].[MeterValue] ([ECOGroup], [CtrlNr], [MeterID], [RecDate], [I1], [I2], [I3], [Iavg], [V1], [V2], [V3], [Vavg], [W], [V_ar], [VA], [PF], [KWh], [Mode1], [Mode2], [Mode3], [Mode4], [Demand], [DemandHalf], [DemandStaHalf], [DemandOff], [RushHour], [HalfHour], [SatHalfHour], [OffHour]) VALUES (N'eco', 10, 4, N'20170717113000', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL)
+GO
+INSERT [dbo].[MeterValue] ([ECOGroup], [CtrlNr], [MeterID], [RecDate], [I1], [I2], [I3], [Iavg], [V1], [V2], [V3], [Vavg], [W], [V_ar], [VA], [PF], [KWh], [Mode1], [Mode2], [Mode3], [Mode4], [Demand], [DemandHalf], [DemandStaHalf], [DemandOff], [RushHour], [HalfHour], [SatHalfHour], [OffHour]) VALUES (N'eco', 10, 5, N'20170717113000', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL)
+GO
+INSERT [dbo].[MeterValue] ([ECOGroup], [CtrlNr], [MeterID], [RecDate], [I1], [I2], [I3], [Iavg], [V1], [V2], [V3], [Vavg], [W], [V_ar], [VA], [PF], [KWh], [Mode1], [Mode2], [Mode3], [Mode4], [Demand], [DemandHalf], [DemandStaHalf], [DemandOff], [RushHour], [HalfHour], [SatHalfHour], [OffHour]) VALUES (N'eco', 10, 6, N'20170717113000', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL)
+GO
+INSERT [dbo].[MeterValue] ([ECOGroup], [CtrlNr], [MeterID], [RecDate], [I1], [I2], [I3], [Iavg], [V1], [V2], [V3], [Vavg], [W], [V_ar], [VA], [PF], [KWh], [Mode1], [Mode2], [Mode3], [Mode4], [Demand], [DemandHalf], [DemandStaHalf], [DemandOff], [RushHour], [HalfHour], [SatHalfHour], [OffHour]) VALUES (N'eco', 10, 7, N'20170717113000', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL)
+GO
+INSERT [dbo].[MeterValue] ([ECOGroup], [CtrlNr], [MeterID], [RecDate], [I1], [I2], [I3], [Iavg], [V1], [V2], [V3], [Vavg], [W], [V_ar], [VA], [PF], [KWh], [Mode1], [Mode2], [Mode3], [Mode4], [Demand], [DemandHalf], [DemandStaHalf], [DemandOff], [RushHour], [HalfHour], [SatHalfHour], [OffHour]) VALUES (N'eco', 10, 8, N'20170717113000', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL)
+GO
+INSERT [dbo].[MeterValue] ([ECOGroup], [CtrlNr], [MeterID], [RecDate], [I1], [I2], [I3], [Iavg], [V1], [V2], [V3], [Vavg], [W], [V_ar], [VA], [PF], [KWh], [Mode1], [Mode2], [Mode3], [Mode4], [Demand], [DemandHalf], [DemandStaHalf], [DemandOff], [RushHour], [HalfHour], [SatHalfHour], [OffHour]) VALUES (N'eco', 10, 9, N'20170717113000', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL)
+GO
+INSERT [dbo].[MeterValue] ([ECOGroup], [CtrlNr], [MeterID], [RecDate], [I1], [I2], [I3], [Iavg], [V1], [V2], [V3], [Vavg], [W], [V_ar], [VA], [PF], [KWh], [Mode1], [Mode2], [Mode3], [Mode4], [Demand], [DemandHalf], [DemandStaHalf], [DemandOff], [RushHour], [HalfHour], [SatHalfHour], [OffHour]) VALUES (N'eco', 10, 10, N'20170717113000', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL)
+GO
+INSERT [dbo].[MeterValue] ([ECOGroup], [CtrlNr], [MeterID], [RecDate], [I1], [I2], [I3], [Iavg], [V1], [V2], [V3], [Vavg], [W], [V_ar], [VA], [PF], [KWh], [Mode1], [Mode2], [Mode3], [Mode4], [Demand], [DemandHalf], [DemandStaHalf], [DemandOff], [RushHour], [HalfHour], [SatHalfHour], [OffHour]) VALUES (N'fomolux', 1, 1, N'20170717113000', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL)
+GO
+INSERT [dbo].[MeterValue] ([ECOGroup], [CtrlNr], [MeterID], [RecDate], [I1], [I2], [I3], [Iavg], [V1], [V2], [V3], [Vavg], [W], [V_ar], [VA], [PF], [KWh], [Mode1], [Mode2], [Mode3], [Mode4], [Demand], [DemandHalf], [DemandStaHalf], [DemandOff], [RushHour], [HalfHour], [SatHalfHour], [OffHour]) VALUES (N'fomolux', 1, 2, N'20170717113000', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL)
+GO
+INSERT [dbo].[MeterValue] ([ECOGroup], [CtrlNr], [MeterID], [RecDate], [I1], [I2], [I3], [Iavg], [V1], [V2], [V3], [Vavg], [W], [V_ar], [VA], [PF], [KWh], [Mode1], [Mode2], [Mode3], [Mode4], [Demand], [DemandHalf], [DemandStaHalf], [DemandOff], [RushHour], [HalfHour], [SatHalfHour], [OffHour]) VALUES (N'fomolux', 1, 3, N'20170717113000', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL)
+GO
+INSERT [dbo].[MeterValue] ([ECOGroup], [CtrlNr], [MeterID], [RecDate], [I1], [I2], [I3], [Iavg], [V1], [V2], [V3], [Vavg], [W], [V_ar], [VA], [PF], [KWh], [Mode1], [Mode2], [Mode3], [Mode4], [Demand], [DemandHalf], [DemandStaHalf], [DemandOff], [RushHour], [HalfHour], [SatHalfHour], [OffHour]) VALUES (N'fomolux', 1, 4, N'20170717113000', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL)
+GO
+INSERT [dbo].[MeterValue] ([ECOGroup], [CtrlNr], [MeterID], [RecDate], [I1], [I2], [I3], [Iavg], [V1], [V2], [V3], [Vavg], [W], [V_ar], [VA], [PF], [KWh], [Mode1], [Mode2], [Mode3], [Mode4], [Demand], [DemandHalf], [DemandStaHalf], [DemandOff], [RushHour], [HalfHour], [SatHalfHour], [OffHour]) VALUES (N'jtflex', 1, 1, N'20170717113000', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL)
+GO
+INSERT [dbo].[MeterValue] ([ECOGroup], [CtrlNr], [MeterID], [RecDate], [I1], [I2], [I3], [Iavg], [V1], [V2], [V3], [Vavg], [W], [V_ar], [VA], [PF], [KWh], [Mode1], [Mode2], [Mode3], [Mode4], [Demand], [DemandHalf], [DemandStaHalf], [DemandOff], [RushHour], [HalfHour], [SatHalfHour], [OffHour]) VALUES (N'jtflex', 1, 2, N'20170717113000', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL)
+GO
+INSERT [dbo].[MeterValue] ([ECOGroup], [CtrlNr], [MeterID], [RecDate], [I1], [I2], [I3], [Iavg], [V1], [V2], [V3], [Vavg], [W], [V_ar], [VA], [PF], [KWh], [Mode1], [Mode2], [Mode3], [Mode4], [Demand], [DemandHalf], [DemandStaHalf], [DemandOff], [RushHour], [HalfHour], [SatHalfHour], [OffHour]) VALUES (N'jtflex', 1, 3, N'20170717113000', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL)
+GO
+INSERT [dbo].[MeterValue] ([ECOGroup], [CtrlNr], [MeterID], [RecDate], [I1], [I2], [I3], [Iavg], [V1], [V2], [V3], [Vavg], [W], [V_ar], [VA], [PF], [KWh], [Mode1], [Mode2], [Mode3], [Mode4], [Demand], [DemandHalf], [DemandStaHalf], [DemandOff], [RushHour], [HalfHour], [SatHalfHour], [OffHour]) VALUES (N'jtflex', 1, 4, N'20170717113000', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL)
+GO
+INSERT [dbo].[MeterValue] ([ECOGroup], [CtrlNr], [MeterID], [RecDate], [I1], [I2], [I3], [Iavg], [V1], [V2], [V3], [Vavg], [W], [V_ar], [VA], [PF], [KWh], [Mode1], [Mode2], [Mode3], [Mode4], [Demand], [DemandHalf], [DemandStaHalf], [DemandOff], [RushHour], [HalfHour], [SatHalfHour], [OffHour]) VALUES (N'jtflex', 1, 5, N'20170717113000', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL)
+GO
+INSERT [dbo].[MeterValue] ([ECOGroup], [CtrlNr], [MeterID], [RecDate], [I1], [I2], [I3], [Iavg], [V1], [V2], [V3], [Vavg], [W], [V_ar], [VA], [PF], [KWh], [Mode1], [Mode2], [Mode3], [Mode4], [Demand], [DemandHalf], [DemandStaHalf], [DemandOff], [RushHour], [HalfHour], [SatHalfHour], [OffHour]) VALUES (N'jtflex', 1, 6, N'20170717113000', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL)
+GO
+INSERT [dbo].[MeterValue] ([ECOGroup], [CtrlNr], [MeterID], [RecDate], [I1], [I2], [I3], [Iavg], [V1], [V2], [V3], [Vavg], [W], [V_ar], [VA], [PF], [KWh], [Mode1], [Mode2], [Mode3], [Mode4], [Demand], [DemandHalf], [DemandStaHalf], [DemandOff], [RushHour], [HalfHour], [SatHalfHour], [OffHour]) VALUES (N'jtflex', 1, 7, N'20170717113000', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL)
+GO
+INSERT [dbo].[MeterValue] ([ECOGroup], [CtrlNr], [MeterID], [RecDate], [I1], [I2], [I3], [Iavg], [V1], [V2], [V3], [Vavg], [W], [V_ar], [VA], [PF], [KWh], [Mode1], [Mode2], [Mode3], [Mode4], [Demand], [DemandHalf], [DemandStaHalf], [DemandOff], [RushHour], [HalfHour], [SatHalfHour], [OffHour]) VALUES (N'jtflex', 1, 8, N'20170717113000', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL)
+GO
+INSERT [dbo].[MeterValue] ([ECOGroup], [CtrlNr], [MeterID], [RecDate], [I1], [I2], [I3], [Iavg], [V1], [V2], [V3], [Vavg], [W], [V_ar], [VA], [PF], [KWh], [Mode1], [Mode2], [Mode3], [Mode4], [Demand], [DemandHalf], [DemandStaHalf], [DemandOff], [RushHour], [HalfHour], [SatHalfHour], [OffHour]) VALUES (N'jtflex', 1, 9, N'20170717113000', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL)
+GO
+INSERT [dbo].[MeterValue] ([ECOGroup], [CtrlNr], [MeterID], [RecDate], [I1], [I2], [I3], [Iavg], [V1], [V2], [V3], [Vavg], [W], [V_ar], [VA], [PF], [KWh], [Mode1], [Mode2], [Mode3], [Mode4], [Demand], [DemandHalf], [DemandStaHalf], [DemandOff], [RushHour], [HalfHour], [SatHalfHour], [OffHour]) VALUES (N'jtflex', 1, 10, N'20170717113000', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL)
+GO
+INSERT [dbo].[MeterValue] ([ECOGroup], [CtrlNr], [MeterID], [RecDate], [I1], [I2], [I3], [Iavg], [V1], [V2], [V3], [Vavg], [W], [V_ar], [VA], [PF], [KWh], [Mode1], [Mode2], [Mode3], [Mode4], [Demand], [DemandHalf], [DemandStaHalf], [DemandOff], [RushHour], [HalfHour], [SatHalfHour], [OffHour]) VALUES (N'kuanstar', 1, 1, N'20170717113000', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL)
+GO
+INSERT [dbo].[MeterValue] ([ECOGroup], [CtrlNr], [MeterID], [RecDate], [I1], [I2], [I3], [Iavg], [V1], [V2], [V3], [Vavg], [W], [V_ar], [VA], [PF], [KWh], [Mode1], [Mode2], [Mode3], [Mode4], [Demand], [DemandHalf], [DemandStaHalf], [DemandOff], [RushHour], [HalfHour], [SatHalfHour], [OffHour]) VALUES (N'kuanstar', 1, 2, N'20170717113000', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL)
+GO
+INSERT [dbo].[MeterValue] ([ECOGroup], [CtrlNr], [MeterID], [RecDate], [I1], [I2], [I3], [Iavg], [V1], [V2], [V3], [Vavg], [W], [V_ar], [VA], [PF], [KWh], [Mode1], [Mode2], [Mode3], [Mode4], [Demand], [DemandHalf], [DemandStaHalf], [DemandOff], [RushHour], [HalfHour], [SatHalfHour], [OffHour]) VALUES (N'kuanstar', 1, 3, N'20170717113000', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL)
+GO
+INSERT [dbo].[MeterValue] ([ECOGroup], [CtrlNr], [MeterID], [RecDate], [I1], [I2], [I3], [Iavg], [V1], [V2], [V3], [Vavg], [W], [V_ar], [VA], [PF], [KWh], [Mode1], [Mode2], [Mode3], [Mode4], [Demand], [DemandHalf], [DemandStaHalf], [DemandOff], [RushHour], [HalfHour], [SatHalfHour], [OffHour]) VALUES (N'kuanstar', 1, 4, N'20170717113000', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL)
+GO
+INSERT [dbo].[MeterValue] ([ECOGroup], [CtrlNr], [MeterID], [RecDate], [I1], [I2], [I3], [Iavg], [V1], [V2], [V3], [Vavg], [W], [V_ar], [VA], [PF], [KWh], [Mode1], [Mode2], [Mode3], [Mode4], [Demand], [DemandHalf], [DemandStaHalf], [DemandOff], [RushHour], [HalfHour], [SatHalfHour], [OffHour]) VALUES (N'kuanstar', 1, 5, N'20170717113000', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL)
+GO
+INSERT [dbo].[MeterValue] ([ECOGroup], [CtrlNr], [MeterID], [RecDate], [I1], [I2], [I3], [Iavg], [V1], [V2], [V3], [Vavg], [W], [V_ar], [VA], [PF], [KWh], [Mode1], [Mode2], [Mode3], [Mode4], [Demand], [DemandHalf], [DemandStaHalf], [DemandOff], [RushHour], [HalfHour], [SatHalfHour], [OffHour]) VALUES (N'kuanstar', 1, 6, N'20170717113000', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL)
+GO
+INSERT [dbo].[MeterValue] ([ECOGroup], [CtrlNr], [MeterID], [RecDate], [I1], [I2], [I3], [Iavg], [V1], [V2], [V3], [Vavg], [W], [V_ar], [VA], [PF], [KWh], [Mode1], [Mode2], [Mode3], [Mode4], [Demand], [DemandHalf], [DemandStaHalf], [DemandOff], [RushHour], [HalfHour], [SatHalfHour], [OffHour]) VALUES (N'kuanstar', 1, 7, N'20170717113000', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL)
+GO
+INSERT [dbo].[MeterValue] ([ECOGroup], [CtrlNr], [MeterID], [RecDate], [I1], [I2], [I3], [Iavg], [V1], [V2], [V3], [Vavg], [W], [V_ar], [VA], [PF], [KWh], [Mode1], [Mode2], [Mode3], [Mode4], [Demand], [DemandHalf], [DemandStaHalf], [DemandOff], [RushHour], [HalfHour], [SatHalfHour], [OffHour]) VALUES (N'kuanstar', 1, 8, N'20170717113000', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL)
+GO
+INSERT [dbo].[MeterValue] ([ECOGroup], [CtrlNr], [MeterID], [RecDate], [I1], [I2], [I3], [Iavg], [V1], [V2], [V3], [Vavg], [W], [V_ar], [VA], [PF], [KWh], [Mode1], [Mode2], [Mode3], [Mode4], [Demand], [DemandHalf], [DemandStaHalf], [DemandOff], [RushHour], [HalfHour], [SatHalfHour], [OffHour]) VALUES (N'kuanstar', 1, 9, N'20170717113000', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL)
+GO
+INSERT [dbo].[MeterValue] ([ECOGroup], [CtrlNr], [MeterID], [RecDate], [I1], [I2], [I3], [Iavg], [V1], [V2], [V3], [Vavg], [W], [V_ar], [VA], [PF], [KWh], [Mode1], [Mode2], [Mode3], [Mode4], [Demand], [DemandHalf], [DemandStaHalf], [DemandOff], [RushHour], [HalfHour], [SatHalfHour], [OffHour]) VALUES (N'kuanstar', 1, 10, N'20170717113000', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL)
+GO
+INSERT [dbo].[MeterValue] ([ECOGroup], [CtrlNr], [MeterID], [RecDate], [I1], [I2], [I3], [Iavg], [V1], [V2], [V3], [Vavg], [W], [V_ar], [VA], [PF], [KWh], [Mode1], [Mode2], [Mode3], [Mode4], [Demand], [DemandHalf], [DemandStaHalf], [DemandOff], [RushHour], [HalfHour], [SatHalfHour], [OffHour]) VALUES (N'sample', 1, 1, N'20170717113000', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL)
+GO
+INSERT [dbo].[MeterValue] ([ECOGroup], [CtrlNr], [MeterID], [RecDate], [I1], [I2], [I3], [Iavg], [V1], [V2], [V3], [Vavg], [W], [V_ar], [VA], [PF], [KWh], [Mode1], [Mode2], [Mode3], [Mode4], [Demand], [DemandHalf], [DemandStaHalf], [DemandOff], [RushHour], [HalfHour], [SatHalfHour], [OffHour]) VALUES (N'sample', 1, 2, N'20170717113000', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL)
+GO
+INSERT [dbo].[MeterValue] ([ECOGroup], [CtrlNr], [MeterID], [RecDate], [I1], [I2], [I3], [Iavg], [V1], [V2], [V3], [Vavg], [W], [V_ar], [VA], [PF], [KWh], [Mode1], [Mode2], [Mode3], [Mode4], [Demand], [DemandHalf], [DemandStaHalf], [DemandOff], [RushHour], [HalfHour], [SatHalfHour], [OffHour]) VALUES (N'sample', 1, 3, N'20170717113000', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL)
+GO
+INSERT [dbo].[MeterValue] ([ECOGroup], [CtrlNr], [MeterID], [RecDate], [I1], [I2], [I3], [Iavg], [V1], [V2], [V3], [Vavg], [W], [V_ar], [VA], [PF], [KWh], [Mode1], [Mode2], [Mode3], [Mode4], [Demand], [DemandHalf], [DemandStaHalf], [DemandOff], [RushHour], [HalfHour], [SatHalfHour], [OffHour]) VALUES (N'sample', 1, 4, N'20170717113000', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL)
+GO
+INSERT [dbo].[MeterValue] ([ECOGroup], [CtrlNr], [MeterID], [RecDate], [I1], [I2], [I3], [Iavg], [V1], [V2], [V3], [Vavg], [W], [V_ar], [VA], [PF], [KWh], [Mode1], [Mode2], [Mode3], [Mode4], [Demand], [DemandHalf], [DemandStaHalf], [DemandOff], [RushHour], [HalfHour], [SatHalfHour], [OffHour]) VALUES (N'sample', 1, 5, N'20170717113000', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL)
+GO
+INSERT [dbo].[MeterValue] ([ECOGroup], [CtrlNr], [MeterID], [RecDate], [I1], [I2], [I3], [Iavg], [V1], [V2], [V3], [Vavg], [W], [V_ar], [VA], [PF], [KWh], [Mode1], [Mode2], [Mode3], [Mode4], [Demand], [DemandHalf], [DemandStaHalf], [DemandOff], [RushHour], [HalfHour], [SatHalfHour], [OffHour]) VALUES (N'sample', 1, 6, N'20170717113000', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL)
+GO
+INSERT [dbo].[MeterValue] ([ECOGroup], [CtrlNr], [MeterID], [RecDate], [I1], [I2], [I3], [Iavg], [V1], [V2], [V3], [Vavg], [W], [V_ar], [VA], [PF], [KWh], [Mode1], [Mode2], [Mode3], [Mode4], [Demand], [DemandHalf], [DemandStaHalf], [DemandOff], [RushHour], [HalfHour], [SatHalfHour], [OffHour]) VALUES (N'sample', 1, 7, N'20170717113000', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL)
+GO
+INSERT [dbo].[MeterValue] ([ECOGroup], [CtrlNr], [MeterID], [RecDate], [I1], [I2], [I3], [Iavg], [V1], [V2], [V3], [Vavg], [W], [V_ar], [VA], [PF], [KWh], [Mode1], [Mode2], [Mode3], [Mode4], [Demand], [DemandHalf], [DemandStaHalf], [DemandOff], [RushHour], [HalfHour], [SatHalfHour], [OffHour]) VALUES (N'sample', 1, 8, N'20170717113000', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL)
+GO
+INSERT [dbo].[MeterValue] ([ECOGroup], [CtrlNr], [MeterID], [RecDate], [I1], [I2], [I3], [Iavg], [V1], [V2], [V3], [Vavg], [W], [V_ar], [VA], [PF], [KWh], [Mode1], [Mode2], [Mode3], [Mode4], [Demand], [DemandHalf], [DemandStaHalf], [DemandOff], [RushHour], [HalfHour], [SatHalfHour], [OffHour]) VALUES (N'sample', 1, 9, N'20170717113000', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL)
+GO
+INSERT [dbo].[MeterValue] ([ECOGroup], [CtrlNr], [MeterID], [RecDate], [I1], [I2], [I3], [Iavg], [V1], [V2], [V3], [Vavg], [W], [V_ar], [VA], [PF], [KWh], [Mode1], [Mode2], [Mode3], [Mode4], [Demand], [DemandHalf], [DemandStaHalf], [DemandOff], [RushHour], [HalfHour], [SatHalfHour], [OffHour]) VALUES (N'sample', 1, 10, N'20170717113000', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL)
+GO
+INSERT [dbo].[MeterValue] ([ECOGroup], [CtrlNr], [MeterID], [RecDate], [I1], [I2], [I3], [Iavg], [V1], [V2], [V3], [Vavg], [W], [V_ar], [VA], [PF], [KWh], [Mode1], [Mode2], [Mode3], [Mode4], [Demand], [DemandHalf], [DemandStaHalf], [DemandOff], [RushHour], [HalfHour], [SatHalfHour], [OffHour]) VALUES (N'sample', 2, 1, N'20170717113000', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL)
+GO
+INSERT [dbo].[MeterValue] ([ECOGroup], [CtrlNr], [MeterID], [RecDate], [I1], [I2], [I3], [Iavg], [V1], [V2], [V3], [Vavg], [W], [V_ar], [VA], [PF], [KWh], [Mode1], [Mode2], [Mode3], [Mode4], [Demand], [DemandHalf], [DemandStaHalf], [DemandOff], [RushHour], [HalfHour], [SatHalfHour], [OffHour]) VALUES (N'sample', 2, 2, N'20170717113000', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL)
+GO
+INSERT [dbo].[MeterValue] ([ECOGroup], [CtrlNr], [MeterID], [RecDate], [I1], [I2], [I3], [Iavg], [V1], [V2], [V3], [Vavg], [W], [V_ar], [VA], [PF], [KWh], [Mode1], [Mode2], [Mode3], [Mode4], [Demand], [DemandHalf], [DemandStaHalf], [DemandOff], [RushHour], [HalfHour], [SatHalfHour], [OffHour]) VALUES (N'sample', 2, 3, N'20170717113000', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL)
+GO
+INSERT [dbo].[MeterValue] ([ECOGroup], [CtrlNr], [MeterID], [RecDate], [I1], [I2], [I3], [Iavg], [V1], [V2], [V3], [Vavg], [W], [V_ar], [VA], [PF], [KWh], [Mode1], [Mode2], [Mode3], [Mode4], [Demand], [DemandHalf], [DemandStaHalf], [DemandOff], [RushHour], [HalfHour], [SatHalfHour], [OffHour]) VALUES (N'sample', 2, 4, N'20170717113000', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL)
+GO
+INSERT [dbo].[MeterValue] ([ECOGroup], [CtrlNr], [MeterID], [RecDate], [I1], [I2], [I3], [Iavg], [V1], [V2], [V3], [Vavg], [W], [V_ar], [VA], [PF], [KWh], [Mode1], [Mode2], [Mode3], [Mode4], [Demand], [DemandHalf], [DemandStaHalf], [DemandOff], [RushHour], [HalfHour], [SatHalfHour], [OffHour]) VALUES (N'sample', 2, 5, N'20170717113000', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL)
+GO
+INSERT [dbo].[MeterValue] ([ECOGroup], [CtrlNr], [MeterID], [RecDate], [I1], [I2], [I3], [Iavg], [V1], [V2], [V3], [Vavg], [W], [V_ar], [VA], [PF], [KWh], [Mode1], [Mode2], [Mode3], [Mode4], [Demand], [DemandHalf], [DemandStaHalf], [DemandOff], [RushHour], [HalfHour], [SatHalfHour], [OffHour]) VALUES (N'sample', 2, 6, N'20170717113000', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL)
+GO
+INSERT [dbo].[MeterValue] ([ECOGroup], [CtrlNr], [MeterID], [RecDate], [I1], [I2], [I3], [Iavg], [V1], [V2], [V3], [Vavg], [W], [V_ar], [VA], [PF], [KWh], [Mode1], [Mode2], [Mode3], [Mode4], [Demand], [DemandHalf], [DemandStaHalf], [DemandOff], [RushHour], [HalfHour], [SatHalfHour], [OffHour]) VALUES (N'sample', 2, 7, N'20170717113000', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL)
+GO
+INSERT [dbo].[MeterValue] ([ECOGroup], [CtrlNr], [MeterID], [RecDate], [I1], [I2], [I3], [Iavg], [V1], [V2], [V3], [Vavg], [W], [V_ar], [VA], [PF], [KWh], [Mode1], [Mode2], [Mode3], [Mode4], [Demand], [DemandHalf], [DemandStaHalf], [DemandOff], [RushHour], [HalfHour], [SatHalfHour], [OffHour]) VALUES (N'sample', 2, 8, N'20170717113000', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL)
+GO
+INSERT [dbo].[MeterValue] ([ECOGroup], [CtrlNr], [MeterID], [RecDate], [I1], [I2], [I3], [Iavg], [V1], [V2], [V3], [Vavg], [W], [V_ar], [VA], [PF], [KWh], [Mode1], [Mode2], [Mode3], [Mode4], [Demand], [DemandHalf], [DemandStaHalf], [DemandOff], [RushHour], [HalfHour], [SatHalfHour], [OffHour]) VALUES (N'sample', 2, 9, N'20170717113000', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL)
+GO
+INSERT [dbo].[MeterValue] ([ECOGroup], [CtrlNr], [MeterID], [RecDate], [I1], [I2], [I3], [Iavg], [V1], [V2], [V3], [Vavg], [W], [V_ar], [VA], [PF], [KWh], [Mode1], [Mode2], [Mode3], [Mode4], [Demand], [DemandHalf], [DemandStaHalf], [DemandOff], [RushHour], [HalfHour], [SatHalfHour], [OffHour]) VALUES (N'sample', 2, 10, N'20170717113000', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL)
+GO
+INSERT [dbo].[MeterValue] ([ECOGroup], [CtrlNr], [MeterID], [RecDate], [I1], [I2], [I3], [Iavg], [V1], [V2], [V3], [Vavg], [W], [V_ar], [VA], [PF], [KWh], [Mode1], [Mode2], [Mode3], [Mode4], [Demand], [DemandHalf], [DemandStaHalf], [DemandOff], [RushHour], [HalfHour], [SatHalfHour], [OffHour]) VALUES (N'sample', 3, 1, N'20170717113000', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL)
+GO
+INSERT [dbo].[MeterValue] ([ECOGroup], [CtrlNr], [MeterID], [RecDate], [I1], [I2], [I3], [Iavg], [V1], [V2], [V3], [Vavg], [W], [V_ar], [VA], [PF], [KWh], [Mode1], [Mode2], [Mode3], [Mode4], [Demand], [DemandHalf], [DemandStaHalf], [DemandOff], [RushHour], [HalfHour], [SatHalfHour], [OffHour]) VALUES (N'sample', 3, 2, N'20170717113000', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL)
+GO
+INSERT [dbo].[MeterValue] ([ECOGroup], [CtrlNr], [MeterID], [RecDate], [I1], [I2], [I3], [Iavg], [V1], [V2], [V3], [Vavg], [W], [V_ar], [VA], [PF], [KWh], [Mode1], [Mode2], [Mode3], [Mode4], [Demand], [DemandHalf], [DemandStaHalf], [DemandOff], [RushHour], [HalfHour], [SatHalfHour], [OffHour]) VALUES (N'sample', 3, 3, N'20170717113000', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL)
+GO
+INSERT [dbo].[MeterValue] ([ECOGroup], [CtrlNr], [MeterID], [RecDate], [I1], [I2], [I3], [Iavg], [V1], [V2], [V3], [Vavg], [W], [V_ar], [VA], [PF], [KWh], [Mode1], [Mode2], [Mode3], [Mode4], [Demand], [DemandHalf], [DemandStaHalf], [DemandOff], [RushHour], [HalfHour], [SatHalfHour], [OffHour]) VALUES (N'sample', 3, 4, N'20170717113000', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL)
+GO
+INSERT [dbo].[MeterValue] ([ECOGroup], [CtrlNr], [MeterID], [RecDate], [I1], [I2], [I3], [Iavg], [V1], [V2], [V3], [Vavg], [W], [V_ar], [VA], [PF], [KWh], [Mode1], [Mode2], [Mode3], [Mode4], [Demand], [DemandHalf], [DemandStaHalf], [DemandOff], [RushHour], [HalfHour], [SatHalfHour], [OffHour]) VALUES (N'sample', 3, 5, N'20170717113000', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL)
+GO
+INSERT [dbo].[MeterValue] ([ECOGroup], [CtrlNr], [MeterID], [RecDate], [I1], [I2], [I3], [Iavg], [V1], [V2], [V3], [Vavg], [W], [V_ar], [VA], [PF], [KWh], [Mode1], [Mode2], [Mode3], [Mode4], [Demand], [DemandHalf], [DemandStaHalf], [DemandOff], [RushHour], [HalfHour], [SatHalfHour], [OffHour]) VALUES (N'sample', 3, 6, N'20170717113000', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL)
+GO
+INSERT [dbo].[MeterValue] ([ECOGroup], [CtrlNr], [MeterID], [RecDate], [I1], [I2], [I3], [Iavg], [V1], [V2], [V3], [Vavg], [W], [V_ar], [VA], [PF], [KWh], [Mode1], [Mode2], [Mode3], [Mode4], [Demand], [DemandHalf], [DemandStaHalf], [DemandOff], [RushHour], [HalfHour], [SatHalfHour], [OffHour]) VALUES (N'sample', 3, 7, N'20170717113000', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL)
+GO
+INSERT [dbo].[MeterValue] ([ECOGroup], [CtrlNr], [MeterID], [RecDate], [I1], [I2], [I3], [Iavg], [V1], [V2], [V3], [Vavg], [W], [V_ar], [VA], [PF], [KWh], [Mode1], [Mode2], [Mode3], [Mode4], [Demand], [DemandHalf], [DemandStaHalf], [DemandOff], [RushHour], [HalfHour], [SatHalfHour], [OffHour]) VALUES (N'sample', 3, 8, N'20170717113000', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL)
+GO
+INSERT [dbo].[MeterValue] ([ECOGroup], [CtrlNr], [MeterID], [RecDate], [I1], [I2], [I3], [Iavg], [V1], [V2], [V3], [Vavg], [W], [V_ar], [VA], [PF], [KWh], [Mode1], [Mode2], [Mode3], [Mode4], [Demand], [DemandHalf], [DemandStaHalf], [DemandOff], [RushHour], [HalfHour], [SatHalfHour], [OffHour]) VALUES (N'sample', 3, 9, N'20170717113000', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL)
+GO
+INSERT [dbo].[MeterValue] ([ECOGroup], [CtrlNr], [MeterID], [RecDate], [I1], [I2], [I3], [Iavg], [V1], [V2], [V3], [Vavg], [W], [V_ar], [VA], [PF], [KWh], [Mode1], [Mode2], [Mode3], [Mode4], [Demand], [DemandHalf], [DemandStaHalf], [DemandOff], [RushHour], [HalfHour], [SatHalfHour], [OffHour]) VALUES (N'sample', 3, 10, N'20170717113000', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL)
+GO
+INSERT [dbo].[MeterValue] ([ECOGroup], [CtrlNr], [MeterID], [RecDate], [I1], [I2], [I3], [Iavg], [V1], [V2], [V3], [Vavg], [W], [V_ar], [VA], [PF], [KWh], [Mode1], [Mode2], [Mode3], [Mode4], [Demand], [DemandHalf], [DemandStaHalf], [DemandOff], [RushHour], [HalfHour], [SatHalfHour], [OffHour]) VALUES (N'sample', 4, 1, N'20170717113000', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL)
+GO
+INSERT [dbo].[MeterValue] ([ECOGroup], [CtrlNr], [MeterID], [RecDate], [I1], [I2], [I3], [Iavg], [V1], [V2], [V3], [Vavg], [W], [V_ar], [VA], [PF], [KWh], [Mode1], [Mode2], [Mode3], [Mode4], [Demand], [DemandHalf], [DemandStaHalf], [DemandOff], [RushHour], [HalfHour], [SatHalfHour], [OffHour]) VALUES (N'sample', 4, 2, N'20170717113000', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL)
+GO
+INSERT [dbo].[MeterValue] ([ECOGroup], [CtrlNr], [MeterID], [RecDate], [I1], [I2], [I3], [Iavg], [V1], [V2], [V3], [Vavg], [W], [V_ar], [VA], [PF], [KWh], [Mode1], [Mode2], [Mode3], [Mode4], [Demand], [DemandHalf], [DemandStaHalf], [DemandOff], [RushHour], [HalfHour], [SatHalfHour], [OffHour]) VALUES (N'sample', 4, 3, N'20170717113000', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL)
+GO
+INSERT [dbo].[MeterValue] ([ECOGroup], [CtrlNr], [MeterID], [RecDate], [I1], [I2], [I3], [Iavg], [V1], [V2], [V3], [Vavg], [W], [V_ar], [VA], [PF], [KWh], [Mode1], [Mode2], [Mode3], [Mode4], [Demand], [DemandHalf], [DemandStaHalf], [DemandOff], [RushHour], [HalfHour], [SatHalfHour], [OffHour]) VALUES (N'sample', 4, 4, N'20170717113000', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL)
+GO
+INSERT [dbo].[MeterValue] ([ECOGroup], [CtrlNr], [MeterID], [RecDate], [I1], [I2], [I3], [Iavg], [V1], [V2], [V3], [Vavg], [W], [V_ar], [VA], [PF], [KWh], [Mode1], [Mode2], [Mode3], [Mode4], [Demand], [DemandHalf], [DemandStaHalf], [DemandOff], [RushHour], [HalfHour], [SatHalfHour], [OffHour]) VALUES (N'sample', 4, 5, N'20170717113000', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL)
+GO
+INSERT [dbo].[MeterValue] ([ECOGroup], [CtrlNr], [MeterID], [RecDate], [I1], [I2], [I3], [Iavg], [V1], [V2], [V3], [Vavg], [W], [V_ar], [VA], [PF], [KWh], [Mode1], [Mode2], [Mode3], [Mode4], [Demand], [DemandHalf], [DemandStaHalf], [DemandOff], [RushHour], [HalfHour], [SatHalfHour], [OffHour]) VALUES (N'sample', 4, 6, N'20170717113000', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL)
+GO
+INSERT [dbo].[MeterValue] ([ECOGroup], [CtrlNr], [MeterID], [RecDate], [I1], [I2], [I3], [Iavg], [V1], [V2], [V3], [Vavg], [W], [V_ar], [VA], [PF], [KWh], [Mode1], [Mode2], [Mode3], [Mode4], [Demand], [DemandHalf], [DemandStaHalf], [DemandOff], [RushHour], [HalfHour], [SatHalfHour], [OffHour]) VALUES (N'sample', 4, 7, N'20170717113000', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL)
+GO
+INSERT [dbo].[MeterValue] ([ECOGroup], [CtrlNr], [MeterID], [RecDate], [I1], [I2], [I3], [Iavg], [V1], [V2], [V3], [Vavg], [W], [V_ar], [VA], [PF], [KWh], [Mode1], [Mode2], [Mode3], [Mode4], [Demand], [DemandHalf], [DemandStaHalf], [DemandOff], [RushHour], [HalfHour], [SatHalfHour], [OffHour]) VALUES (N'sample', 4, 8, N'20170717113000', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL)
+GO
+INSERT [dbo].[MeterValue] ([ECOGroup], [CtrlNr], [MeterID], [RecDate], [I1], [I2], [I3], [Iavg], [V1], [V2], [V3], [Vavg], [W], [V_ar], [VA], [PF], [KWh], [Mode1], [Mode2], [Mode3], [Mode4], [Demand], [DemandHalf], [DemandStaHalf], [DemandOff], [RushHour], [HalfHour], [SatHalfHour], [OffHour]) VALUES (N'sample', 4, 9, N'20170717113000', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL)
+GO
+INSERT [dbo].[MeterValue] ([ECOGroup], [CtrlNr], [MeterID], [RecDate], [I1], [I2], [I3], [Iavg], [V1], [V2], [V3], [Vavg], [W], [V_ar], [VA], [PF], [KWh], [Mode1], [Mode2], [Mode3], [Mode4], [Demand], [DemandHalf], [DemandStaHalf], [DemandOff], [RushHour], [HalfHour], [SatHalfHour], [OffHour]) VALUES (N'sample', 4, 10, N'20170717113000', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL)
+GO
+INSERT [dbo].[MeterValue] ([ECOGroup], [CtrlNr], [MeterID], [RecDate], [I1], [I2], [I3], [Iavg], [V1], [V2], [V3], [Vavg], [W], [V_ar], [VA], [PF], [KWh], [Mode1], [Mode2], [Mode3], [Mode4], [Demand], [DemandHalf], [DemandStaHalf], [DemandOff], [RushHour], [HalfHour], [SatHalfHour], [OffHour]) VALUES (N'sample', 5, 1, N'20170717113000', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL)
+GO
+INSERT [dbo].[MeterValue] ([ECOGroup], [CtrlNr], [MeterID], [RecDate], [I1], [I2], [I3], [Iavg], [V1], [V2], [V3], [Vavg], [W], [V_ar], [VA], [PF], [KWh], [Mode1], [Mode2], [Mode3], [Mode4], [Demand], [DemandHalf], [DemandStaHalf], [DemandOff], [RushHour], [HalfHour], [SatHalfHour], [OffHour]) VALUES (N'sample', 5, 2, N'20170717113000', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL)
+GO
+INSERT [dbo].[MeterValue] ([ECOGroup], [CtrlNr], [MeterID], [RecDate], [I1], [I2], [I3], [Iavg], [V1], [V2], [V3], [Vavg], [W], [V_ar], [VA], [PF], [KWh], [Mode1], [Mode2], [Mode3], [Mode4], [Demand], [DemandHalf], [DemandStaHalf], [DemandOff], [RushHour], [HalfHour], [SatHalfHour], [OffHour]) VALUES (N'sample', 5, 3, N'20170717113000', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL)
+GO
+INSERT [dbo].[MeterValue] ([ECOGroup], [CtrlNr], [MeterID], [RecDate], [I1], [I2], [I3], [Iavg], [V1], [V2], [V3], [Vavg], [W], [V_ar], [VA], [PF], [KWh], [Mode1], [Mode2], [Mode3], [Mode4], [Demand], [DemandHalf], [DemandStaHalf], [DemandOff], [RushHour], [HalfHour], [SatHalfHour], [OffHour]) VALUES (N'sample', 5, 4, N'20170717113000', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL)
+GO
+INSERT [dbo].[MeterValue] ([ECOGroup], [CtrlNr], [MeterID], [RecDate], [I1], [I2], [I3], [Iavg], [V1], [V2], [V3], [Vavg], [W], [V_ar], [VA], [PF], [KWh], [Mode1], [Mode2], [Mode3], [Mode4], [Demand], [DemandHalf], [DemandStaHalf], [DemandOff], [RushHour], [HalfHour], [SatHalfHour], [OffHour]) VALUES (N'sample', 5, 5, N'20170717113000', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL)
+GO
+INSERT [dbo].[MeterValue] ([ECOGroup], [CtrlNr], [MeterID], [RecDate], [I1], [I2], [I3], [Iavg], [V1], [V2], [V3], [Vavg], [W], [V_ar], [VA], [PF], [KWh], [Mode1], [Mode2], [Mode3], [Mode4], [Demand], [DemandHalf], [DemandStaHalf], [DemandOff], [RushHour], [HalfHour], [SatHalfHour], [OffHour]) VALUES (N'sample', 5, 6, N'20170717113000', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL)
+GO
+INSERT [dbo].[MeterValue] ([ECOGroup], [CtrlNr], [MeterID], [RecDate], [I1], [I2], [I3], [Iavg], [V1], [V2], [V3], [Vavg], [W], [V_ar], [VA], [PF], [KWh], [Mode1], [Mode2], [Mode3], [Mode4], [Demand], [DemandHalf], [DemandStaHalf], [DemandOff], [RushHour], [HalfHour], [SatHalfHour], [OffHour]) VALUES (N'sample', 5, 7, N'20170717113000', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL)
+GO
+INSERT [dbo].[MeterValue] ([ECOGroup], [CtrlNr], [MeterID], [RecDate], [I1], [I2], [I3], [Iavg], [V1], [V2], [V3], [Vavg], [W], [V_ar], [VA], [PF], [KWh], [Mode1], [Mode2], [Mode3], [Mode4], [Demand], [DemandHalf], [DemandStaHalf], [DemandOff], [RushHour], [HalfHour], [SatHalfHour], [OffHour]) VALUES (N'sample', 5, 8, N'20170717113000', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL)
+GO
+INSERT [dbo].[MeterValue] ([ECOGroup], [CtrlNr], [MeterID], [RecDate], [I1], [I2], [I3], [Iavg], [V1], [V2], [V3], [Vavg], [W], [V_ar], [VA], [PF], [KWh], [Mode1], [Mode2], [Mode3], [Mode4], [Demand], [DemandHalf], [DemandStaHalf], [DemandOff], [RushHour], [HalfHour], [SatHalfHour], [OffHour]) VALUES (N'sample', 5, 9, N'20170717113000', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL)
+GO
+INSERT [dbo].[MeterValue] ([ECOGroup], [CtrlNr], [MeterID], [RecDate], [I1], [I2], [I3], [Iavg], [V1], [V2], [V3], [Vavg], [W], [V_ar], [VA], [PF], [KWh], [Mode1], [Mode2], [Mode3], [Mode4], [Demand], [DemandHalf], [DemandStaHalf], [DemandOff], [RushHour], [HalfHour], [SatHalfHour], [OffHour]) VALUES (N'sample', 5, 10, N'20170717113000', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL)
+GO
+INSERT [dbo].[MeterValue] ([ECOGroup], [CtrlNr], [MeterID], [RecDate], [I1], [I2], [I3], [Iavg], [V1], [V2], [V3], [Vavg], [W], [V_ar], [VA], [PF], [KWh], [Mode1], [Mode2], [Mode3], [Mode4], [Demand], [DemandHalf], [DemandStaHalf], [DemandOff], [RushHour], [HalfHour], [SatHalfHour], [OffHour]) VALUES (N'shichi', 1, 1, N'20170717113000', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL)
+GO
+INSERT [dbo].[MeterValue] ([ECOGroup], [CtrlNr], [MeterID], [RecDate], [I1], [I2], [I3], [Iavg], [V1], [V2], [V3], [Vavg], [W], [V_ar], [VA], [PF], [KWh], [Mode1], [Mode2], [Mode3], [Mode4], [Demand], [DemandHalf], [DemandStaHalf], [DemandOff], [RushHour], [HalfHour], [SatHalfHour], [OffHour]) VALUES (N'shichi', 1, 2, N'20170717113000', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL)
+GO
+INSERT [dbo].[MeterValue] ([ECOGroup], [CtrlNr], [MeterID], [RecDate], [I1], [I2], [I3], [Iavg], [V1], [V2], [V3], [Vavg], [W], [V_ar], [VA], [PF], [KWh], [Mode1], [Mode2], [Mode3], [Mode4], [Demand], [DemandHalf], [DemandStaHalf], [DemandOff], [RushHour], [HalfHour], [SatHalfHour], [OffHour]) VALUES (N'shichi', 1, 3, N'20170717113000', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL)
+GO
+INSERT [dbo].[MeterValue] ([ECOGroup], [CtrlNr], [MeterID], [RecDate], [I1], [I2], [I3], [Iavg], [V1], [V2], [V3], [Vavg], [W], [V_ar], [VA], [PF], [KWh], [Mode1], [Mode2], [Mode3], [Mode4], [Demand], [DemandHalf], [DemandStaHalf], [DemandOff], [RushHour], [HalfHour], [SatHalfHour], [OffHour]) VALUES (N'shichi', 1, 4, N'20170717113000', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL)
+GO
+INSERT [dbo].[MeterValue] ([ECOGroup], [CtrlNr], [MeterID], [RecDate], [I1], [I2], [I3], [Iavg], [V1], [V2], [V3], [Vavg], [W], [V_ar], [VA], [PF], [KWh], [Mode1], [Mode2], [Mode3], [Mode4], [Demand], [DemandHalf], [DemandStaHalf], [DemandOff], [RushHour], [HalfHour], [SatHalfHour], [OffHour]) VALUES (N'twenergy', 1, 1, N'20170717113000', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL)
+GO
+INSERT [dbo].[MeterValue] ([ECOGroup], [CtrlNr], [MeterID], [RecDate], [I1], [I2], [I3], [Iavg], [V1], [V2], [V3], [Vavg], [W], [V_ar], [VA], [PF], [KWh], [Mode1], [Mode2], [Mode3], [Mode4], [Demand], [DemandHalf], [DemandStaHalf], [DemandOff], [RushHour], [HalfHour], [SatHalfHour], [OffHour]) VALUES (N'twenergy', 1, 2, N'20170717113000', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL)
+GO
+INSERT [dbo].[MeterValue] ([ECOGroup], [CtrlNr], [MeterID], [RecDate], [I1], [I2], [I3], [Iavg], [V1], [V2], [V3], [Vavg], [W], [V_ar], [VA], [PF], [KWh], [Mode1], [Mode2], [Mode3], [Mode4], [Demand], [DemandHalf], [DemandStaHalf], [DemandOff], [RushHour], [HalfHour], [SatHalfHour], [OffHour]) VALUES (N'twenergy', 1, 3, N'20170717113000', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL)
+GO
+INSERT [dbo].[MeterValue] ([ECOGroup], [CtrlNr], [MeterID], [RecDate], [I1], [I2], [I3], [Iavg], [V1], [V2], [V3], [Vavg], [W], [V_ar], [VA], [PF], [KWh], [Mode1], [Mode2], [Mode3], [Mode4], [Demand], [DemandHalf], [DemandStaHalf], [DemandOff], [RushHour], [HalfHour], [SatHalfHour], [OffHour]) VALUES (N'twenergy', 1, 4, N'20170717113000', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL)
+GO
+INSERT [dbo].[MeterValue] ([ECOGroup], [CtrlNr], [MeterID], [RecDate], [I1], [I2], [I3], [Iavg], [V1], [V2], [V3], [Vavg], [W], [V_ar], [VA], [PF], [KWh], [Mode1], [Mode2], [Mode3], [Mode4], [Demand], [DemandHalf], [DemandStaHalf], [DemandOff], [RushHour], [HalfHour], [SatHalfHour], [OffHour]) VALUES (N'twenergy', 2, 1, N'20170717113000', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL)
+GO
+INSERT [dbo].[MeterValue] ([ECOGroup], [CtrlNr], [MeterID], [RecDate], [I1], [I2], [I3], [Iavg], [V1], [V2], [V3], [Vavg], [W], [V_ar], [VA], [PF], [KWh], [Mode1], [Mode2], [Mode3], [Mode4], [Demand], [DemandHalf], [DemandStaHalf], [DemandOff], [RushHour], [HalfHour], [SatHalfHour], [OffHour]) VALUES (N'twenergy', 2, 2, N'20170717113000', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL)
+GO
+INSERT [dbo].[MeterValue] ([ECOGroup], [CtrlNr], [MeterID], [RecDate], [I1], [I2], [I3], [Iavg], [V1], [V2], [V3], [Vavg], [W], [V_ar], [VA], [PF], [KWh], [Mode1], [Mode2], [Mode3], [Mode4], [Demand], [DemandHalf], [DemandStaHalf], [DemandOff], [RushHour], [HalfHour], [SatHalfHour], [OffHour]) VALUES (N'twenergy', 2, 3, N'20170717113000', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL)
+GO
+INSERT [dbo].[MeterValue] ([ECOGroup], [CtrlNr], [MeterID], [RecDate], [I1], [I2], [I3], [Iavg], [V1], [V2], [V3], [Vavg], [W], [V_ar], [VA], [PF], [KWh], [Mode1], [Mode2], [Mode3], [Mode4], [Demand], [DemandHalf], [DemandStaHalf], [DemandOff], [RushHour], [HalfHour], [SatHalfHour], [OffHour]) VALUES (N'twenergy', 2, 4, N'20170717113000', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL)
+GO
+INSERT [dbo].[MeterValue] ([ECOGroup], [CtrlNr], [MeterID], [RecDate], [I1], [I2], [I3], [Iavg], [V1], [V2], [V3], [Vavg], [W], [V_ar], [VA], [PF], [KWh], [Mode1], [Mode2], [Mode3], [Mode4], [Demand], [DemandHalf], [DemandStaHalf], [DemandOff], [RushHour], [HalfHour], [SatHalfHour], [OffHour]) VALUES (N'twenergy', 3, 1, N'20170717113000', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL)
+GO
+INSERT [dbo].[MeterValue] ([ECOGroup], [CtrlNr], [MeterID], [RecDate], [I1], [I2], [I3], [Iavg], [V1], [V2], [V3], [Vavg], [W], [V_ar], [VA], [PF], [KWh], [Mode1], [Mode2], [Mode3], [Mode4], [Demand], [DemandHalf], [DemandStaHalf], [DemandOff], [RushHour], [HalfHour], [SatHalfHour], [OffHour]) VALUES (N'twenergy', 3, 2, N'20170717113000', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL)
+GO
+INSERT [dbo].[MeterValue] ([ECOGroup], [CtrlNr], [MeterID], [RecDate], [I1], [I2], [I3], [Iavg], [V1], [V2], [V3], [Vavg], [W], [V_ar], [VA], [PF], [KWh], [Mode1], [Mode2], [Mode3], [Mode4], [Demand], [DemandHalf], [DemandStaHalf], [DemandOff], [RushHour], [HalfHour], [SatHalfHour], [OffHour]) VALUES (N'twenergy', 3, 3, N'20170717113000', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL)
+GO
+INSERT [dbo].[MeterValue] ([ECOGroup], [CtrlNr], [MeterID], [RecDate], [I1], [I2], [I3], [Iavg], [V1], [V2], [V3], [Vavg], [W], [V_ar], [VA], [PF], [KWh], [Mode1], [Mode2], [Mode3], [Mode4], [Demand], [DemandHalf], [DemandStaHalf], [DemandOff], [RushHour], [HalfHour], [SatHalfHour], [OffHour]) VALUES (N'twenergy', 3, 4, N'20170717113000', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL)
+GO
+INSERT [dbo].[MeterValue] ([ECOGroup], [CtrlNr], [MeterID], [RecDate], [I1], [I2], [I3], [Iavg], [V1], [V2], [V3], [Vavg], [W], [V_ar], [VA], [PF], [KWh], [Mode1], [Mode2], [Mode3], [Mode4], [Demand], [DemandHalf], [DemandStaHalf], [DemandOff], [RushHour], [HalfHour], [SatHalfHour], [OffHour]) VALUES (N'twenergy', 4, 1, N'20170717113000', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL)
+GO
+INSERT [dbo].[MeterValue] ([ECOGroup], [CtrlNr], [MeterID], [RecDate], [I1], [I2], [I3], [Iavg], [V1], [V2], [V3], [Vavg], [W], [V_ar], [VA], [PF], [KWh], [Mode1], [Mode2], [Mode3], [Mode4], [Demand], [DemandHalf], [DemandStaHalf], [DemandOff], [RushHour], [HalfHour], [SatHalfHour], [OffHour]) VALUES (N'twenergy', 4, 2, N'20170717113000', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL)
+GO
+INSERT [dbo].[MeterValue] ([ECOGroup], [CtrlNr], [MeterID], [RecDate], [I1], [I2], [I3], [Iavg], [V1], [V2], [V3], [Vavg], [W], [V_ar], [VA], [PF], [KWh], [Mode1], [Mode2], [Mode3], [Mode4], [Demand], [DemandHalf], [DemandStaHalf], [DemandOff], [RushHour], [HalfHour], [SatHalfHour], [OffHour]) VALUES (N'twenergy', 4, 3, N'20170717113000', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL)
+GO
+INSERT [dbo].[MeterValue] ([ECOGroup], [CtrlNr], [MeterID], [RecDate], [I1], [I2], [I3], [Iavg], [V1], [V2], [V3], [Vavg], [W], [V_ar], [VA], [PF], [KWh], [Mode1], [Mode2], [Mode3], [Mode4], [Demand], [DemandHalf], [DemandStaHalf], [DemandOff], [RushHour], [HalfHour], [SatHalfHour], [OffHour]) VALUES (N'twenergy', 4, 4, N'20170717113000', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL)
+GO
+INSERT [dbo].[MeterValue] ([ECOGroup], [CtrlNr], [MeterID], [RecDate], [I1], [I2], [I3], [Iavg], [V1], [V2], [V3], [Vavg], [W], [V_ar], [VA], [PF], [KWh], [Mode1], [Mode2], [Mode3], [Mode4], [Demand], [DemandHalf], [DemandStaHalf], [DemandOff], [RushHour], [HalfHour], [SatHalfHour], [OffHour]) VALUES (N'twenergy', 5, 1, N'20170717113000', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL)
+GO
+INSERT [dbo].[MeterValue] ([ECOGroup], [CtrlNr], [MeterID], [RecDate], [I1], [I2], [I3], [Iavg], [V1], [V2], [V3], [Vavg], [W], [V_ar], [VA], [PF], [KWh], [Mode1], [Mode2], [Mode3], [Mode4], [Demand], [DemandHalf], [DemandStaHalf], [DemandOff], [RushHour], [HalfHour], [SatHalfHour], [OffHour]) VALUES (N'twenergy', 5, 2, N'20170717113000', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL)
+GO
+INSERT [dbo].[MeterValue] ([ECOGroup], [CtrlNr], [MeterID], [RecDate], [I1], [I2], [I3], [Iavg], [V1], [V2], [V3], [Vavg], [W], [V_ar], [VA], [PF], [KWh], [Mode1], [Mode2], [Mode3], [Mode4], [Demand], [DemandHalf], [DemandStaHalf], [DemandOff], [RushHour], [HalfHour], [SatHalfHour], [OffHour]) VALUES (N'twenergy', 5, 3, N'20170717113000', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL)
+GO
+INSERT [dbo].[MeterValue] ([ECOGroup], [CtrlNr], [MeterID], [RecDate], [I1], [I2], [I3], [Iavg], [V1], [V2], [V3], [Vavg], [W], [V_ar], [VA], [PF], [KWh], [Mode1], [Mode2], [Mode3], [Mode4], [Demand], [DemandHalf], [DemandStaHalf], [DemandOff], [RushHour], [HalfHour], [SatHalfHour], [OffHour]) VALUES (N'twenergy', 5, 4, N'20170717113000', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL)
+GO
+INSERT [dbo].[MeterValue] ([ECOGroup], [CtrlNr], [MeterID], [RecDate], [I1], [I2], [I3], [Iavg], [V1], [V2], [V3], [Vavg], [W], [V_ar], [VA], [PF], [KWh], [Mode1], [Mode2], [Mode3], [Mode4], [Demand], [DemandHalf], [DemandStaHalf], [DemandOff], [RushHour], [HalfHour], [SatHalfHour], [OffHour]) VALUES (N'wljsh', 1, 1, N'20170717113000', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL)
+GO
+INSERT [dbo].[MeterValue] ([ECOGroup], [CtrlNr], [MeterID], [RecDate], [I1], [I2], [I3], [Iavg], [V1], [V2], [V3], [Vavg], [W], [V_ar], [VA], [PF], [KWh], [Mode1], [Mode2], [Mode3], [Mode4], [Demand], [DemandHalf], [DemandStaHalf], [DemandOff], [RushHour], [HalfHour], [SatHalfHour], [OffHour]) VALUES (N'wljsh', 1, 2, N'20170717113000', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL)
+GO
+INSERT [dbo].[MeterValue] ([ECOGroup], [CtrlNr], [MeterID], [RecDate], [I1], [I2], [I3], [Iavg], [V1], [V2], [V3], [Vavg], [W], [V_ar], [VA], [PF], [KWh], [Mode1], [Mode2], [Mode3], [Mode4], [Demand], [DemandHalf], [DemandStaHalf], [DemandOff], [RushHour], [HalfHour], [SatHalfHour], [OffHour]) VALUES (N'wljsh', 1, 3, N'20170717113000', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL)
+GO
+INSERT [dbo].[MeterValue] ([ECOGroup], [CtrlNr], [MeterID], [RecDate], [I1], [I2], [I3], [Iavg], [V1], [V2], [V3], [Vavg], [W], [V_ar], [VA], [PF], [KWh], [Mode1], [Mode2], [Mode3], [Mode4], [Demand], [DemandHalf], [DemandStaHalf], [DemandOff], [RushHour], [HalfHour], [SatHalfHour], [OffHour]) VALUES (N'wljsh', 1, 4, N'20170717113000', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL)
+GO
+INSERT [dbo].[MeterValue] ([ECOGroup], [CtrlNr], [MeterID], [RecDate], [I1], [I2], [I3], [Iavg], [V1], [V2], [V3], [Vavg], [W], [V_ar], [VA], [PF], [KWh], [Mode1], [Mode2], [Mode3], [Mode4], [Demand], [DemandHalf], [DemandStaHalf], [DemandOff], [RushHour], [HalfHour], [SatHalfHour], [OffHour]) VALUES (N'wljsh', 1, 5, N'20170717113000', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL)
+GO
+INSERT [dbo].[MeterValue] ([ECOGroup], [CtrlNr], [MeterID], [RecDate], [I1], [I2], [I3], [Iavg], [V1], [V2], [V3], [Vavg], [W], [V_ar], [VA], [PF], [KWh], [Mode1], [Mode2], [Mode3], [Mode4], [Demand], [DemandHalf], [DemandStaHalf], [DemandOff], [RushHour], [HalfHour], [SatHalfHour], [OffHour]) VALUES (N'wljsh', 1, 6, N'20170717113000', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL)
+GO
+INSERT [dbo].[MeterValue] ([ECOGroup], [CtrlNr], [MeterID], [RecDate], [I1], [I2], [I3], [Iavg], [V1], [V2], [V3], [Vavg], [W], [V_ar], [VA], [PF], [KWh], [Mode1], [Mode2], [Mode3], [Mode4], [Demand], [DemandHalf], [DemandStaHalf], [DemandOff], [RushHour], [HalfHour], [SatHalfHour], [OffHour]) VALUES (N'wljsh', 1, 7, N'20170717113000', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL)
+GO
+INSERT [dbo].[MeterValue] ([ECOGroup], [CtrlNr], [MeterID], [RecDate], [I1], [I2], [I3], [Iavg], [V1], [V2], [V3], [Vavg], [W], [V_ar], [VA], [PF], [KWh], [Mode1], [Mode2], [Mode3], [Mode4], [Demand], [DemandHalf], [DemandStaHalf], [DemandOff], [RushHour], [HalfHour], [SatHalfHour], [OffHour]) VALUES (N'wljsh', 1, 8, N'20170717113000', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL)
+GO
+INSERT [dbo].[MeterValue] ([ECOGroup], [CtrlNr], [MeterID], [RecDate], [I1], [I2], [I3], [Iavg], [V1], [V2], [V3], [Vavg], [W], [V_ar], [VA], [PF], [KWh], [Mode1], [Mode2], [Mode3], [Mode4], [Demand], [DemandHalf], [DemandStaHalf], [DemandOff], [RushHour], [HalfHour], [SatHalfHour], [OffHour]) VALUES (N'wljsh', 1, 9, N'20170717113000', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL)
+GO
+INSERT [dbo].[MeterValue] ([ECOGroup], [CtrlNr], [MeterID], [RecDate], [I1], [I2], [I3], [Iavg], [V1], [V2], [V3], [Vavg], [W], [V_ar], [VA], [PF], [KWh], [Mode1], [Mode2], [Mode3], [Mode4], [Demand], [DemandHalf], [DemandStaHalf], [DemandOff], [RushHour], [HalfHour], [SatHalfHour], [OffHour]) VALUES (N'wljsh', 1, 10, N'20170717113000', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL)
+GO
+INSERT [dbo].[MeterValue] ([ECOGroup], [CtrlNr], [MeterID], [RecDate], [I1], [I2], [I3], [Iavg], [V1], [V2], [V3], [Vavg], [W], [V_ar], [VA], [PF], [KWh], [Mode1], [Mode2], [Mode3], [Mode4], [Demand], [DemandHalf], [DemandStaHalf], [DemandOff], [RushHour], [HalfHour], [SatHalfHour], [OffHour]) VALUES (N'wlsh', 1, 1, N'20170717113000', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL)
+GO
+INSERT [dbo].[MeterValue] ([ECOGroup], [CtrlNr], [MeterID], [RecDate], [I1], [I2], [I3], [Iavg], [V1], [V2], [V3], [Vavg], [W], [V_ar], [VA], [PF], [KWh], [Mode1], [Mode2], [Mode3], [Mode4], [Demand], [DemandHalf], [DemandStaHalf], [DemandOff], [RushHour], [HalfHour], [SatHalfHour], [OffHour]) VALUES (N'wlsh', 1, 2, N'20170717113000', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL)
+GO
+INSERT [dbo].[MeterValue] ([ECOGroup], [CtrlNr], [MeterID], [RecDate], [I1], [I2], [I3], [Iavg], [V1], [V2], [V3], [Vavg], [W], [V_ar], [VA], [PF], [KWh], [Mode1], [Mode2], [Mode3], [Mode4], [Demand], [DemandHalf], [DemandStaHalf], [DemandOff], [RushHour], [HalfHour], [SatHalfHour], [OffHour]) VALUES (N'wlsh', 1, 3, N'20170717113000', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL)
+GO
+INSERT [dbo].[MeterValue] ([ECOGroup], [CtrlNr], [MeterID], [RecDate], [I1], [I2], [I3], [Iavg], [V1], [V2], [V3], [Vavg], [W], [V_ar], [VA], [PF], [KWh], [Mode1], [Mode2], [Mode3], [Mode4], [Demand], [DemandHalf], [DemandStaHalf], [DemandOff], [RushHour], [HalfHour], [SatHalfHour], [OffHour]) VALUES (N'wlsh', 1, 4, N'20170717113000', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL)
+GO
+INSERT [dbo].[MeterValue] ([ECOGroup], [CtrlNr], [MeterID], [RecDate], [I1], [I2], [I3], [Iavg], [V1], [V2], [V3], [Vavg], [W], [V_ar], [VA], [PF], [KWh], [Mode1], [Mode2], [Mode3], [Mode4], [Demand], [DemandHalf], [DemandStaHalf], [DemandOff], [RushHour], [HalfHour], [SatHalfHour], [OffHour]) VALUES (N'wlsh', 1, 5, N'20170717113000', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL)
+GO
+INSERT [dbo].[MeterValue] ([ECOGroup], [CtrlNr], [MeterID], [RecDate], [I1], [I2], [I3], [Iavg], [V1], [V2], [V3], [Vavg], [W], [V_ar], [VA], [PF], [KWh], [Mode1], [Mode2], [Mode3], [Mode4], [Demand], [DemandHalf], [DemandStaHalf], [DemandOff], [RushHour], [HalfHour], [SatHalfHour], [OffHour]) VALUES (N'wlsh', 1, 6, N'20170717113000', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL)
+GO
+INSERT [dbo].[MeterValue] ([ECOGroup], [CtrlNr], [MeterID], [RecDate], [I1], [I2], [I3], [Iavg], [V1], [V2], [V3], [Vavg], [W], [V_ar], [VA], [PF], [KWh], [Mode1], [Mode2], [Mode3], [Mode4], [Demand], [DemandHalf], [DemandStaHalf], [DemandOff], [RushHour], [HalfHour], [SatHalfHour], [OffHour]) VALUES (N'wlsh', 1, 7, N'20170717113000', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL)
+GO
+INSERT [dbo].[MeterValue] ([ECOGroup], [CtrlNr], [MeterID], [RecDate], [I1], [I2], [I3], [Iavg], [V1], [V2], [V3], [Vavg], [W], [V_ar], [VA], [PF], [KWh], [Mode1], [Mode2], [Mode3], [Mode4], [Demand], [DemandHalf], [DemandStaHalf], [DemandOff], [RushHour], [HalfHour], [SatHalfHour], [OffHour]) VALUES (N'wlsh', 1, 8, N'20170717113000', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL)
+GO
+INSERT [dbo].[MeterValue] ([ECOGroup], [CtrlNr], [MeterID], [RecDate], [I1], [I2], [I3], [Iavg], [V1], [V2], [V3], [Vavg], [W], [V_ar], [VA], [PF], [KWh], [Mode1], [Mode2], [Mode3], [Mode4], [Demand], [DemandHalf], [DemandStaHalf], [DemandOff], [RushHour], [HalfHour], [SatHalfHour], [OffHour]) VALUES (N'wlsh', 1, 9, N'20170717113000', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL)
+GO
+INSERT [dbo].[MeterValue] ([ECOGroup], [CtrlNr], [MeterID], [RecDate], [I1], [I2], [I3], [Iavg], [V1], [V2], [V3], [Vavg], [W], [V_ar], [VA], [PF], [KWh], [Mode1], [Mode2], [Mode3], [Mode4], [Demand], [DemandHalf], [DemandStaHalf], [DemandOff], [RushHour], [HalfHour], [SatHalfHour], [OffHour]) VALUES (N'wlsh', 1, 10, N'20170717113000', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL)
+GO
+INSERT [dbo].[SmtpSetup] ([SmtpServer], [MailAccount], [MailPassword], [MailAddress], [MailName], [SSL], [Bcc]) VALUES (N'mail.ecosmart.com.tw', N'mail', N'53394812', N'mail@ecosmart.com.tw', N'ECO Energy', 0, NULL)
+GO
+INSERT [dbo].[UserCom] ([Account], [Com], [Enabled], [EnabledTime]) VALUES (N'admin', N'eco', 1, CAST(N'2017-07-17 11:30:00.000' AS DateTime))
+GO
+INSERT [dbo].[UserCom] ([Account], [Com], [Enabled], [EnabledTime]) VALUES (N'admin', N'fomolux', 1, CAST(N'2017-07-17 11:30:00.000' AS DateTime))
+GO
+INSERT [dbo].[UserCom] ([Account], [Com], [Enabled], [EnabledTime]) VALUES (N'admin', N'jtflex', 1, CAST(N'2017-07-17 11:30:00.000' AS DateTime))
+GO
+INSERT [dbo].[UserCom] ([Account], [Com], [Enabled], [EnabledTime]) VALUES (N'admin', N'sample', 1, CAST(N'2017-07-17 11:30:00.000' AS DateTime))
+GO
+INSERT [dbo].[UserCom] ([Account], [Com], [Enabled], [EnabledTime]) VALUES (N'admin', N'shichi', 1, CAST(N'2017-07-17 11:30:00.000' AS DateTime))
+GO
+INSERT [dbo].[UserCom] ([Account], [Com], [Enabled], [EnabledTime]) VALUES (N'admin', N'twenergy', 1, CAST(N'2017-07-17 11:30:00.000' AS DateTime))
+GO
+INSERT [dbo].[UserCom] ([Account], [Com], [Enabled], [EnabledTime]) VALUES (N'admin', N'wljsh', 1, CAST(N'2017-07-17 11:30:00.000' AS DateTime))
+GO
+INSERT [dbo].[UserCom] ([Account], [Com], [Enabled], [EnabledTime]) VALUES (N'admin', N'wlsh', 1, CAST(N'2017-07-17 11:30:00.000' AS DateTime))
+GO
+INSERT [dbo].[UserCom] ([Account], [Com], [Enabled], [EnabledTime]) VALUES (N'eco', N'eco', 1, CAST(N'2016-06-28 10:59:49.897' AS DateTime))
+GO
+INSERT [dbo].[UserCom] ([Account], [Com], [Enabled], [EnabledTime]) VALUES (N'eco', N'fomolux', 0, CAST(N'2016-06-28 10:59:49.897' AS DateTime))
+GO
+INSERT [dbo].[UserCom] ([Account], [Com], [Enabled], [EnabledTime]) VALUES (N'eco', N'jtflex', 0, CAST(N'2016-06-28 10:59:49.897' AS DateTime))
+GO
+INSERT [dbo].[UserCom] ([Account], [Com], [Enabled], [EnabledTime]) VALUES (N'eco', N'kuanstar', 0, CAST(N'2016-06-28 10:59:49.897' AS DateTime))
+GO
+INSERT [dbo].[UserCom] ([Account], [Com], [Enabled], [EnabledTime]) VALUES (N'eco', N'sample', 0, CAST(N'2017-07-17 11:30:00.000' AS DateTime))
+GO
+INSERT [dbo].[UserCom] ([Account], [Com], [Enabled], [EnabledTime]) VALUES (N'eco', N'shichi', 0, CAST(N'2016-06-28 10:59:49.897' AS DateTime))
+GO
+INSERT [dbo].[UserCom] ([Account], [Com], [Enabled], [EnabledTime]) VALUES (N'eco', N'twenergy', 0, CAST(N'2016-06-28 10:59:49.897' AS DateTime))
+GO
+INSERT [dbo].[UserCom] ([Account], [Com], [Enabled], [EnabledTime]) VALUES (N'eco', N'wljsh', 0, CAST(N'2016-12-01 12:41:30.257' AS DateTime))
+GO
+INSERT [dbo].[UserCom] ([Account], [Com], [Enabled], [EnabledTime]) VALUES (N'eco', N'wlsh', 0, CAST(N'2016-06-28 10:59:49.897' AS DateTime))
+GO
+INSERT [dbo].[UserCom] ([Account], [Com], [Enabled], [EnabledTime]) VALUES (N'fomolux', N'eco', 0, CAST(N'2016-06-28 10:59:49.897' AS DateTime))
+GO
+INSERT [dbo].[UserCom] ([Account], [Com], [Enabled], [EnabledTime]) VALUES (N'fomolux', N'fomolux', 1, CAST(N'2016-06-28 10:59:49.897' AS DateTime))
+GO
+INSERT [dbo].[UserCom] ([Account], [Com], [Enabled], [EnabledTime]) VALUES (N'fomolux', N'jtflex', 0, CAST(N'2016-06-28 10:59:49.897' AS DateTime))
+GO
+INSERT [dbo].[UserCom] ([Account], [Com], [Enabled], [EnabledTime]) VALUES (N'fomolux', N'kuanstar', 0, CAST(N'2016-06-28 10:59:49.897' AS DateTime))
+GO
+INSERT [dbo].[UserCom] ([Account], [Com], [Enabled], [EnabledTime]) VALUES (N'fomolux', N'sample', 0, CAST(N'2017-07-17 11:30:00.000' AS DateTime))
+GO
+INSERT [dbo].[UserCom] ([Account], [Com], [Enabled], [EnabledTime]) VALUES (N'fomolux', N'shichi', 0, CAST(N'2016-06-28 10:59:49.897' AS DateTime))
+GO
+INSERT [dbo].[UserCom] ([Account], [Com], [Enabled], [EnabledTime]) VALUES (N'fomolux', N'twenergy', 0, CAST(N'2016-06-28 10:59:49.897' AS DateTime))
+GO
+INSERT [dbo].[UserCom] ([Account], [Com], [Enabled], [EnabledTime]) VALUES (N'fomolux', N'wljsh', 0, CAST(N'2016-12-01 12:41:30.257' AS DateTime))
+GO
+INSERT [dbo].[UserCom] ([Account], [Com], [Enabled], [EnabledTime]) VALUES (N'fomolux', N'wlsh', 0, CAST(N'2016-06-28 10:59:49.897' AS DateTime))
+GO
+INSERT [dbo].[UserCom] ([Account], [Com], [Enabled], [EnabledTime]) VALUES (N'jtflex', N'eco', 0, CAST(N'2016-06-28 10:59:49.897' AS DateTime))
+GO
+INSERT [dbo].[UserCom] ([Account], [Com], [Enabled], [EnabledTime]) VALUES (N'jtflex', N'fomolux', 0, CAST(N'2016-06-28 10:59:49.897' AS DateTime))
+GO
+INSERT [dbo].[UserCom] ([Account], [Com], [Enabled], [EnabledTime]) VALUES (N'jtflex', N'jtflex', 1, CAST(N'2016-06-28 10:59:49.897' AS DateTime))
+GO
+INSERT [dbo].[UserCom] ([Account], [Com], [Enabled], [EnabledTime]) VALUES (N'jtflex', N'kuanstar', 0, CAST(N'2016-06-28 10:59:49.897' AS DateTime))
+GO
+INSERT [dbo].[UserCom] ([Account], [Com], [Enabled], [EnabledTime]) VALUES (N'jtflex', N'sample', 0, CAST(N'2017-07-17 11:30:00.000' AS DateTime))
+GO
+INSERT [dbo].[UserCom] ([Account], [Com], [Enabled], [EnabledTime]) VALUES (N'jtflex', N'shichi', 0, CAST(N'2016-06-28 10:59:49.897' AS DateTime))
+GO
+INSERT [dbo].[UserCom] ([Account], [Com], [Enabled], [EnabledTime]) VALUES (N'jtflex', N'twenergy', 0, CAST(N'2016-06-28 10:59:49.897' AS DateTime))
+GO
+INSERT [dbo].[UserCom] ([Account], [Com], [Enabled], [EnabledTime]) VALUES (N'jtflex', N'wljsh', 0, CAST(N'2016-12-01 12:41:30.257' AS DateTime))
+GO
+INSERT [dbo].[UserCom] ([Account], [Com], [Enabled], [EnabledTime]) VALUES (N'jtflex', N'wlsh', 0, CAST(N'2016-06-28 10:59:49.897' AS DateTime))
+GO
+INSERT [dbo].[UserCom] ([Account], [Com], [Enabled], [EnabledTime]) VALUES (N'kuanstar', N'eco', 0, CAST(N'2016-06-28 10:59:49.897' AS DateTime))
+GO
+INSERT [dbo].[UserCom] ([Account], [Com], [Enabled], [EnabledTime]) VALUES (N'kuanstar', N'fomolux', 0, CAST(N'2016-06-28 10:59:49.897' AS DateTime))
+GO
+INSERT [dbo].[UserCom] ([Account], [Com], [Enabled], [EnabledTime]) VALUES (N'kuanstar', N'jtflex', 0, CAST(N'2016-06-28 10:59:49.897' AS DateTime))
+GO
+INSERT [dbo].[UserCom] ([Account], [Com], [Enabled], [EnabledTime]) VALUES (N'kuanstar', N'kuanstar', 1, CAST(N'2016-06-28 10:59:49.897' AS DateTime))
+GO
+INSERT [dbo].[UserCom] ([Account], [Com], [Enabled], [EnabledTime]) VALUES (N'kuanstar', N'sample', 0, CAST(N'2017-07-17 11:30:00.000' AS DateTime))
+GO
+INSERT [dbo].[UserCom] ([Account], [Com], [Enabled], [EnabledTime]) VALUES (N'kuanstar', N'shichi', 0, CAST(N'2016-06-28 10:59:49.897' AS DateTime))
+GO
+INSERT [dbo].[UserCom] ([Account], [Com], [Enabled], [EnabledTime]) VALUES (N'kuanstar', N'twenergy', 0, CAST(N'2016-06-28 10:59:49.897' AS DateTime))
+GO
+INSERT [dbo].[UserCom] ([Account], [Com], [Enabled], [EnabledTime]) VALUES (N'kuanstar', N'wljsh', 0, CAST(N'2016-12-01 12:41:30.257' AS DateTime))
+GO
+INSERT [dbo].[UserCom] ([Account], [Com], [Enabled], [EnabledTime]) VALUES (N'kuanstar', N'wlsh', 0, CAST(N'2016-06-28 10:59:49.897' AS DateTime))
+GO
+INSERT [dbo].[UserCom] ([Account], [Com], [Enabled], [EnabledTime]) VALUES (N'sample', N'eco', 0, CAST(N'2017-07-17 11:30:00.000' AS DateTime))
+GO
+INSERT [dbo].[UserCom] ([Account], [Com], [Enabled], [EnabledTime]) VALUES (N'sample', N'fomolux', 0, CAST(N'2017-07-17 11:30:00.000' AS DateTime))
+GO
+INSERT [dbo].[UserCom] ([Account], [Com], [Enabled], [EnabledTime]) VALUES (N'sample', N'jtflex', 0, CAST(N'2017-07-17 11:30:00.000' AS DateTime))
+GO
+INSERT [dbo].[UserCom] ([Account], [Com], [Enabled], [EnabledTime]) VALUES (N'sample', N'kuanstar', 0, CAST(N'2017-07-17 11:30:00.000' AS DateTime))
+GO
+INSERT [dbo].[UserCom] ([Account], [Com], [Enabled], [EnabledTime]) VALUES (N'sample', N'sample', 1, CAST(N'2017-07-17 11:30:00.000' AS DateTime))
+GO
+INSERT [dbo].[UserCom] ([Account], [Com], [Enabled], [EnabledTime]) VALUES (N'sample', N'shichi', 0, CAST(N'2017-07-17 11:30:00.000' AS DateTime))
+GO
+INSERT [dbo].[UserCom] ([Account], [Com], [Enabled], [EnabledTime]) VALUES (N'sample', N'twenergy', 0, CAST(N'2017-07-17 11:30:00.000' AS DateTime))
+GO
+INSERT [dbo].[UserCom] ([Account], [Com], [Enabled], [EnabledTime]) VALUES (N'sample', N'wljsh', 0, CAST(N'2017-07-17 11:30:00.000' AS DateTime))
+GO
+INSERT [dbo].[UserCom] ([Account], [Com], [Enabled], [EnabledTime]) VALUES (N'sample', N'wlsh', 0, CAST(N'2017-07-17 11:30:00.000' AS DateTime))
+GO
+INSERT [dbo].[UserCom] ([Account], [Com], [Enabled], [EnabledTime]) VALUES (N'shichi', N'eco', 0, CAST(N'2016-06-28 10:59:49.897' AS DateTime))
+GO
+INSERT [dbo].[UserCom] ([Account], [Com], [Enabled], [EnabledTime]) VALUES (N'shichi', N'fomolux', 0, CAST(N'2016-06-28 10:59:49.897' AS DateTime))
+GO
+INSERT [dbo].[UserCom] ([Account], [Com], [Enabled], [EnabledTime]) VALUES (N'shichi', N'jtflex', 0, CAST(N'2016-06-28 10:59:49.897' AS DateTime))
+GO
+INSERT [dbo].[UserCom] ([Account], [Com], [Enabled], [EnabledTime]) VALUES (N'shichi', N'kuanstar', 0, CAST(N'2016-06-28 10:59:49.897' AS DateTime))
+GO
+INSERT [dbo].[UserCom] ([Account], [Com], [Enabled], [EnabledTime]) VALUES (N'shichi', N'sample', 0, CAST(N'2017-07-17 11:30:00.000' AS DateTime))
+GO
+INSERT [dbo].[UserCom] ([Account], [Com], [Enabled], [EnabledTime]) VALUES (N'shichi', N'shichi', 1, CAST(N'2016-06-28 10:59:49.897' AS DateTime))
+GO
+INSERT [dbo].[UserCom] ([Account], [Com], [Enabled], [EnabledTime]) VALUES (N'shichi', N'twenergy', 0, CAST(N'2016-06-28 10:59:49.897' AS DateTime))
+GO
+INSERT [dbo].[UserCom] ([Account], [Com], [Enabled], [EnabledTime]) VALUES (N'shichi', N'wljsh', 0, CAST(N'2016-12-01 12:41:30.257' AS DateTime))
+GO
+INSERT [dbo].[UserCom] ([Account], [Com], [Enabled], [EnabledTime]) VALUES (N'shichi', N'wlsh', 0, CAST(N'2016-06-28 10:59:49.897' AS DateTime))
+GO
+INSERT [dbo].[UserCom] ([Account], [Com], [Enabled], [EnabledTime]) VALUES (N'twenergy', N'eco', 0, CAST(N'2016-06-28 10:59:49.897' AS DateTime))
+GO
+INSERT [dbo].[UserCom] ([Account], [Com], [Enabled], [EnabledTime]) VALUES (N'twenergy', N'fomolux', 0, CAST(N'2016-06-28 10:59:49.897' AS DateTime))
+GO
+INSERT [dbo].[UserCom] ([Account], [Com], [Enabled], [EnabledTime]) VALUES (N'twenergy', N'jtflex', 0, CAST(N'2016-06-28 10:59:49.897' AS DateTime))
+GO
+INSERT [dbo].[UserCom] ([Account], [Com], [Enabled], [EnabledTime]) VALUES (N'twenergy', N'kuanstar', 0, CAST(N'2016-06-28 10:59:49.897' AS DateTime))
+GO
+INSERT [dbo].[UserCom] ([Account], [Com], [Enabled], [EnabledTime]) VALUES (N'twenergy', N'sample', 0, CAST(N'2017-07-17 11:30:00.000' AS DateTime))
+GO
+INSERT [dbo].[UserCom] ([Account], [Com], [Enabled], [EnabledTime]) VALUES (N'twenergy', N'shichi', 0, CAST(N'2016-06-28 10:59:49.897' AS DateTime))
+GO
+INSERT [dbo].[UserCom] ([Account], [Com], [Enabled], [EnabledTime]) VALUES (N'twenergy', N'twenergy', 1, CAST(N'2016-06-28 10:59:49.897' AS DateTime))
+GO
+INSERT [dbo].[UserCom] ([Account], [Com], [Enabled], [EnabledTime]) VALUES (N'twenergy', N'wljsh', 0, CAST(N'2016-12-01 12:41:30.257' AS DateTime))
+GO
+INSERT [dbo].[UserCom] ([Account], [Com], [Enabled], [EnabledTime]) VALUES (N'twenergy', N'wlsh', 0, CAST(N'2016-06-28 10:59:49.897' AS DateTime))
+GO
+INSERT [dbo].[UserCom] ([Account], [Com], [Enabled], [EnabledTime]) VALUES (N'wljsh', N'eco', 0, CAST(N'2016-12-01 12:45:56.633' AS DateTime))
+GO
+INSERT [dbo].[UserCom] ([Account], [Com], [Enabled], [EnabledTime]) VALUES (N'wljsh', N'fomolux', 0, CAST(N'2016-12-01 12:45:56.633' AS DateTime))
+GO
+INSERT [dbo].[UserCom] ([Account], [Com], [Enabled], [EnabledTime]) VALUES (N'wljsh', N'jtflex', 0, CAST(N'2016-12-01 12:45:56.633' AS DateTime))
+GO
+INSERT [dbo].[UserCom] ([Account], [Com], [Enabled], [EnabledTime]) VALUES (N'wljsh', N'kuanstar', 0, CAST(N'2016-12-01 12:45:56.633' AS DateTime))
+GO
+INSERT [dbo].[UserCom] ([Account], [Com], [Enabled], [EnabledTime]) VALUES (N'wljsh', N'sample', 0, CAST(N'2017-07-17 11:30:00.000' AS DateTime))
+GO
+INSERT [dbo].[UserCom] ([Account], [Com], [Enabled], [EnabledTime]) VALUES (N'wljsh', N'shichi', 0, CAST(N'2016-12-01 12:45:56.633' AS DateTime))
+GO
+INSERT [dbo].[UserCom] ([Account], [Com], [Enabled], [EnabledTime]) VALUES (N'wljsh', N'twenergy', 0, CAST(N'2016-12-01 12:45:56.633' AS DateTime))
+GO
+INSERT [dbo].[UserCom] ([Account], [Com], [Enabled], [EnabledTime]) VALUES (N'wljsh', N'wljsh', 1, CAST(N'2016-12-01 12:43:48.300' AS DateTime))
+GO
+INSERT [dbo].[UserCom] ([Account], [Com], [Enabled], [EnabledTime]) VALUES (N'wljsh', N'wlsh', 0, CAST(N'2016-12-01 12:45:56.633' AS DateTime))
+GO
+INSERT [dbo].[UserCom] ([Account], [Com], [Enabled], [EnabledTime]) VALUES (N'wlsh', N'eco', 0, CAST(N'2016-06-28 10:59:49.897' AS DateTime))
+GO
+INSERT [dbo].[UserCom] ([Account], [Com], [Enabled], [EnabledTime]) VALUES (N'wlsh', N'fomolux', 0, CAST(N'2016-06-28 10:59:49.897' AS DateTime))
+GO
+INSERT [dbo].[UserCom] ([Account], [Com], [Enabled], [EnabledTime]) VALUES (N'wlsh', N'jtflex', 0, CAST(N'2016-06-28 10:59:49.897' AS DateTime))
+GO
+INSERT [dbo].[UserCom] ([Account], [Com], [Enabled], [EnabledTime]) VALUES (N'wlsh', N'kuanstar', 0, CAST(N'2016-06-28 10:59:49.897' AS DateTime))
+GO
+INSERT [dbo].[UserCom] ([Account], [Com], [Enabled], [EnabledTime]) VALUES (N'wlsh', N'sample', 0, CAST(N'2017-07-17 11:30:00.000' AS DateTime))
+GO
+INSERT [dbo].[UserCom] ([Account], [Com], [Enabled], [EnabledTime]) VALUES (N'wlsh', N'shichi', 0, CAST(N'2016-06-28 10:59:49.897' AS DateTime))
+GO
+INSERT [dbo].[UserCom] ([Account], [Com], [Enabled], [EnabledTime]) VALUES (N'wlsh', N'twenergy', 0, CAST(N'2016-06-28 10:59:49.897' AS DateTime))
+GO
+INSERT [dbo].[UserCom] ([Account], [Com], [Enabled], [EnabledTime]) VALUES (N'wlsh', N'wljsh', 0, CAST(N'2016-12-01 12:41:30.257' AS DateTime))
+GO
+INSERT [dbo].[UserCom] ([Account], [Com], [Enabled], [EnabledTime]) VALUES (N'wlsh', N'wlsh', 1, CAST(N'2016-06-28 10:59:49.897' AS DateTime))
+GO
+INSERT [dbo].[UserSetup] ([Account], [Password], [ECOGroup], [Name], [Company], [Address], [Tel], [Mobile], [Email], [Rank], [GUID], [Enabled], [EnabledTime]) VALUES (N'admin', N'admin0690', N'總管理', N'最高管理者', N'艾可智能科技', N'', N'03-4272786', N'', N'test@mail.com', 0, N'cd89cac7-b3f1-414e-b493-28f433aeeb2b', 1, CAST(N'2015-12-25 09:36:04.677' AS DateTime))
+GO
+INSERT [dbo].[UserSetup] ([Account], [Password], [ECOGroup], [Name], [Company], [Address], [Tel], [Mobile], [Email], [Rank], [GUID], [Enabled], [EnabledTime]) VALUES (N'eco', N'53394812', N'ECO', N'', N'艾可智能', N'', N'03-4272786', N'', N'mail@ecosmart.com.tw', 1, N'96fdc672-b4bb-4384-b891-7239bae2e40f', 1, CAST(N'2015-12-25 10:57:43.553' AS DateTime))
+GO
+INSERT [dbo].[UserSetup] ([Account], [Password], [ECOGroup], [Name], [Company], [Address], [Tel], [Mobile], [Email], [Rank], [GUID], [Enabled], [EnabledTime]) VALUES (N'fomolux', N'fomolux', N'陽明大學', N'', N'原長智能', N'', N'', N'', N'jeff@fomolux.com.tw', 3, N'185405a8-9999-4d1a-aadf-56cde2e1403c', 1, CAST(N'2015-12-25 16:16:01.533' AS DateTime))
+GO
+INSERT [dbo].[UserSetup] ([Account], [Password], [ECOGroup], [Name], [Company], [Address], [Tel], [Mobile], [Email], [Rank], [GUID], [Enabled], [EnabledTime]) VALUES (N'jtflex', N'jtflex', N'日翔', N'陳正豪', N'日翔軟板科技', N'', N'', N'', N'jh.chen@jtflex.com.tw', 1, N'0cd34510-7022-412a-b516-f48412790ce4', 1, CAST(N'2016-01-29 14:55:32.973' AS DateTime))
+GO
+INSERT [dbo].[UserSetup] ([Account], [Password], [ECOGroup], [Name], [Company], [Address], [Tel], [Mobile], [Email], [Rank], [GUID], [Enabled], [EnabledTime]) VALUES (N'kuanstar', N'kuanstar', N'冠新能源', N'冠新', N'冠新能源科技', N'', N'03-3397475', N'', N'kuanslin@ms36.hinet.net', 3, N'c0815b2f-c013-4a94-ab16-1227f3c821c2', 1, CAST(N'2016-05-12 14:37:21.380' AS DateTime))
+GO
+INSERT [dbo].[UserSetup] ([Account], [Password], [ECOGroup], [Name], [Company], [Address], [Tel], [Mobile], [Email], [Rank], [GUID], [Enabled], [EnabledTime]) VALUES (N'shichi', N'shichi', N'世奇蛋糕', N'', N'世奇蛋糕', N'', N'', N'', N'yung_seu@yahoo.com.tw', 3, N'3159d199-83a4-43fa-a668-19432147add0', 1, CAST(N'2015-12-25 16:22:39.400' AS DateTime))
+GO
+INSERT [dbo].[UserSetup] ([Account], [Password], [ECOGroup], [Name], [Company], [Address], [Tel], [Mobile], [Email], [Rank], [GUID], [Enabled], [EnabledTime]) VALUES (N'twenergy', N'twenergy', N'雅勝', N'台灣電能', N'台灣電能', N'', N'', N'', N'taiwan.energy@hotmail.com', 1, N'96bb7768-9f92-46cd-97e4-573e93fb35d6', 1, CAST(N'2015-12-25 09:36:04.677' AS DateTime))
+GO
+INSERT [dbo].[UserSetup] ([Account], [Password], [ECOGroup], [Name], [Company], [Address], [Tel], [Mobile], [Email], [Rank], [GUID], [Enabled], [EnabledTime]) VALUES (N'wljsh', N'wljsh', N'萬里國中', N'', N'萬里國中', N'', N'', N'', N'dream@ecosmart.com.tw', 1, N'e6e79ba9-715c-4ecf-af12-856289b8284e', 1, CAST(N'2016-08-31 12:45:15.233' AS DateTime))
+GO
+INSERT [dbo].[UserSetup] ([Account], [Password], [ECOGroup], [Name], [Company], [Address], [Tel], [Mobile], [Email], [Rank], [GUID], [Enabled], [EnabledTime]) VALUES (N'wlsh', N'wlsh00', N'武陵高中', N'武陵', N'武陵高中', N'', N'', N'', N'jc.lin@dataknit.com.tw', 3, N'd64634c5-89f4-4b6e-bea1-0932362159bf', 1, CAST(N'2016-04-15 13:16:24.477' AS DateTime))
+GO
+INSERT [dbo].[UserSetup] ([Account], [Password], [ECOGroup], [Name], [Company], [Address], [Tel], [Mobile], [Email], [Rank], [GUID], [Enabled], [EnabledTime]) VALUES (N'sample', N'sapmle', N'樣本', N'樣本', N'綠智慧', NULL, NULL, NULL, N'a178808939@ecosmart.com.tw', 1, N'73598785-5e07-4b85-bbc3-813122c838f9', 1, CAST(N'2017-07-17 11:30:00.000' AS DateTime))
+GO
+USE [master]
+GO
+ALTER DATABASE [GREENSMART] SET  READ_WRITE 
+GO

@@ -1,0 +1,213 @@
+* {
+    box-sizing: border-box;
+}
+
+.WCF_index {
+    width: 100%;
+    margin: auto;
+    /*background: -webkit-linear-gradient(to bottom right, white, #d9d9d9);
+    background: -o-linear-gradient(to bottom right, white, #d9d9d9);
+    background: -moz-linear-gradient(to bottom right, white, #d9d9d9);
+    background: linear-gradient(to bottom right, white, #d9d9d9);*/
+    border-radius: 5px;
+}
+
+    .WCF_index .header .title {
+        height: 120px;
+        background-image: url(../img/header/BANNER.jpg);
+        background-size: cover;
+        position: relative;
+    }
+
+    .WCF_index .header .menu table {
+        width: 100%;
+    }
+
+        .WCF_index .header .menu table tr .option {
+            text-align: center;
+            vertical-align: middle;
+            width: 19.5%;
+            height: 50px;
+            background-color: rgb(235, 235, 224);
+            font-size: 20px;
+        }
+
+        .WCF_index .header .menu table tr td:first-child,
+        .WCF_index .header .menu table tr td:last-child {
+            background-color: rgb(235, 235, 224);
+        }
+
+    .WCF_index .content {
+        height: 800px;
+    }
+
+        .WCF_index .content .top {
+            height: 50px;
+            position: relative;
+        }
+
+#ECO_Group {
+    width: 120px;
+    height: 30px;
+}
+
+input[type=checkbox] {
+    /* Double-sized Checkboxes */
+    -ms-transform: scale(2);
+    /* IE */
+    -moz-transform: scale(2);
+    /* FF */
+    -webkit-transform: scale(2);
+    /* Safari and Chrome */
+    -o-transform: scale(2);
+    /* Opera */
+    padding: 10px;
+}
+
+#Show_Title {
+    height: 100px;    
+    font-size: 20px;
+    color: white;
+}
+
+.WCF_index .footer {
+    text-align: center;
+    color: white;
+    background-color: dimgray;
+    height: 64px;
+    line-height: 64px;
+    font-size: 30px;
+}
+
+#treeview_block {
+    height: 590px;
+}
+
+#myModal {
+    width: 1200px;
+    margin: auto;
+}
+
+    #myModal .modal-header {
+        border-bottom: dotted 1px;
+    }
+
+    #myModal .modal-content {
+        /*background: -webkit-linear-gradient(to bottom right, white, #d9d9d9);
+        background: -o-linear-gradient(to bottom right, white, #d9d9d9);
+        background: -moz-linear-gradient(to bottom right, white, #d9d9d9);
+        background: linear-gradient(to bottom right, white, #d9d9d9);*/
+        border-radius: 5px;
+    }
+
+    #myModal .modal-header table {
+        width: 100%;
+        height: 100%;
+    }
+
+        #myModal .modal-header table span {
+            font-size: 25px;
+        }
+
+    #myModal .modal-body table {
+        text-align: center;
+    }
+
+        #myModal .modal-body table tr .Number {
+            text-align: right;
+            font-size: 35px;
+            letter-spacing: 0.05em;
+            color: #595959;
+        }
+
+        #myModal .modal-body table tr .Unit {
+            font-size: 15px;
+        }
+
+        #myModal .modal-body table tr td {
+            vertical-align: bottom;
+            font-size: 25px;
+        }
+
+    #myModal .modal-footer {
+        border: 0;
+    }
+
+        #myModal .modal-footer table {
+            width: 100%;
+            height: 200px;
+        }
+
+            #myModal .modal-footer table tr td {
+                text-align: center;
+                font-size: 25px;
+            }
+
+            #myModal .modal-footer table tr .modal_option {
+                width: 20%;
+            }
+
+    #myModal .Modal_btn_diary {
+        height: 142px;
+        width: 142px;
+        background: url(../img/modal/btn_daily-report.png);
+        background-size: cover;
+    }
+
+    #myModal .Modal_btn_month {
+        height: 142px;
+        width: 142px;
+        background-image: url(../img/modal/btn_monthly-report.png);
+        background-size: cover;
+    }
+
+    #myModal .Modal_btn_chart {
+        height: 142px;
+        width: 142px;
+        background-image: url(../img/modal/btn_trend.png);
+        background-size: cover;
+    }
+
+    #myModal .Modal_btn_record {
+        height: 142px;
+        width: 142px;
+        background-image: url(../img/modal/btn_record.png);
+        background-size: cover;
+    }
+
+    #myModal .modal-header {
+        border-bottom: dotted 1px;
+    }
+
+    #myModal .modal-footer {
+        border: 0;
+    }
+
+#SlideValue1, #SlideValue2, #SlideValue3 {
+    display: none;
+}
+
+#Arrow_Menu:hover img {
+    opacity: 0.5;
+}
+
+#Arrow_Show:hover img {
+    opacity: 0.5;
+}
+
+#Menu_nav {
+    display: none;
+}
+
+#Menu_ShowName {
+    background-image: url(../img/content/analysis.jpg);
+    background-size: cover;
+    width: 100%;
+    display: none;
+}
+
+@media screen and (max-width: 1250px) {
+    .WCF_index {
+        width: 1250px;
+    }
+}

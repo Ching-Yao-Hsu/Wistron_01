@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+</head>
+
+<body>
+
+</body>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+
+<script>
+    var e = [{
+        "id": "00",
+        "child":[],
+        "remark": "總站"
+    }, {
+        "id": "00-00",
+        "child":[],
+        "remark": "319庫冷凍機440V"
+    }, {
+        "id": "00-00-00-00",
+        "child":[],
+        "remark": "315庫冷凍機440V"
+    }, {
+        "id": "00-00-00-02",
+        "child":[],
+        "remark": "315庫CO2冷凍機440V"
+    }, {
+        "id": "00-00-01",
+        "child":[],
+        "remark": "319庫冷凍機周邊220V"
+    }, {
+        "id": "00-00-01-00",
+        "child":[],
+        "remark": "315庫冷凍機周邊220V"
+    }, {
+        "id": "00-01",
+        "child":[],
+        "remark": "新加工站"
+    }, {
+        "id": "00-01-00",
+        "child":[],
+        "remark": "汙水廠800AT"
+    }, {
+        "id": "00-01-01",
+        "child":[],
+        "remark": "總開關1000AT"
+    }]
+
+    var array_2D = [];   
+    var maxLength = 0;
+    var storage = "";    
+    
+    for (var i = 0; i < e.length; i++) {
+        if (e[i]["id"].split("-").length > maxLength) {
+            maxLength = e[i]["id"].split("-").length;
+        }
+        
+        storage = e[i]["id"].split("-");
+        storage.pop();
+        storage.join("-");
+        
+        for(var j = 0; j < e.length; j++){
+            if(e[j]["id"] == storage){
+                e[j]["child"].push(e[i]["id"]);
+            }
+        }      
+        
+    }
+
+    for (var i = 0; i < maxLength; i++) {
+        array_2D[i] = [];
+        data = {};
+    }    
+    
+    for(var i = 0; i < e.length; i++){
+        array_2D[e[i]["id"].split("-").length - 1].push(e[i]);
+    }
+
+    for(var i = 0; i < maxLength; i++){
+        data[i] = array_2D[i];
+    }
+    
+    
+    
+    
+    console.log(data);
+
+</script>
+
+</html>

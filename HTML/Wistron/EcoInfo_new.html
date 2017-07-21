@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <link rel="stylesheet" href="html_reset.css">
+    <link rel="stylesheet" href="EcoInfo_new.css">
+    <link rel="stylesheet" href="EcoInfo_newTabs.css">
+</head>
+
+<body>
+    <div class="EcoInfo_page">
+
+        <div class="Eco_Nav">
+            <div class="container">
+                <div class="Eco_Group">
+                    <span>群組</span>
+                    <select id="Eco_Group">
+                    <option value="0">電力監控群組</option>
+                </select>
+                </div>
+
+                <table class="Eco_Info">
+                    <tr>
+                        <td colspan="2">
+                            <img src="img/Wistron_EcoInfo/icon_eco5.png" alt="icon_eco5">
+                            <span>ECO-5資訊 - </span><span class="font_open">啟用</span><input type="button" value="修改" id="ECO5-InfoUpdate">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>型號:<span id="Eco_Type">ECO-5 Lite</span></td>
+                        <td>編號:<span id="Eco_Numbering">02</span></td>
+                    </tr>
+                    <tr>
+                        <td>帳號:<span id="Eco_Account">eco000000000009</span></td>
+                    </tr>
+                    <tr>
+                        <td>密碼:<span id="Eco_Password">000000</span></td>
+                    </tr>
+                    <tr>
+                        <td>安裝位置:<span id="Eco_Position">辦公室</span></td>
+                    </tr>
+                    <tr>
+                        <td>IP:<span id="Eco_IP">192.168.0.0</span></td>
+                    </tr>
+                    <tr>
+                        <td>圖面:<span id="Eco_Diagram">Null</span></td>
+                        <td>時差:<span id="Eco_TimeDifferent">0</span></td>
+                    </tr>
+                </table>
+                <table class="Meter_Info">
+                    <tr>
+                        <td colspan="2">
+                            <img src="img/Wistron_EcoInfo/icon_meter.png" alt="icon_meter">
+                            <span>電表資訊 - </span><span class="font_open">啟用</span><input type="button" value="修改" id="Meter-InfoUpdate">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>型號:<span id="Meter_Type">PA310</span></td>
+                        <td>編號:<span id="Meter_Numbering">03</span></td>
+                    </tr>
+                    <tr>
+                        <td>電流:<span id="Meter_Current">600</span></td>
+                        <td>電壓:<span id="Meter_Voltage">380/200</span></td>
+                    </tr>
+                    <tr>
+                        <td>種類:<span id="Meter_Sort">辦公室</span></td>
+                        <td>位置:<span id="Meter_Position">辦公室A</span></td>
+                    </tr>
+                    <tr>
+                        <td>圖面:<span id="Meter_Diagram">Null</span></td>
+                        <td>單線圖:<span id="Meter_Route">01-01</span></td>
+                    </tr>
+                    <tr>
+                        <td colspan="2" class="EUI"><span>EUI</span></td>
+                    </tr>
+                    <tr>
+                        <td>面積:<span id="Meter_EUIArea">1000</span></td>
+                        <td>人員:<span id="Meter_EUIPeople">20</span></td>
+                    </tr>
+                    <tr>
+                        <td>產量:<span id="Meter_Productivity">300</span></td>
+                        <td>自定義:<span id="Meter_Definition">值</span></td>
+                    </tr>
+                </table>
+                <table class="Meter_List">
+                    <tr>
+                        <td colspan="4">
+                            <img src="img/Wistron_EcoInfo/icon_list.png" alt="icon_list">
+                            <span>電表列表</span>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>ECO-5編號</td>
+                        <td>編號</td>
+                        <td>種類</td>
+                        <td>位置</td>
+                    </tr>
+
+                    <tr>
+                        <td>ECO-5#2</td>
+                        <td>01</td>
+                        <td>辦公區</td>
+                        <td>會議室</td>
+                    </tr>
+
+                    <tr>
+                        <td>ECO-5#2</td>
+                        <td>02</td>
+                        <td>辦公區</td>
+                        <td>會客室</td>
+                    </tr>
+
+                    <tr>
+                        <td>ECO-5#2</td>
+                        <td>03</td>
+                        <td>辦公區</td>
+                        <td>辦公室A</td>
+                    </tr>
+
+                    <tr>
+                        <td>ECO-5#2</td>
+                        <td>04</td>
+                        <td>辦公區</td>
+                        <td>辦公室B辦公室B</td>
+                    </tr>
+
+                </table>
+            </div>
+        </div>
+
+
+        <div class="MeterTreeView">
+            <div class="MeterTreeViewNav">
+                <div class="MeterTreeViewTabs">
+                    <button class="tablinks " onclick="myFunction('01')" id="01" data-link="ECO-5#1">ECO-5#1</button>
+                    <button class="tablinks " data-link="ECO-5#2">ECO-5#2</button>
+                    <button class="tablinks " data-link="ECO-5#3">ECO-5#3</button>
+                    <button class="tablinks " data-link="ECO-5#4">ECO-5#4</button>
+                    <button class="tablinks " data-link="ECO-5#5">ECO-5#5</button>
+                    <button class="tablinks " data-link="ECO-5#6">ECO-5#6</button>
+                </div>
+
+                <div class="MeterTreeViewContent">
+                    <div class="MeterStatusSelect">
+                        <div>
+                            <img src="img/Wistron_EcoInfo/explain_on.png" alt="explain_on">
+                            <span>已啟用電表</span>
+                        </div>
+                        <div>
+                            <img src="img/Wistron_EcoInfo/explain_off.png" alt="explain_off">
+                            <span>停用電表</span>
+                        </div>
+                        <div>
+                            <img src="img/Wistron_EcoInfo/explain_select.png" alt="explain_select">
+                            <span>目前點選的電表</span>
+                        </div>
+                    </div>
+
+                    <h1></h1>
+                    <p>London is the capital city of England.</p>
+                </div>
+            </div>
+
+
+        </div>
+
+
+    </div>
+</body>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+
+<script>
+    function myFunction(e) {
+        $("#" + e).addClass("tablinks_selected");
+        $(".MeterTreeViewContent h1").text("ECO-5#1");
+    }
+
+    $(document).ready(function() {
+        $('#01').click();
+
+        $(".MeterTreeView .MeterTreeViewNav .MeterTreeViewTabs button").click(function() {
+
+            $(this).parent().children().each(function() {
+                $(this).removeClass("tablinks_selected");
+            });
+            
+            $(this).addClass("tablinks_selected");
+            
+            $(".MeterTreeViewContent h1").text($(this).data("link"));
+
+        });
+    });
+</script>
+
+
+</html>

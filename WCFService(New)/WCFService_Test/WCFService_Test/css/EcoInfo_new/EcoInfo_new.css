@@ -1,0 +1,136 @@
+* {
+    box-sizing: border-box;
+}
+
+.EcoInfo_page {
+    display: flex;
+    width: 850px;
+    padding: 10px;
+    margin:auto;
+    overflow: hidden;
+}
+
+.EcoInfo_page .Eco_Nav {
+    width: 350px;
+    border-radius: 20px;
+    border: 1px solid gray;
+    float: left;
+}
+
+.EcoInfo_page .Eco_Nav .container {
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+.Eco_Group {
+    width: 100%;
+    font-size: 20px;
+    text-align: center;
+    font-weight: bold;
+    padding-bottom: 10px;
+}
+
+.Eco_Nav .Eco_Info img,
+.Eco_Nav .Meter_Info img {
+    width: 60px;
+    height: 30px;
+    vertical-align: middle;
+}
+
+.Eco_Nav .Meter_List img {
+    width: 50px;
+    height: 40px;
+    vertical-align: middle;
+}
+
+.Eco_Nav .Eco_Info tr:first-of-type {
+    background-color: #cce6ff;
+    line-height: 40px;
+    font-size: 20px;
+    font-weight: bold;
+    border-top: 1px solid #999;
+    border-bottom: 1px solid #999;
+}
+
+.Eco_Nav .Meter_Info tr:first-of-type {
+    background-color: #ffffcc;
+    line-height: 40px;
+    font-size: 20px;
+    font-weight: bold;
+    border-top: 1px solid #999;
+    border-bottom: 1px solid #999;
+}
+
+.Eco_Nav .Meter_List tr:first-of-type {
+    background-color: #cddca8;
+    line-height: 40px;
+    font-size: 20px;
+    font-weight: bold;
+    border-top: 1px solid #999;
+    border-bottom: 1px solid #999;
+}
+
+.Eco_Nav .Eco_Info,
+.Eco_Nav .Meter_Info,
+.Eco_Nav .Meter_List {
+    width: 100%;
+}
+
+.Eco_Nav .Eco_Info tr td,
+.Eco_Nav .Meter_Info tr td,
+.Eco_Nav .Meter_List tr td {
+    padding: 5px;
+    position: relative;
+}
+
+.Eco_Nav .Eco_Info input,
+.Eco_Nav .Meter_Info input {
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    color: gray;
+    font-weight: bold;
+    width: 50px;
+    height: 30px;
+    border-radius: 5px;
+    /* For browsers that do not support gradients */
+    background: -webkit-linear-gradient(left top, white, #ebebe0);
+    /* For Safari 5.1 to 6.0 */
+    background: -o-linear-gradient(left top, white, #ebebe0);
+    /* For Opera 11.1 to 12.0 */
+    background: -moz-linear-gradient(left top, white, #ebebe0);
+    /* For Firefox 3.6 to 15 */
+    background: linear-gradient(left top, white, #ebebe0);
+    /* Standard syntax */
+    margin-right: 3%;
+}
+
+.Eco_Nav .font_open {
+    color: green;
+}
+
+.Eco_Nav .EUI {
+    text-align: center;
+    /* For browsers that do not support gradients */
+    background: -webkit-linear-gradient(left top, white, #ebebe0);
+    /* For Safari 5.1 to 6.0 */
+    background: -o-linear-gradient(left top, white, #ebebe0);
+    /* For Opera 11.1 to 12.0 */
+    background: -moz-linear-gradient(left top, white, #ebebe0);
+    /* For Firefox 3.6 to 15 */
+    background: linear-gradient(left top, white, #ebebe0);
+    /* Standard syntax */
+    font-weight: bold;
+    font-size: 20px;
+}
+
+.Eco_Nav .Eco_Group select {
+    font-weight: bold;
+    font-size: 20px;
+    color: gray;
+}
+
+.Eco_Nav .Meter_List tr {
+    border-bottom: 1px solid #999;
+}
